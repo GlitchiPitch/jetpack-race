@@ -13,25 +13,32 @@ local Server = {}
 Server.__index = Server
 
 ---@return LiveLeaderboardSystemServerServer
-function Server.new()
-    local self = setmetatable({}, Server)
-    self.shared = Shared.new()
-    self.infrastructure = ServerInfrastructure.new(self.shared.Infrastructure.DIContainer)
-    self.application = ServerApplication.new(self.shared.Infrastructure.DIContainer)
-    return self
+---@param iocContainer DIContainer
+function Server.new(iocContainer)
+	local self = setmetatable({}, Server)
+	self.shared = Shared.new()
+	self.iocContainer = iocContainer
+	self.infrastructure = ServerInfrastructure.new(self.shared.Infrastructure.DIContainer)
+	self.application = ServerApplication.new(self.shared.Infrastructure.DIContainer)
+	return self
 end
 
 function Server:init()
-    self.infrastructure:init()
-    self.application:init()
+	local logger = self.iocContainer:resolve("Logger")
+	logger:info("LiveLeaderboardSystemServer", "Initializing LiveLeaderboardSystem server...")
+
+	self.infrastructure:init()
+	self.application:init()
+
+	logger:info("LiveLeaderboardSystemServer", "LiveLeaderboardSystem server initialized successfully")
 end
 
 function Server:onPlayerAdded(player)
-    self.application.services.playerService:onPlayerAdded(player)
+	self.application.services.playerService:onPlayerAdded(player)
 end
 
 function Server:onPlayerRemoving(player)
-    self.application.services.playerService:onPlayerRemoving(player)
+	self.application.services.playerService:onPlayerRemoving(player)
 end
 
 return Server

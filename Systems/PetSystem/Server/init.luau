@@ -1,5 +1,4 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
 
 local Shared = require(ReplicatedStorage.JetpackRace.Systems.PetSystem)
 
@@ -14,25 +13,30 @@ local Server = {}
 Server.__index = Server
 
 ---@return PetSystemServer
-function Server.new()
+---@param iocContainer DIContainer
+function Server.new(iocContainer)
     local self = setmetatable({}, Server)
     self.shared = Shared.new()
+    self.iocContainer = iocContainer
     self.infrastructure = ServerInfrastructure.new(self.shared.Infrastructure.DIContainer)
     self.application = ServerApplication.new(self.shared.Infrastructure.DIContainer)
     return self
 end
 
-function Server:init()
-    self.infrastructure:init()
-    self.application:init()
+function Server:onPlayerAdded(player)
+    ---@type PetSystemServerApplicationServices
+    local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
+    ---@type PetSystemServerPlayerService
+    local playerService = applicationServices.playerService
+    playerService:onPlayerAdded(player)
+end
 
-    Players.PlayerAdded:Connect(function(player)
-        self.application.services.playerService:onPlayerAdded(player)
-    end)
-
-    Players.PlayerRemoving:Connect(function(player)
-        self.application.services.playerService:onPlayerRemoving(player)
-    end)
+function Server:onPlayerRemoving(player)
+    ---@type PetSystemServerApplicationServices
+    local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
+    ---@type PetSystemServerPlayerService
+    local playerService = applicationServices.playerService
+    playerService:onPlayerRemoving(player)
 end
 
 return Server

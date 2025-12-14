@@ -16,7 +16,11 @@ end
 
 function Infrastructure:_register()
     self.diContainer:singleton("PlayerRepository", function()
-        return Repositories.PlayerRepository.new(self.diContainer:resolve("PlayerEntity"))
+        ---@type FlyingSystemPlayerEntity
+        local entities = self.diContainer:resolve("Entities")
+        ---@type FlyingSystemPlayerEntity
+        local playerEntity = entities.Player
+        return Repositories.PlayerRepository.new(playerEntity)
     end)
 end
 

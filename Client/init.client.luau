@@ -24,9 +24,9 @@ function Client.new()
 	self.shared = Shared.new()
 	self.application = Application.new(self.shared.Infrastructure.DIContainer)
 	self.presentation = Presentation.new(self.shared.Infrastructure.DIContainer)
-	self.petSystemClient = PetSystemClient.new()
-	self.flyingSystemClient = FlyingSystemClient.new()
-	self.liveLeaderboardSystemClient = LiveLeaderboardSystemClient.new()
+	self.petSystemClient = PetSystemClient.new(self.shared.Infrastructure.DIContainer)
+	self.flyingSystemClient = FlyingSystemClient.new(self.shared.Infrastructure.DIContainer)
+	self.liveLeaderboardSystemClient = LiveLeaderboardSystemClient.new(self.shared.Infrastructure.DIContainer)
 	return self
 end
 

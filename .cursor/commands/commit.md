@@ -6,8 +6,8 @@
 
 ### 1. Documentation Update
 
-* Check and update CHANGELOG.md
-* Update TODO.md
+* Check and update .dev/CHANGELOG.md
+* Update .dev/TODO.md
 * Check relevance of other documents in .dev/
 
 ### 2. Game Version Update

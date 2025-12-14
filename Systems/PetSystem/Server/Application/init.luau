@@ -2,13 +2,7 @@ local Commands = require(script.Commands)
 local UseCases = require(script.UseCases)
 local Services = require(script.Services)
 ---@class PetSystemServerApplication
----@field application SharedApplication
 ---@field diContainer DIContainer
----@field constants SharedApplicationConstants
----@field useCases ServerUseCases
----@field commands ServerCommands
----@field remoteEventService RemoteEventService
----@field services ServerApplicationServices
 local Application = {}
 Application.__index = Application
 
@@ -30,35 +24,6 @@ function Application:_register()
 	end)
 	self.diContainer:singleton("Server.Application.Services", function(c)
 		return Services.new(c)
-	end)
-end
-
-function Application:init()
-	self.constants = self.diContainer:resolve("Shared.Constants")
-	self.useCases = self.diContainer:resolve("Server.Application.UseCases")
-	self.commands = self.diContainer:resolve("Server.Application.Commands")
-	self.remoteEventService = self.diContainer:resolve("RemoteEventService")
-
-	self.services = self.diContainer:resolve("Server.Application.Services")
-	self.services:init()
-	self:connectToEvents()
-end
-
-function Application:connectToEvents()
-	self.remoteEventService:connectToEvent(self.constants.BUY_ITEM, function(player, args)
-		local playerEntity = self.services.playerService:getPlayerEntity(player)
-		local useCase = self.useCases.BuyItem.new(self.constants.SHOP_LIST, self.constants.SHOP_CONSTANTS)
-		local command = self.commands.BuyItem.new({
-			itemName = args.itemName,
-			playerEntity = playerEntity,
-			shopMode = args.shopMode,
-		})
-
-		if useCase:execute(command) then
-			self.remoteEventService:fireClient(playerEntity, self.constants.BUY_ITEM_SUCCESS, args)
-		else
-			self.remoteEventService:fireClient(playerEntity, self.constants.BUY_ITEM_ERROR, args)
-		end
 	end)
 end
 

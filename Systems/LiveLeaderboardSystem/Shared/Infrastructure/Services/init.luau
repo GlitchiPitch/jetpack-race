@@ -17,7 +17,6 @@ function Services.new(diContainer)
 end
 
 function Services:_register()
-	
 end
 
 return Services

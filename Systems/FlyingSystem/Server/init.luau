@@ -1,5 +1,4 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
 
 local Shared = require(ReplicatedStorage.JetpackRace.Systems.FlyingSystem)
 
@@ -14,25 +13,30 @@ local Server = {}
 Server.__index = Server
 
 ---@return FlyingSystemServer
-function Server.new()
-    local self = setmetatable({}, Server)
-    self.shared = Shared.new()
-    self.infrastructure = ServerInfrastructure.new(self.shared.Infrastructure.DIContainer)
-    self.application = ServerApplication.new(self.shared.Infrastructure.DIContainer)
-    return self
+---@param iocContainer DIContainer
+function Server.new(iocContainer)
+	local self = setmetatable({}, Server)
+	self.shared = Shared.new()
+	self.iocContainer = iocContainer
+	self.infrastructure = ServerInfrastructure.new(self.shared.Infrastructure.DIContainer)
+	self.application = ServerApplication.new(self.shared.Infrastructure.DIContainer)
+	return self
 end
 
-function Server:init()
-    self.infrastructure:init()
-    self.application:init()
+function Server:onPlayerAdded(player)
+	---@type FlyingSystemServerServices
+	local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
+	---@type FlyingSystemServerPlayerService
+	local playerService = applicationServices.playerService
+	playerService:onPlayerAdded(player)
+end
 
-    Players.PlayerAdded:Connect(function(player)
-        self.application.services.playerService:onPlayerAdded(player)
-    end)
-
-    Players.PlayerRemoving:Connect(function(player)
-        self.application.services.playerService:onPlayerRemoving(player)
-    end)
+function Server:onPlayerRemoving(player)
+	---@type FlyingSystemServerServices
+	local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
+	---@type FlyingSystemServerPlayerService
+	local playerService = applicationServices.playerService
+	playerService:onPlayerRemoving(player)
 end
 
 return Server

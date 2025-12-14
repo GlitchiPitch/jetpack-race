@@ -10,17 +10,10 @@ function PlayerService.new(diContainer)
 	return self
 end
 
-function PlayerService:init()
-	---@type FlyingSystemEntities
-	local entities = self.diContainer:resolve("Entities")
+function PlayerService:onPlayerAdded(player)
 	---@type FlyingSystemServerPlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	self.PlayerEntity = entities.Player
-	self.playerRepository = playerRepository
-end
-
-function PlayerService:onPlayerAdded(player)
-	self.playerRepository:getPlayerEntity(player)
+	playerRepository:getPlayerEntity(player)
 end
 
 function PlayerService:onPlayerRemoving(player)
@@ -28,8 +21,9 @@ function PlayerService:onPlayerRemoving(player)
 end
 
 function PlayerService:updatePlayer(player)
+	local playerRepository = self.diContainer:resolve("PlayerRepository")
 	---@type FlyingSystemPlayerEntity
-	local playerEntity = self.playerRepository:getPlayerEntity(player)
+	local playerEntity = playerRepository:getPlayerEntity(player)
 	---@type RemoteEventService
 	local remoteEventService = self.diContainer:resolve("RemoteEventService")
 	---@type FlyingSystemConstants
