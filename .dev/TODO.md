@@ -1,5 +1,12 @@
 # TODO
 
+## Completed Tasks (Priority: Completed)
+- [x] **Bug Fixes v0.1.1**: Fixed 4 critical bugs in codebase
+  - [x] PlayerEntity constructor parameter mismatch
+  - [x] Removed debug warn() statements from production code
+  - [x] Fixed service reference errors in connectToEvents methods
+  - [x] Removed non-existent shopService calls preventing runtime errors
+
 ## Current Development Questions (Priority: High)
 These questions need to be answered by the team before proceeding with implementation:
 
@@ -46,7 +53,14 @@ These questions need to be answered by the team before proceeding with implement
 - [ ] Add code quality checks
 
 ## Next Steps
-1. Get answers to development questions from team
-2. Create detailed implementation plan for Phase 1
-3. Begin core systems development
-4. Schedule sync meetings for testing (6-9 PM/AM EST)
+1. **Immediate**: Get answers to development questions from team (movement mechanics, jetpack acquisition, camera system, dev products)
+2. **Short-term**: Create detailed implementation plan for Phase 1 core systems
+3. **Medium-term**: Begin core systems development (jetpack movement, camera, acquisition)
+4. **Long-term**: Implement game features (dev products, racing, leaderboard)
+5. Schedule sync meetings for testing and planning (6-9 PM/AM EST)
+
+## Project Status
+- ✅ **Project Structure**: Modular architecture established
+- ✅ **Bug Fixes**: Critical runtime errors resolved
+- ⏳ **Core Questions**: Awaiting team input on game mechanics
+- 📋 **Ready for Development**: Codebase prepared for feature implementation

@@ -46,7 +46,7 @@ end
 
 function Application:connectToEvents()
 	self.remoteEventService:connectToEvent(self.constants.BUY_ITEM, function(player, args)
-		local playerEntity = self.playerService:getPlayerEntity(player)
+		local playerEntity = self.services.playerService:getPlayerEntity(player)
 		local useCase = self.useCases.BuyItem.new(self.constants.SHOP_LIST, self.constants.SHOP_CONSTANTS)
 		local command = self.commands.BuyItem.new({
 			itemName = args.itemName,

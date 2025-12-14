@@ -27,3 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added development workflow documentation (`.docs/notes.md`)
 - Created project documentation structure (`.dev/` directory)
 - Added commit process and version management guidelines
+
+## [v0.1.1] - 2025-12-14
+
+### Fixed
+- **PlayerEntity Constructor Bug**: Fixed `PlayerRepository:getPlayerEntity()` calls to provide all required parameters (`player`, `_playerData`, `data`) to `PlayerEntity.new()` in FlyingSystem and PetSystem
+- **Debug Statements Removal**: Removed all debug `warn()` statements from client initialization files and shared application files in FlyingSystem, PetSystem, and LiveLeaderboardSystem
+- **Service Reference Bug**: Fixed `connectToEvents` methods to reference `self.services.playerService` instead of non-existent `self.playerService` in all server Application classes
+- **ShopService Runtime Error**: Removed calls to non-existent `self.services.shopService:init()` from all Application:init() methods to prevent runtime errors

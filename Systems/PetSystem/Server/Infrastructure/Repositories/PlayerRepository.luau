@@ -15,7 +15,7 @@ end
 ---@return PetSystemPlayerEntity
 function PlayerRepository:getPlayerEntity(player)
 	if not self.playerEntities[player] then
-		self.playerEntities[player] = self.PlayerEntity.new(player)
+		self.playerEntities[player] = self.PlayerEntity.new(player, {}, {})
 	end
 
 	return self.playerEntities[player]

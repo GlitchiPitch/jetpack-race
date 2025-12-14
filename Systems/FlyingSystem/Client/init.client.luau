@@ -12,7 +12,6 @@ Client.__index = Client
 function Client.new()
 	local self = setmetatable({}, Client)
 	self.shared = Shared.new()
-	warn(self.shared)
 	self.application = Application.new(self.shared.Infrastructure.DIContainer)
 	self.presentation = Presentation.new(self.shared.Infrastructure.DIContainer)
 	return self
@@ -24,5 +23,4 @@ function Client:init()
 end
 
 local client = Client.new()
-warn(client)
 client:init()

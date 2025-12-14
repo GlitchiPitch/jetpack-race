@@ -50,8 +50,6 @@ function Application:init()
 	self.useCases = self.diContainer:resolve("Shared.Application.UseCases")
 	self.services = self.diContainer:resolve("Shared.Application.Services")
 	self.config = self.diContainer:resolve("Shared.Config")
-
-	self.services.shopService:init()
 end
 
 return Application
