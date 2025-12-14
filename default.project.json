@@ -15,6 +15,9 @@
           },
           "LiveLeaderboardSystem": {
             "$path": "Systems/LiveLeaderboardSystem/Shared"
+          },
+          "RewardsSystem": {
+            "$path": "Systems/RewardsSystem/Shared"
           }
         }
       }
@@ -32,6 +35,9 @@
           },
           "LiveLeaderboardSystem": {
             "$path": "Systems/LiveLeaderboardSystem/Server"
+          },
+          "RewardsSystem": {
+            "$path": "Systems/RewardsSystem/Server"
           }
         }
       }
@@ -50,6 +56,9 @@
             },
             "LiveLeaderboardSystem": {
               "$path": "Systems/LiveLeaderboardSystem/Client"
+            },
+            "RewardsSystem": {
+              "$path": "Systems/RewardsSystem/Client"
             }
           }
         }

@@ -36,6 +36,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Service Reference Bug**: Fixed `connectToEvents` methods to reference `self.services.playerService` instead of non-existent `self.playerService` in all server Application classes
 - **ShopService Runtime Error**: Removed calls to non-existent `self.services.shopService:init()` from all Application:init() methods to prevent runtime errors
 
+## [v0.1.5] - 2025-12-14
+
+### Added
+- **RewardsSystem Integration**: Fully integrated RewardsSystem into the main game initialization
+  - Added RewardsSystemServer to server initialization with player event handling
+  - Added RewardsSystemClient to client initialization
+  - Fixed Logger service registration timing issues in DI container
+  - Added comprehensive logging throughout the RewardsSystem for debugging
+
+### Fixed
+- **Syntax Error**: Removed stray character causing "Incomplete statement" error in Server/init.server.luau
+- **DI Container Logger Registration**: Fixed Logger service resolution timing by moving Logger-dependent operations from constructors to init() methods
+- **RewardsSystem Client Path**: Fixed incorrect Shared module path in RewardsSystem/Client/init.luau
+
+### Changed
+- **RewardsSystem Architecture**: Enhanced RewardsSystem with proper dependency injection and logging infrastructure
+- **Initialization Order**: Improved component initialization sequence to ensure services are available when needed
+
 ## [v0.1.4] - 2025-12-14
 
 ### Changed
