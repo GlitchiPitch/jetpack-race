@@ -1,0 +1,59 @@
+{
+  "name": "project",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "JetpackRace": {
+        "$path": "Shared",
+        "Systems": {
+          "$className": "Folder",
+          "FlyingSystem": {
+            "$path": "Systems/FlyingSystem/Shared"
+          },
+          "PetSystem": {
+            "$path": "Systems/PetSystem/Shared"
+          },
+          "LiveLeaderboardSystem": {
+            "$path": "Systems/LiveLeaderboardSystem/Shared"
+          }
+        }
+      }
+    },
+    "ServerScriptService": {
+      "JetpackRace": {
+        "$path": "Server",
+        "Systems": {
+          "$className": "Folder",
+          "FlyingSystem": {
+            "$path": "Systems/FlyingSystem/Server"
+          },
+          "PetSystem": {
+            "$path": "Systems/PetSystem/Server"
+          },
+          "LiveLeaderboardSystem": {
+            "$path": "Systems/LiveLeaderboardSystem/Server"
+          }
+        }
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "JetpackRace": {
+          "$path": "Client",
+          "Systems": {
+            "$className": "Folder",
+            "FlyingSystem": {
+              "$path": "Systems/FlyingSystem/Client"
+            },
+            "PetSystem": {
+              "$path": "Systems/PetSystem/Client"
+            },
+            "LiveLeaderboardSystem": {
+              "$path": "Systems/LiveLeaderboardSystem/Client"
+            }
+          }
+        }
+      }
+    }
+  }
+}
