@@ -31,3 +31,5 @@ View our development progress on [GitHub](https://github.com/GlitchiPitch/jetpac
 ## 📝 Contributing
 
 See our documentation for contribution guidelines and development practices.
+
+If you see this message, please give it a star ⭐
