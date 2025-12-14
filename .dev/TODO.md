@@ -52,6 +52,10 @@ These questions need to be answered by the team before proceeding with implement
 - [ ] Implement CI/CD workflow
 - [ ] Add code quality checks
 
+## v0.1.4 Completed Tasks
+- [x] **Dependency Injection Enhancement**: Successfully implemented DIContainer injection across all game systems
+- [x] **Architecture Refinement**: Enhanced client initialization with proper shared infrastructure dependencies
+
 ## Next Steps
 1. **Immediate**: Get answers to development questions from team (movement mechanics, jetpack acquisition, camera system, dev products)
 2. **Short-term**: Create detailed implementation plan for Phase 1 core systems
