@@ -5,6 +5,34 @@ The Jetpack Flying System is the core movement mechanic for Jetpack Race. It rep
 
 ## Architecture
 
+### System Structure
+The Flying System follows a modular architecture with dependency injection:
+
+```
+FlyingSystem/
+├── Client/
+│   ├── Application/     # Business logic
+│   ├── Presentation/    # UI layer
+│   └── init.luau       # DIContainer integration
+├── Server/
+│   ├── Application/     # Server-side logic
+│   ├── Infrastructure/  # Data layer
+│   └── init.luau       # DIContainer integration
+└── Shared/
+    ├── Application/     # Cross-platform logic
+    ├── Domain/         # Business entities
+    └── Infrastructure/ # Shared services
+```
+
+### Dependency Injection
+All system components are initialized through `DIContainer` for clean separation of concerns:
+
+```lua
+-- Client initialization
+local flyingSystemClient = FlyingSystemClient.new(sharedDIContainer)
+flyingSystemClient:init()
+```
+
 ### Movement Components
 - **Client-Side Movement**: Uses BodyMovers (BodyVelocity/BodyGyro) for smooth physics-based movement
 - **Server Validation**: Validates client positions and prevents cheating

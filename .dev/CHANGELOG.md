@@ -36,6 +36,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Service Reference Bug**: Fixed `connectToEvents` methods to reference `self.services.playerService` instead of non-existent `self.playerService` in all server Application classes
 - **ShopService Runtime Error**: Removed calls to non-existent `self.services.shopService:init()` from all Application:init() methods to prevent runtime errors
 
+## [v0.1.4] - 2025-12-14
+
+### Changed
+- **Dependency Injection Enhancement**: Improved dependency injection by passing `DIContainer` to system client constructors (PetSystemClient, FlyingSystemClient, LiveLeaderboardSystemClient)
+- **Architecture Refinement**: Enhanced client initialization to properly inject shared infrastructure dependencies across all game systems
+
 ## [v0.1.3] - 2025-12-14
 
 ### Changed

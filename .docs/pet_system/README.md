@@ -5,6 +5,34 @@ The Pet System provides collectible companions that follow players during races.
 
 ## Architecture
 
+### System Structure
+The Pet System follows a modular architecture with dependency injection:
+
+```
+PetSystem/
+├── Client/
+│   ├── Application/     # UI and interaction logic
+│   ├── Presentation/    # Pet display and controls
+│   └── init.luau       # DIContainer integration
+├── Server/
+│   ├── Application/     # Server-side validation
+│   ├── Infrastructure/  # Data persistence
+│   └── init.luau       # DIContainer integration
+└── Shared/
+    ├── Application/     # Cross-platform logic
+    ├── Domain/         # Pet entities and business rules
+    └── Infrastructure/ # Shared services and utilities
+```
+
+### Dependency Injection
+All system components are initialized through `DIContainer` for clean separation of concerns:
+
+```lua
+-- Client initialization
+local petSystemClient = PetSystemClient.new(sharedDIContainer)
+petSystemClient:init()
+```
+
 ### Core Components
 - **Pet Manager**: Central system for pet lifecycle management
 - **Variant System**: Handles different pet appearances and rarities

@@ -5,6 +5,34 @@ The Live Leaderboard System provides real-time competitive tracking for Jetpack 
 
 ## Architecture
 
+### System Structure
+The Live Leaderboard System follows a modular architecture with dependency injection:
+
+```
+LiveLeaderboardSystem/
+├── Client/
+│   ├── Application/     # UI update logic
+│   ├── Presentation/    # Leaderboard display
+│   └── init.luau       # DIContainer integration
+├── Server/
+│   ├── Application/     # Ranking calculations
+│   ├── Infrastructure/  # Data processing
+│   └── init.luau       # DIContainer integration
+└── Shared/
+    ├── Application/     # Cross-platform logic
+    ├── Domain/         # Ranking entities
+    └── Infrastructure/ # Shared utilities
+```
+
+### Dependency Injection
+All system components are initialized through `DIContainer` for clean separation of concerns:
+
+```lua
+-- Client initialization
+local leaderboardClient = LiveLeaderboardSystemClient.new(sharedDIContainer)
+leaderboardClient:init()
+```
+
 ### Core Components
 - **Position Calculator**: Tracks player progress and rankings
 - **Update Manager**: Handles real-time synchronization
