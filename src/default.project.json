@@ -1,0 +1,32 @@
+{
+  "name": "project",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "JetpackRace": {
+        "$path": "Shared"
+      },
+      "Systems": {
+        "$path": "Systems/Shared"
+      }
+    },
+    "ServerScriptService": {
+      "JetpackRace": {
+        "$path": "Server"
+      },
+      "Systems": {
+        "$path": "Systems/Server"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "JetpackRace": {
+          "$path": "Client",
+          "Systems": {
+            "$path": "Systems/Client"
+          }
+        }
+      }
+    }
+  }
+}
