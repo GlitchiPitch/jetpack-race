@@ -11,6 +11,10 @@ function PlayerService.new(diContainer)
 end
 
 function PlayerService:onPlayerAdded(player)
+	---@type LoggerService
+	local logger = self.diContainer:resolve("Logger")
+	logger:info("PlayerService", "Player added:", player.Name, "(ID:", player.UserId, ")")
+
 	---@type IPlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
 	return playerRepository:getPlayerEntity(player)

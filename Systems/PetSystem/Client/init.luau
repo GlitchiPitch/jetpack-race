@@ -23,13 +23,16 @@ function Client.new(iocContainer)
 end
 
 function Client:init()
-	local logger = self.iocContainer:resolve("Logger")
-	logger:info("PetSystemClient", "Initializing PetSystem client...")
+	self.logger = self.iocContainer:resolve("Logger")
+	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
+		return self.logger
+	end)
+	self.logger:info("PetSystemClient", "Initializing PetSystem client...")
 
 	self.application:init()
 	self.presentation:init()
 
-	logger:info("PetSystemClient", "PetSystem client initialized successfully")
+	self.logger:info("PetSystemClient", "PetSystem client initialized successfully")
 end
 
 return Client

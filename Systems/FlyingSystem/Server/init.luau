@@ -23,7 +23,20 @@ function Server.new(iocContainer)
 	return self
 end
 
+function Server:init()
+	---@type LoggerService
+	self.logger = self.iocContainer:resolve("Logger")
+	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
+		return self.logger
+	end)
+
+	self.logger:info("FlyingSystemServer", "Initializing FlyingSystem server...")
+
+end
+
 function Server:onPlayerAdded(player)
+	self.logger:info("FlyingSystemServer", "Player added to flying system:", player.Name, "(ID:", player.UserId, ")")
+
 	---@type FlyingSystemServerServices
 	local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
 	---@type FlyingSystemServerPlayerService

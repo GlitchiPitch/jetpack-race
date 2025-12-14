@@ -20,6 +20,10 @@ function PlayerService:init()
 end
 
 function PlayerService:onPlayerAdded(player)
+	---@type LoggerService
+	local logger = self.diContainer:resolve("Logger")
+	logger:info("PetSystemPlayerService", "Player added to pet system:", player.Name, "(ID:", player.UserId, ")")
+
 	---@type PetSystemServerPlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
 	playerRepository:getPlayerEntity(player)

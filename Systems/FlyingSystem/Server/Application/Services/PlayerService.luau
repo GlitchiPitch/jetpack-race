@@ -11,6 +11,10 @@ function PlayerService.new(diContainer)
 end
 
 function PlayerService:onPlayerAdded(player)
+	---@type LoggerService
+	local logger = self.diContainer:resolve("Logger")
+	logger:info("FlyingSystemPlayerService", "Player added to flying system:", player.Name, "(ID:", player.UserId, ")")
+
 	---@type FlyingSystemServerPlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
 	playerRepository:getPlayerEntity(player)

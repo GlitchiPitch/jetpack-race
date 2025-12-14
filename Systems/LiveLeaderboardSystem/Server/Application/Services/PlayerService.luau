@@ -11,6 +11,10 @@ function PlayerService.new(diContainer)
 end
 
 function PlayerService:onPlayerAdded(player)
+	---@type LoggerService
+	local logger = self.diContainer:resolve("Logger")
+	logger:info("LiveLeaderboardPlayerService", "Player added to live leaderboard system:", player.Name, "(ID:", player.UserId, ")")
+
 	---@type LiveLeaderboardSystemServerPlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
 	playerRepository:getPlayerEntity(player)

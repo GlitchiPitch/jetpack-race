@@ -7,7 +7,7 @@ local Application = require(script.Application)
 ---@class ShopClient
 ---@field shared Shared
 ---@field application LiveLeaderboardSystemClientApplication
----@field presentation LiveLeaderboardSystemClientPresentation	
+---@field presentation LiveLeaderboardSystemClientPresentation
 ---@field iocContainer DIContainer
 local Client = {}
 Client.__index = Client
@@ -24,12 +24,14 @@ function Client.new(iocContainer)
 end
 
 function Client:init()
-	local logger = self.iocContainer:resolve("Logger")
-	logger:info("LiveLeaderboardSystemClient", "Initializing LiveLeaderboardSystem client...")
+	self.logger = self.iocContainer:resolve("Logger")
+	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
+		return self.logger
+	end)
+	self.logger:info("LiveLeaderboardSystemClient", "Initializing LiveLeaderboardSystem client...")
 
 	self.application:init()
 	self.presentation:init()
-
 end
 
 return Client

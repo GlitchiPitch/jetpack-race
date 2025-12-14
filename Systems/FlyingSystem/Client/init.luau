@@ -5,6 +5,10 @@ local Presentation = require(script.Presentation)
 local Application = require(script.Application)
 
 ---@class FlyingSystemClient
+---@field shared Shared
+---@field iocContainer DIContainer
+---@field application FlyingSystemClientApplication
+---@field presentation FlyingSystemClientPresentation
 local Client = {}
 Client.__index = Client
 
@@ -20,12 +24,16 @@ function Client.new(iocContainer)
 end
 
 function Client:init()
-	local logger = self.iocContainer:resolve("Logger")
-	logger:info("FlyingSystemClient", "Initializing FlyingSystem client...")
+	self.logger = self.iocContainer:resolve("Logger")
+
+	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
+		return self.logger
+	end)
+
+	self.logger:info("FlyingSystemClient", "Initializing FlyingSystem client...")
 
 	self.application:init()
 	self.presentation:init()
-
 end
 
 return Client

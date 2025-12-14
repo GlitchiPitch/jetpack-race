@@ -24,16 +24,25 @@ function Server.new(iocContainer)
 end
 
 function Server:init()
-	local logger = self.iocContainer:resolve("Logger")
-	logger:info("LiveLeaderboardSystemServer", "Initializing LiveLeaderboardSystem server...")
+	self.logger = self.iocContainer:resolve("Logger")
+	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
+		return self.logger
+	end)
+	self.logger:info("LiveLeaderboardSystemServer", "Initializing LiveLeaderboardSystem server...")
 
-	self.infrastructure:init()
-	self.application:init()
-
-	logger:info("LiveLeaderboardSystemServer", "LiveLeaderboardSystem server initialized successfully")
+	self.logger:info("LiveLeaderboardSystemServer", "LiveLeaderboardSystem server initialized successfully")
 end
 
 function Server:onPlayerAdded(player)
+	self.logger:info(
+		"LiveLeaderboardSystemServer",
+		"Player added to live leaderboard system:",
+		player.Name,
+		"(ID:",
+		player.UserId,
+		")"
+	)
+
 	self.application.services.playerService:onPlayerAdded(player)
 end
 

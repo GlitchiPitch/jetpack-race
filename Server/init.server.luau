@@ -33,6 +33,11 @@ function Server.new()
 end
 
 function Server:init()
+
+    self.flyingSystemServer:init()
+    self.petSystemServer:init()
+    self.liveLeaderboardSystemServer:init()
+
 	---@type ServerApplicationServices
 	local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
 	---@type PlayerService
@@ -40,6 +45,9 @@ function Server:init()
 
 
 	Players.PlayerAdded:Connect(function(player)
+		local logger = self.shared.Infrastructure.DIContainer:resolve("Logger")
+		logger:info("Server", "Player joined the game:", player.Name, "(ID:", player.UserId, ")")
+
 		playerService:onPlayerAdded(player)
 		self.flyingSystemServer:onPlayerAdded(player)
 		self.petSystemServer:onPlayerAdded(player)
