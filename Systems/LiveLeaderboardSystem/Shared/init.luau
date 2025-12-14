@@ -22,8 +22,6 @@ function Shared.new()
     self.Application = Application.new(self.Infrastructure.DIContainer, self.Config)
     self:_register()
 
-    self.Application:init()
-
     return self
 end
 

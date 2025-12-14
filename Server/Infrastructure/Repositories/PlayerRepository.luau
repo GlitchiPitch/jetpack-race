@@ -2,12 +2,12 @@
 local PlayerRepository = {}
 PlayerRepository.__index = PlayerRepository
 
----@param PlayerEntity PlayerEntity
+---@param entities Entities
 ---@return ShopPlayerRepository
-function PlayerRepository.new(PlayerEntity)
+function PlayerRepository.new(entities)
 	local self = setmetatable({}, PlayerRepository)
 	self.playerEntities = {}
-	self.PlayerEntity = PlayerEntity
+	self.PlayerEntity = entities.Player
 	return self
 end
 

@@ -1,7 +1,6 @@
 local Commands = require(script.Commands)
 local UseCases = require(script.UseCases)
 local Services = require(script.Services)
-local Constants = require(script.Constants)
     
 ---@class SharedApplication
 ---@field commands SharedCommands
@@ -19,7 +18,6 @@ function Application.new(diContainer, config)
 	local self = setmetatable({}, Application)
 	self.diContainer = diContainer
     self.config = config
-    self.constants = Constants
 	self.commands = Commands.new()
 	self.useCases = UseCases.new()
 	self.services = Services.new(self.diContainer, self.config)
@@ -40,16 +38,10 @@ function Application:_register()
     self.diContainer:singleton("Shared.Application.Constants", function()
 		return self.constants
 	end)
-    self.diContainer:singleton("Shared.Constants", function()
-		return self.constants
-	end)
 end
 
 function Application:init()
-	self.commands = self.diContainer:resolve("Shared.Application.Commands")
-	self.useCases = self.diContainer:resolve("Shared.Application.UseCases")
-	self.services = self.diContainer:resolve("Shared.Application.Services")
-	self.config = self.diContainer:resolve("Shared.Config")
+	
 end
 
 return Application

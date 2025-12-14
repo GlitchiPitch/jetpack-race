@@ -1,4 +1,4 @@
----@class SharedConstants
+---@class LiveLeaderboardSystemSharedConstants
 local Constants = {}
 
 return Constants

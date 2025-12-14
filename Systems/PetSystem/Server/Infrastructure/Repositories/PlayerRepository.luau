@@ -1,4 +1,4 @@
----@class PetSystemServerPlayerRepository : PetSystemServerIPlayerRepository
+---@class PetSystemServerPlayerRepository
 local PlayerRepository = {}
 PlayerRepository.__index = PlayerRepository
 

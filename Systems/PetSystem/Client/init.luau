@@ -1,14 +1,14 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Shared = require(ReplicatedStorage.Shared)
+local Shared = require(ReplicatedStorage.JetpackRace.Systems.PetSystem)
 
 local Presentation = require(script.Presentation)
 local Application = require(script.Application)
 
----@class FlyingSystemClient
+---@class PetSystemClient
 local Client = {}
 Client.__index = Client
 
----@return FlyingSystemClient
+---@return PetSystemClient
 function Client.new()
 	local self = setmetatable({}, Client)
 	self.shared = Shared.new()
@@ -22,5 +22,4 @@ function Client:init()
 	self.presentation:init()
 end
 
-local client = Client.new()
-client:init()
+return Client

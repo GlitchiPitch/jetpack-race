@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local Shared = require(ReplicatedStorage.Shared)
+local Shared = require(ReplicatedStorage.JetpackRace)
 
 local FlyingSystemServer = require(script.Systems.FlyingSystem)
 local PetSystemServer = require(script.Systems.PetSystem)
@@ -30,16 +30,22 @@ function Server.new()
 end
 
 function Server:init()
-    self.infrastructure:init()
-    self.application:init()
+
+    ---@type ServerApplicationServices
+    local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
+    ---@type PlayerService
+    local playerService = applicationServices.playerService
 
     Players.PlayerAdded:Connect(function(player)
-        self.application.services.playerService:onPlayerAdded(player)
+        playerService:onPlayerAdded(player)
     end)
 
     Players.PlayerRemoving:Connect(function(player)
-        self.application.services.playerService:onPlayerRemoving(player)
+        playerService:onPlayerRemoving(player)
     end)
+
+    ReplicatedStorage:SetAttribute(self.shared.Constants.SERVER_IS_LOADED, true)
 end
 
-return Server
+local server = Server.new()
+server:init()

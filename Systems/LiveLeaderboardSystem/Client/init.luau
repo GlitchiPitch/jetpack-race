@@ -1,5 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Shared = require(ReplicatedStorage.Shared)
+local Shared = require(ReplicatedStorage.JetpackRace.Systems.LiveLeaderboardSystem)
 
 local Presentation = require(script.Presentation)
 local Application = require(script.Application)
@@ -22,5 +22,4 @@ function Client:init()
 	self.presentation:init()
 end
 
-local client = Client.new()
-client:init()
+return Client

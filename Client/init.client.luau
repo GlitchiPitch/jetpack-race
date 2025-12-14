@@ -9,6 +9,12 @@ local FlyingSystemClient = require(script.Systems.FlyingSystem)
 local LiveLeaderboardSystemClient = require(script.Systems.LiveLeaderboardSystem)
 
 ---@class Client
+---@field shared Shared
+---@field application ClientApplication
+---@field presentation ClientPresentation
+---@field petSystemClient PetSystemClient
+---@field flyingSystemClient FlyingSystemClient
+---@field liveLeaderboardSystemClient LiveLeaderboardSystemClient
 local Client = {}
 Client.__index = Client
 
@@ -30,4 +36,11 @@ function Client:init()
 end
 
 local client = Client.new()
-client:init()
+print(client)
+if ReplicatedStorage:GetAttribute(client.shared.Constants.SERVER_IS_LOADED) then
+	client:init()
+else
+	ReplicatedStorage:GetAttributeChangedSignal(client.shared.Constants.SERVER_IS_LOADED):Connect(function()
+		client:init()
+	end)
+end

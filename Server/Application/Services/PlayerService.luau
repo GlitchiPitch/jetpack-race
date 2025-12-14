@@ -10,34 +10,29 @@ function PlayerService.new(diContainer)
 	return self
 end
 
-function PlayerService:init()
-	---@type Entities
-	local entities = self.diContainer:resolve("Entities")
+function PlayerService:onPlayerAdded(player)
 	---@type IPlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	self.PlayerEntity = entities.Player
-	self.playerRepository = playerRepository
-end
-
-function PlayerService:onPlayerAdded(player)
-	self.playerRepository:getPlayerEntity(player)
+	return playerRepository:getPlayerEntity(player)
 end
 
 function PlayerService:onPlayerRemoving(player)
-	self.playerRepository:removePlayerEntity(player)
+	---@type IPlayerRepository
+	local playerRepository = self.diContainer:resolve("PlayerRepository")
+	playerRepository:removePlayerEntity(player)
 end
 
 function PlayerService:updatePlayer(player)
-    ---@type PlayerEntity
+	---@type PlayerEntity
 	local playerEntity = self.playerRepository:getPlayerEntity(player)
-    ---@type RemoteEventService
+	---@type RemoteEventService
 	local remoteEventService = self.diContainer:resolve("RemoteEventService")
-    ---@type SharedConstants
-    local constants = self.diContainer:resolve("Shared.Constants")
+	---@type SharedConstants
+	local constants = self.diContainer:resolve("Shared.Constants")
 
-    remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
-        playerData = playerEntity:getData(),
-    })
+	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
+		playerData = playerEntity:getData(),
+	})
 end
 
 return PlayerService
