@@ -1,13 +1,9 @@
 # Jetpack Race
 
-A Roblox game featuring jetpack-based racing mechanics with various systems for gameplay enhancement.
-
 ## 📚 Documentation
-
 ### Project Documentation
 - **[Project Plan](.docs/plan.md)** - Overall project planning and roadmap
 - **[Questions](.docs/questions.md)** - Development questions and clarifications
-- **[Notes](.docs/notes.md)** - Development notes and observations
 
 ### System Documentation
 - **[Flying System](.docs/flying_system/README.md)** - Jetpack flight mechanics and controls
@@ -15,21 +11,12 @@ A Roblox game featuring jetpack-based racing mechanics with various systems for 
 - **[Pet System](.docs/pet_system/README.md)** - Pet mechanics and features
 
 ## 🏗️ Architecture
-
 This project follows Clean Architecture principles with clear separation of concerns across Client, Server, and Shared layers.
 
-## 🚀 Quick Start
-
-1. Clone the repository
-2. Open in Roblox Studio
-3. Run the game
-
 ## 📊 Progress Tracking
-
 View our development progress on [GitHub](https://github.com/GlitchiPitch/jetpack-race)
 
 ## 📝 Contributing
-
 See our documentation for contribution guidelines and development practices.
 
 If you see this message, please give it a star ⭐
