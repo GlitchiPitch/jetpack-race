@@ -1,6 +1,6 @@
 ---@class FlyingSystemEntities
 local Entities = {
-	Player = require(script.Player),
+	FlyingEntity = require(script.FlyingEntity),
 }
 
 return Entities

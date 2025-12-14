@@ -15,7 +15,7 @@ end
 ---@return FlyingSystemPlayerEntity
 function PlayerRepository:getPlayerEntity(player)
 	if not self.playerEntities[player] then
-		self.playerEntities[player] = self.PlayerEntity.new(player, {}, {})
+		self.playerEntities[player] = self.PlayerEntity.new()
 	end
 
 	return self.playerEntities[player]
