@@ -23,7 +23,7 @@ local Rarity = {
         name = "Mythic",
         description = "Mythic rarity",
         color = Color3.fromRGB(255, 0, 255),
-        gradient = ""
+        gradient = "",
     },
 }
 
