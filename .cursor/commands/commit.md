@@ -38,8 +38,8 @@
 ## Commit Format
 
 ```
-- [ Tag ] [ v{X}.{Y}.{Z} ] [ github name ] Change 1
-- [ Tag ] [ v{X}.{Y}.{Z} ] [ github name ] Change 2
+- [ Tag ] [ v{X}.{Y}.{Z} ] [ git user.name ] Change 1
+- [ Tag ] [ v{X}.{Y}.{Z} ] [ git user.name ] Change 2
 ```
 
 *(emojis can be added)*
