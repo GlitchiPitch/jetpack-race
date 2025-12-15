@@ -1,4 +1,4 @@
-local MarketPlayerService = game:GetService("MarketPlayerService")
+local MarketplaceService = game:GetService("MarketplaceService")
 
 ---@class _MarketPlayerService
 local _MarketPlayerService = {}
@@ -14,4 +14,4 @@ end
 
 
 
-return MarketPlayerService
+return MarketplaceService

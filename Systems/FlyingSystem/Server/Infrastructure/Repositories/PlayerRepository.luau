@@ -2,7 +2,7 @@
 local PlayerRepository = {}
 PlayerRepository.__index = PlayerRepository
 
----@param PlayerEntity FlyingSystemPlayerEntity
+---@param PlayerEntity PlayerEntity
 ---@return FlyingSystemServerPlayerRepository
 function PlayerRepository.new(PlayerEntity)
 	local self = setmetatable({}, PlayerRepository)
@@ -12,7 +12,7 @@ function PlayerRepository.new(PlayerEntity)
 end
 
 ---@param player Player
----@return FlyingSystemPlayerEntity
+---@return PlayerEntity
 function PlayerRepository:getPlayerEntity(player)
 	if not self.playerEntities[player] then
 		self.playerEntities[player] = self.PlayerEntity.new()

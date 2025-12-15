@@ -1,14 +1,16 @@
 # TODO
 
-## Current Sprint [v0.1.6]
+## Current Sprint [v0.1.7]
 
 ### Completed ✅
-- [x] Fix FlyingModule require paths
-- [x] Translate questions.md to English
-- [x] Add documentation links to README.md
-- [x] Create CHANGELOG.md
-- [x] Create TODO.md
-- [x] Update project version to v0.1.6
+- [x] Analyze project and identify issues
+- [x] Fix duplicate class names in RewardsSystem
+- [x] Correct invalid Roblox service references
+- [x] Fix incorrect require paths in FlyingSystem
+- [x] Add .gitignore file for Roblox projects
+- [x] Resolve linter errors (34 → 22 errors)
+- [x] Update documentation with fixes
+- [x] Update project version to v0.1.7
 
 ### In Progress 🚧
 - [ ] Test FlyingModule integration in Roblox Studio
@@ -17,6 +19,7 @@
 - [ ] Test multiplayer functionality
 
 ### Next Sprint [v0.2.0] 📋
+- [ ] Test fixed systems in Roblox Studio
 - [ ] Implement Developer Products (speed boosts, rebirths)
 - [ ] Add camera behavior (classic vs scripted)
 - [ ] Complete pet system mechanics
@@ -33,7 +36,7 @@
 
 ## Project Status
 
-**Current Version:** v0.1.6
+**Current Version:** v0.1.7
 
 **Architecture:** Clean Architecture (95% complete)
 - Domain Layer: ✅ Complete

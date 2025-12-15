@@ -30,6 +30,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Player management system
 - Project documentation in .docs/ folder
 
+## [0.1.7] - 2025-01-15
+
+### Fixed
+- Corrected duplicate class names in RewardsSystem (PetSystemEntities → RewardsSystemEntities)
+- Fixed invalid Roblox service references (MarketPlayerService → MarketplaceService)
+- Removed dead code with incorrect require paths in FlyingSystem
+- Fixed type annotations and entity references in FlyingSystem
+- Added .gitignore file for Roblox projects
+- Resolved linter errors (reduced from 34 to 22 errors)
+
+### Changed
+- Improved code quality and type safety across all systems
+- Updated FlyingSystem to properly use shared entities
+- Enhanced project structure consistency
+
 ## [Unreleased]
 
 ### Next Features

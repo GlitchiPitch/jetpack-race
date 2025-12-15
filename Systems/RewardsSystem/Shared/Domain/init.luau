@@ -1,10 +1,10 @@
 local Entities = require(script.Entities)
----@class PetSystemDomain
----@field Entities PetSystemEntities
+---@class RewardsSystemDomain
+---@field Entities RewardsSystemEntities
 local Domain = {}
 Domain.__index = Domain
 
----@return PetSystemDomain
+---@return RewardsSystemDomain
 function Domain.new()
     local self = setmetatable({}, Domain)
     self.Entities = Entities

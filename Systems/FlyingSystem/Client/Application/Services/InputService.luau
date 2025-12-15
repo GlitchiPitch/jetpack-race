@@ -1,5 +1,5 @@
 local UserInputService = game:GetService("UserInputService")
-local Constants = require("FlyingModule.Shared.Types.Constants")
+local Constants = require("../../../Shared/Constants")
 
 ---@class RobloxInputService
 local RobloxInputService = {}
