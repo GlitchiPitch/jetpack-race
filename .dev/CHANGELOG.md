@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.9] - 2025-01-15
+
+### Added
+- **JetpackService**: New service for managing jetpack setup and initialization
+  - Added `setupStarterJetpack` method for default jetpack assignment
+  - Integrated with Assets system for jetpack management
+- **Assets System**: Added Assets module to FlyingSystem Shared layer
+  - DefaultJetpack asset registration
+  - Asset management infrastructure
+
+### Changed
+- **Repository Architecture**: Refactored repository structure
+  - Removed duplicate PlayerRepository from FlyingSystem (now uses shared Server repository)
+  - Improved FlyingRepository implementation with better caching and entity management
+  - Simplified ShopSystem repositories by removing redundant code
+- **FlyingEntity**: Enhanced FlyingEntity with additional state management
+- **Service Registration**: Improved service initialization and dependency injection
+
+### Removed
+- **Duplicate Code**: Removed redundant PlayerRepository from FlyingSystem
+- **Code Duplication**: Cleaned up duplicate repository implementations in ShopSystem
+
 ## [v0.1.8] - 2025-01-15
 
 ### Added

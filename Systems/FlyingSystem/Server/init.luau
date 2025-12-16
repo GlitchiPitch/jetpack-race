@@ -28,10 +28,16 @@ function Server:init()
 	self.logger = self.iocContainer:resolve("Logger")
 	---@type RemoteEventService
 	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
+	---@type PlayerRepository
+	self.playerRepository = self.iocContainer:resolve("PlayerRepository")
+
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
 	end)
 
+	self.shared.Infrastructure.DIContainer:singleton("PlayerRepository", function()
+		return self.playerRepository
+	end)
 	
 	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
 		return self.remoteEventService

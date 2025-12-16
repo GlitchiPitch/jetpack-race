@@ -62,4 +62,12 @@ function FlyingEntity:GetState()
 	}
 end
 
+function FlyingEntity:setSprintActivated(active)
+	self.sprintActivated = active
+end
+
+function FlyingEntity:isSprintActivated()
+	return self.sprintActivated
+end
+
 return FlyingEntity

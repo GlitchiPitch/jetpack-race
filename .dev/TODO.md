@@ -86,6 +86,12 @@ Still awaiting team input on:
 - [x] **UI Components**: Created new UI components for Main, Visual, Jetpack, and LiveLeaderboard systems
 - [x] **System Initialization**: Enhanced initialization across all game systems
 
+## v0.1.9 Completed Tasks
+- [x] **JetpackService**: Added new service for jetpack setup and management
+- [x] **Assets System**: Implemented Assets module for asset management in FlyingSystem
+- [x] **Repository Refactoring**: Removed duplicate PlayerRepository, improved repository architecture
+- [x] **Code Cleanup**: Removed redundant code from ShopSystem repositories
+
 ## Project Status
 - ✅ **Project Structure**: Modular architecture established
 - ✅ **Bug Fixes**: Critical runtime errors resolved

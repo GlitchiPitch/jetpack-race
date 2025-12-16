@@ -22,12 +22,13 @@ function Application.new(diContainer)
 end
 
 function Application:_register()
-	self.diContainer:singleton("Server.Application.Commands", function()
+	self.diContainer:singleton("Server.Commands", function()
 		return Commands.new()
 	end)
-	self.diContainer:singleton("Server.Application.UseCases", function()
+	self.diContainer:singleton("Server.UseCases", function()
 		return UseCases.new()
 	end)
+	
 	self.diContainer:singleton("Server.Application.Services", function(c)
 		return Services.new(c)
 	end)

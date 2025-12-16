@@ -10,31 +10,37 @@ function PlayerService.new(diContainer)
 	return self
 end
 
+---@param player Player
 function PlayerService:onPlayerAdded(player)
 	---@type LoggerService
 	local logger = self.diContainer:resolve("Logger")
+	---@type FlyingSystemServerServices
+	local services = self.diContainer:resolve("Server.Application.Services")
+	---@type FlyingSystemServerJetpackService
+	local jetpackService = services.jetpackService
 	logger:info("FlyingSystemPlayerService", "Player added to flying system:", player.Name, "(ID:", player.UserId, ")")
 
-	---@type FlyingSystemServerPlayerRepository
+	---@type PlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	playerRepository:getPlayerEntity(player)
+	local playerEntity = playerRepository:getPlayerEntity(player)
+	
+	jetpackService:setupStarterJetpack(playerEntity)
 end
 
-function PlayerService:onPlayerRemoving(player)
-	self.playerRepository:removePlayerEntity(player)
-end
+function PlayerService:onPlayerRemoving(player) end
 
 function PlayerService:updatePlayer(player)
-	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	---@type FlyingSystemPlayerEntity
-	local playerEntity = playerRepository:getPlayerEntity(player)
+	---@type FlyingRepository
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	---@type FlyingEntity
+	local flyingEntity = flyingRepository:getFlyingEntity(player)
 	---@type RemoteEventService
 	local remoteEventService = self.diContainer:resolve("RemoteEventService")
 	---@type FlyingSystemConstants
 	local constants = self.diContainer:resolve("Shared.Constants")
 
 	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
-		playerData = playerEntity:getData(),
+		playerData = flyingEntity:getData(),
 	})
 end
 
@@ -42,24 +48,26 @@ function PlayerService:onSprintActivated(player)
 	local logger = self.diContainer:resolve("Logger")
 	logger:info("FlyingSystemPlayerService", "Sprint activated for player:", player.Name)
 
-	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	---@type FlyingSystemPlayerEntity
-	local playerEntity = playerRepository:getPlayerEntity(player)
+	---@type FlyingRepository
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	---@type FlyingEntity
+	local flyingEntity = flyingRepository:getFlyingEntity(player)
 
 	-- Активировать спринт в сущности игрока
-	playerEntity:setSprintActivated(true)
+	flyingEntity:setSprintActivated(true)
 end
 
 function PlayerService:onSprintDeactivated(player)
 	local logger = self.diContainer:resolve("Logger")
 	logger:info("FlyingSystemPlayerService", "Sprint deactivated for player:", player.Name)
 
-	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	---@type FlyingSystemPlayerEntity
-	local playerEntity = playerRepository:getPlayerEntity(player)
+	---@type FlyingRepository
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	---@type FlyingEntity
+	local flyingPlayerEntity = flyingRepository:getPlayerEntity(player)
 
 	-- Деактивировать спринт в сущности игрока
-	playerEntity:setSprintActivated(false)
+	flyingPlayerEntity:setSprintActivated(false)
 end
 
 return PlayerService
