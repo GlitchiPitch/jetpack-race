@@ -26,11 +26,28 @@ end
 function Server:init()
 	---@type LoggerService
 	self.logger = self.iocContainer:resolve("Logger")
+	---@type RemoteEventService
+	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
 	end)
 
+	
+	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
+		return self.remoteEventService
+	end)
+
+
 	self.logger:info("FlyingSystemServer", "Initializing FlyingSystem server...")
+
+	-- Подключение к remote событиям
+	self.remoteEventService:connectToEvent("flying", function(player, cameraCFrame)
+		self:onFlyingUpdate(player, cameraCFrame)
+	end)
+
+	self.remoteEventService:connectToEvent("sprint", function(player, isSprintActive)
+		self:onSprintToggle(player, isSprintActive)
+	end)
 
 end
 
@@ -50,6 +67,26 @@ function Server:onPlayerRemoving(player)
 	---@type FlyingSystemServerPlayerService
 	local playerService = applicationServices.playerService
 	playerService:onPlayerRemoving(player)
+end
+
+function Server:onFlyingUpdate(player, cameraCFrame)
+	self.logger:debug("FlyingSystemServer", "Received flying update from", player.Name, "camera:", cameraCFrame.Position)
+	-- TODO: Обработать обновление камеры для полета
+end
+
+function Server:onSprintToggle(player, isSprintActive)
+	self.logger:debug("FlyingSystemServer", "Sprint toggle from", player.Name, "active:", isSprintActive)
+
+	---@type FlyingSystemServerServices
+	local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
+	---@type FlyingSystemServerPlayerService
+	local playerService = applicationServices.playerService
+
+	if isSprintActive then
+		playerService:onSprintActivated(player)
+	else
+		playerService:onSprintDeactivated(player)
+	end
 end
 
 return Server

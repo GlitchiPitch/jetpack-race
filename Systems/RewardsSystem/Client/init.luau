@@ -25,9 +25,16 @@ end
 
 function Client:init()
 	self.logger = self.iocContainer:resolve("Logger")
+	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
 	end)
+
+	
+	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
+		return self.remoteEventService
+	end)
+
 	self.logger:info("RewardsSystemClient", "Initializing RewardsSystem client...")
 
 	self.logger:debug("RewardsSystemClient", "Setting up DI container and shared infrastructure")

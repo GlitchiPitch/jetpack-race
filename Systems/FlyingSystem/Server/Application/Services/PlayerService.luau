@@ -38,4 +38,28 @@ function PlayerService:updatePlayer(player)
 	})
 end
 
+function PlayerService:onSprintActivated(player)
+	local logger = self.diContainer:resolve("Logger")
+	logger:info("FlyingSystemPlayerService", "Sprint activated for player:", player.Name)
+
+	local playerRepository = self.diContainer:resolve("PlayerRepository")
+	---@type FlyingSystemPlayerEntity
+	local playerEntity = playerRepository:getPlayerEntity(player)
+
+	-- Активировать спринт в сущности игрока
+	playerEntity:setSprintActivated(true)
+end
+
+function PlayerService:onSprintDeactivated(player)
+	local logger = self.diContainer:resolve("Logger")
+	logger:info("FlyingSystemPlayerService", "Sprint deactivated for player:", player.Name)
+
+	local playerRepository = self.diContainer:resolve("PlayerRepository")
+	---@type FlyingSystemPlayerEntity
+	local playerEntity = playerRepository:getPlayerEntity(player)
+
+	-- Деактивировать спринт в сущности игрока
+	playerEntity:setSprintActivated(false)
+end
+
 return PlayerService

@@ -1,0 +1,29 @@
+---@class ShopSystemServerPlayerRepository
+local PlayerRepository = {}
+PlayerRepository.__index = PlayerRepository
+
+---@param PlayerEntity PlayerEntity
+---@return ShopSystemServerPlayerRepository
+function PlayerRepository.new(PlayerEntity)
+	local self = setmetatable({}, PlayerRepository)
+	self.playerEntities = {}
+	self.PlayerEntity = PlayerEntity
+	return self
+end
+
+---@param player Player
+---@return PlayerEntity
+function PlayerRepository:getPlayerEntity(player)
+	if not self.playerEntities[player] then
+		self.playerEntities[player] = self.PlayerEntity.new()
+	end
+
+	return self.playerEntities[player]
+end
+
+---@param player Player
+function PlayerRepository:removePlayerEntity(player)
+	self.playerEntities[player] = nil
+end
+
+return PlayerRepository

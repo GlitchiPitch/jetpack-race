@@ -1,0 +1,49 @@
+{
+    "className": "ScreenGui",
+    "children": [
+        {
+            "className": "Frame",
+            "name": "ProgressBar",
+            "children": [
+                {
+                    "className": "UICorner"
+                },
+                {
+                    "className": "UIStroke",
+                    "children": [
+                        {
+                            "className": "UIGradient"
+                        }
+                    ]
+                },
+                {
+                    "className": "ImageLabel",
+                    "name": "FinishImage",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
+                        }
+                    ]
+                },
+                {
+                    "className": "ImageLabel",
+                    "name": "StartImage",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
+                        }
+                    ]
+                },
+                {
+                    "className": "ImageLabel",
+                    "name": "Template",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

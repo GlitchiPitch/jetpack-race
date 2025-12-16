@@ -5,15 +5,15 @@ local Shared = require(ReplicatedStorage.JetpackRace.Systems.LiveLeaderboardSyst
 local ServerInfrastructure = require(script.Infrastructure)
 local ServerApplication = require(script.Application)
 
----@class LiveLeaderboardSystemServerServer
+---@class LiveLeaderboardSystemServer
 ---@field shared Shared
 ---@field infrastructure LiveLeaderboardSystemServerInfrastructure
 ---@field application LiveLeaderboardSystemServerApplication
 local Server = {}
 Server.__index = Server
 
----@return LiveLeaderboardSystemServerServer
 ---@param iocContainer DIContainer
+---@return LiveLeaderboardSystemServer
 function Server.new(iocContainer)
 	local self = setmetatable({}, Server)
 	self.shared = Shared.new()
@@ -24,10 +24,19 @@ function Server.new(iocContainer)
 end
 
 function Server:init()
+	---@type LoggerService
 	self.logger = self.iocContainer:resolve("Logger")
+	---@type RemoteEventService
+	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
 	end)
+
+	
+	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
+		return self.remoteEventService
+	end)
+
 	self.logger:info("LiveLeaderboardSystemServer", "Initializing LiveLeaderboardSystem server...")
 
 	self.logger:info("LiveLeaderboardSystemServer", "LiveLeaderboardSystem server initialized successfully")

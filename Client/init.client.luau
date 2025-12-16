@@ -8,6 +8,8 @@ local PetSystemClient = require(script.Systems.PetSystem)
 local FlyingSystemClient = require(script.Systems.FlyingSystem)
 local LiveLeaderboardSystemClient = require(script.Systems.LiveLeaderboardSystem)
 local RewardsSystemClient = require(script.Systems.RewardsSystem)
+local ShopSystemClient = require(script.Systems.ShopSystem)
+
 
 ---@class Client
 ---@field shared Shared
@@ -17,6 +19,7 @@ local RewardsSystemClient = require(script.Systems.RewardsSystem)
 ---@field flyingSystemClient FlyingSystemClient
 ---@field liveLeaderboardSystemClient LiveLeaderboardSystemClient
 ---@field rewardsSystemClient RewardsSystemClient
+---@field shopSystemClient ShopSystemClient
 local Client = {}
 Client.__index = Client
 
@@ -30,6 +33,7 @@ function Client.new()
 	self.flyingSystemClient = FlyingSystemClient.new(self.shared.Infrastructure.DIContainer)
 	self.liveLeaderboardSystemClient = LiveLeaderboardSystemClient.new(self.shared.Infrastructure.DIContainer)
 	self.rewardsSystemClient = RewardsSystemClient.new(self.shared.Infrastructure.DIContainer)
+	self.shopSystemClient = ShopSystemClient.new(self.shared.Infrastructure.DIContainer)
 	return self
 end
 

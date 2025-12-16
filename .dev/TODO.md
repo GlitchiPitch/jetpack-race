@@ -80,9 +80,17 @@ Still awaiting team input on:
 - [ ] Camera system requirements
 - [ ] Dev products catalog
 
+## v0.1.8 Completed Tasks
+- [x] **RaceSystem Integration**: Added new RaceSystem with client/server architecture and UI components
+- [x] **ShopSystem Integration**: Added new ShopSystem infrastructure with UI presentation layer
+- [x] **UI Components**: Created new UI components for Main, Visual, Jetpack, and LiveLeaderboard systems
+- [x] **System Initialization**: Enhanced initialization across all game systems
+
 ## Project Status
 - ✅ **Project Structure**: Modular architecture established
 - ✅ **Bug Fixes**: Critical runtime errors resolved
 - ✅ **RewardsSystem**: Successfully integrated into main game loop
+- ✅ **RaceSystem**: New racing system added (v0.1.8)
+- ✅ **ShopSystem**: New shop system infrastructure added (v0.1.8)
 - ⏳ **Core Questions**: Awaiting team input on game mechanics
 - 📋 **Ready for Development**: Codebase prepared for feature implementation

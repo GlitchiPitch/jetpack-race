@@ -8,6 +8,7 @@ PlayerEntity.__index = PlayerEntity
 function PlayerEntity.new(player, data)
 	local self = setmetatable({}, PlayerEntity)
 	self.player = player
+	self.sprintActivated = false
 
 	self.skillsConfig = {
 		flyingSpeed = {
@@ -38,6 +39,14 @@ end
 
 function PlayerEntity:getData()
 	return self.data
+end
+
+function PlayerEntity:setSprintActivated(active)
+	self.sprintActivated = active
+end
+
+function PlayerEntity:isSprintActivated()
+	return self.sprintActivated
 end
 
 return PlayerEntity

@@ -26,9 +26,17 @@ end
 function Server:init()
 	---@type LoggerService
 	self.logger = self.iocContainer:resolve("Logger")
+	---@type RemoteEventService
+	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
 	end)
+
+	
+	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
+		return self.remoteEventService
+	end)
+
 
 	self.logger:info("RewardsSystemServer", "Initializing RewardsSystem server...")
 	self.logger:debug("RewardsSystemServer", "Setting up DI container and shared infrastructure")

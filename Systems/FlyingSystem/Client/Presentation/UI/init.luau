@@ -15,7 +15,7 @@ function UI.new(diContainer)
 end
 
 function UI:init()
-	self.remoteService = self.diContainer:resolve("RemoteService")
+	self.remoteEventService = self.diContainer:resolve("RemoteEventService")
 	self.inputService = self.diContainer:resolve("InputService")
 	self.constants = self.diContainer:resolve("Shared.Constants")
 end
@@ -58,18 +58,18 @@ function UI:OnCameraChanged()
 	end
 
 	local cameraCFrame = self.inputService:GetCameraCFrame()
-	self.remoteService:Fire("flying", cameraCFrame)
+	self.remoteEventService:fireServer("flying", cameraCFrame)
 end
 
 function UI:OnInputBegan(input)
 	if input.KeyCode == self.constants.INPUT_KEYS.SPRINT then
-		self.remoteService:Fire("sprint", true)
+		self.remoteEventService:fireServer("sprint", true)
 	end
 end
 
 function UI:OnInputEnded(input)
 	if input.KeyCode == self.constants.INPUT_KEYS.SPRINT then
-		self.remoteService:Fire("sprint", false)
+		self.remoteEventService:fireServer("sprint", false)
 	end
 end
 

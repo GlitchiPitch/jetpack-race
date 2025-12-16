@@ -1,23 +1,27 @@
 local UserInputService = game:GetService("UserInputService")
-local Constants = require("../../../Shared/Constants")
 
----@class RobloxInputService
-local RobloxInputService = {}
-RobloxInputService.__index = RobloxInputService
+---@class InputService
+local InputService = {}
+InputService.__index = InputService
 
----@return RobloxInputService
-function RobloxInputService.new(): RobloxInputService
-    return setmetatable({}, RobloxInputService)
+---@param diContainer DIContainer
+---@return InputService
+function InputService.new(diContainer)
+	local self = setmetatable({}, InputService)
+	self.diContainer = diContainer
+	return self
 end
 
 ---@return CFrame
-function RobloxInputService:GetCameraCFrame(): CFrame
-    return workspace.CurrentCamera.CFrame
+function InputService:GetCameraCFrame()
+	return workspace.CurrentCamera.CFrame
 end
 
 ---@return boolean
-function RobloxInputService:IsSprintInputActive(): boolean
-    return UserInputService:IsKeyDown(Constants.INPUT_KEYS.SPRINT)
+function InputService:IsSprintInputActive()
+	---@type FlyingSystemConstants
+	local constants = self.diContainer:resolve("Shared.Constants")
+	return UserInputService:IsKeyDown(constants.INPUT_KEYS.SPRINT)
 end
 
-return RobloxInputService
+return InputService

@@ -1,0 +1,98 @@
+{
+    "className": "ScreenGui",
+    "children": [
+        {
+            "className": "Frame",
+            "name": "Background",
+            "children": [
+                {
+                    "className": "Frame",
+                    "name": "Body",
+                    "children": [
+                        {
+                            "className": "ScrollingFrame",
+                            "children": [
+                                {
+                                    "className": "UIGridLayout",
+                                    "children": [
+                                        {
+                                            "className": "UIAspectRatioConstraint"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "className": "TextButton",
+                                    "name": "Template",
+                                    "children": [
+                                        {
+                                            "className": "ImageLabel",
+                                            "children": [
+                                                {
+                                                    "className": "UIStroke",
+                                                    "children": [
+                                                        {
+                                                            "className": "UIGradient"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "className": "TextLabel",
+                                                    "name": "ItemNameLabel"
+                                                },
+                                                {
+                                                    "className": "TextLabel",
+                                                    "name": "PriceLabel"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "StatsFrame",
+            "children": [
+                {
+                    "className": "UIAspectRatioConstraint"
+                },
+                {
+                    "className": "UIListLayout"
+                },
+                {
+                    "className": "Frame",
+                    "name": "Template",
+                    "children": [
+                        {
+                            "className": "UICorner"
+                        },
+                        {
+                            "className": "UIStroke",
+                            "children": [
+                                {
+                                    "className": "UIGradient"
+                                }
+                            ]
+                        },
+                        {
+                            "className": "TextLabel",
+                            "name": "AmountLabel"
+                        },
+                        {
+                            "className": "ImageLabel",
+                            "children": [
+                                {
+                                    "className": "UIAspectRatioConstraint"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

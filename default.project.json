@@ -18,6 +18,12 @@
           },
           "RewardsSystem": {
             "$path": "Systems/RewardsSystem/Shared"
+          },
+          "ShopSystem": {
+            "$path": "Systems/ShopSystem/Shared"
+          },
+          "RaceSystem": {
+            "$path": "Systems/RaceSystem/Shared"
           }
         }
       }
@@ -38,6 +44,12 @@
           },
           "RewardsSystem": {
             "$path": "Systems/RewardsSystem/Server"
+          },
+          "ShopSystem": {
+            "$path": "Systems/ShopSystem/Server"
+          },
+          "RaceSystem": {
+            "$path": "Systems/RaceSystem/Server"
           }
         }
       }
@@ -59,9 +71,20 @@
             },
             "RewardsSystem": {
               "$path": "Systems/RewardsSystem/Client"
+            },
+            "ShopSystem": {
+              "$path": "Systems/ShopSystem/Client"
+            },
+            "RaceSystem": {
+              "$path": "Systems/RaceSystem/Client"
             }
           }
         }
+      }
+    },
+    "Workspace": {
+      "JetpackRace": {
+        "$path": "Workspace"
       }
     }
   }

@@ -7,6 +7,7 @@ local FlyingSystemServer = require(script.Systems.FlyingSystem)
 local PetSystemServer = require(script.Systems.PetSystem)
 local LiveLeaderboardSystemServer = require(script.Systems.LiveLeaderboardSystem)
 local RewardsSystemServer = require(script.Systems.RewardsSystem)
+local ShopSystemServer = require(script.Systems.ShopSystem)	
 
 local ServerInfrastructure = require(script.Infrastructure)
 local ServerApplication = require(script.Application)
@@ -32,6 +33,7 @@ function Server.new()
 	self.petSystemServer = PetSystemServer.new(self.shared.Infrastructure.DIContainer)
 	self.liveLeaderboardSystemServer = LiveLeaderboardSystemServer.new(self.shared.Infrastructure.DIContainer)
 	self.rewardsSystemServer = RewardsSystemServer.new(self.shared.Infrastructure.DIContainer)
+	self.shopSystemServer = ShopSystemServer.new(self.shared.Infrastructure.DIContainer)
 	return self
 end
 

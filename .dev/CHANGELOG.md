@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.8] - 2025-01-15
+
+### Added
+- **RaceSystem**: New racing system with client/server architecture
+  - Race UI components with rank display
+  - Race system initialization integrated into main game loop
+- **ShopSystem**: New shop system infrastructure
+  - Client and server components
+  - UI presentation layer
+  - Player service integration
+- **UI Components**: New UI presentation components
+  - Main UI components
+  - Visual UI components
+  - Jetpack UI components
+  - LiveLeaderboard UI components
+
+### Changed
+- **System Initialization**: Enhanced initialization across all systems
+  - Updated FlyingSystem initialization with improved input handling
+  - Enhanced LiveLeaderboardSystem initialization
+  - Improved PetSystem and RewardsSystem initialization
+- **Player Entity**: Extended Player entity with additional functionality
+- **Project Structure**: Added new systems and UI components to default.project.json
+
 ## [v0.1.0] - 2025-12-14
 
 ### Changed

@@ -1,0 +1,116 @@
+{
+    "className": "ScreenGui",
+    "children": [
+        {
+            "className": "UIPadding"
+        },
+        {
+            "className": "Frame",
+            "name": "BuffFrame",
+            "children": [
+                {
+                    "className": "UIAspectRatioConstraint"
+                },
+                {
+                    "className": "UIGridLayout",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
+                        }
+                    ]
+                },
+                {
+                    "className": "Frame",
+                    "name": "Template",
+                    "children": [
+                        {
+                            "className": "Frame",
+                            "name": "Bar"
+                        },
+                        {
+                            "className": "ImageLabel"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "ComboFrame",
+            "children": [
+                {
+                    "className": "UIAspectRatioConstraint"
+                },
+                {
+                    "className": "Frame",
+                    "name": "Template",
+                    "children": [
+                        {
+                            "className": "UIListLayout"
+                        },
+                        {
+                            "className": "ImageLabel",
+                            "children": [
+                                {
+                                    "className": "UIAspectRatioConstraint"
+                                }
+                            ]
+                        },
+                        {
+                            "className": "TextLabel",
+                            "name": "AmountLabel"
+                        },
+                        {
+                            "className": "TextLabel"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "CurrencyPopup",
+            "children": [
+                {
+                    "className": "UIAspectRatioConstraint"
+                },
+                {
+                    "className": "UIListLayout"
+                },
+                {
+                    "className": "ImageLabel",
+                    "name": "Template",
+                    "children": [
+                        {
+                            "className": "TextLabel"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "MessageFrame",
+            "children": [
+                {
+                    "className": "UIAspectRatioConstraint"
+                },
+                {
+                    "className": "UIListLayout"
+                },
+                {
+                    "className": "Frame",
+                    "name": "Template",
+                    "children": [
+                        {
+                            "className": "UIGradient"
+                        },
+                        {
+                            "className": "TextLabel"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
