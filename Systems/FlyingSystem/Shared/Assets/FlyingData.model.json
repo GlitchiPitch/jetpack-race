@@ -1,0 +1,25 @@
+{
+    "className": "Configuration",
+    "children": [
+        {
+            "className": "BoolValue",
+            "name": "IsActive"
+        },
+        {
+            "className": "NumberValue",
+            "name": "ChargeLevel"
+        },
+        {
+            "className": "BoolValue",
+            "name": "SprintActivated"
+        },
+        {
+            "className": "NumberValue",
+            "name": "MaxCharge"
+        },
+        {
+            "className": "NumberValue",
+            "name": "SpeedMultiplier"
+        }
+    ]
+}

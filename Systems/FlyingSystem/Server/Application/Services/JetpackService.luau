@@ -13,7 +13,7 @@ end
 ---@param playerEntity PlayerEntity
 function JetpackService:setupStarterJetpack(playerEntity)
     ---@type FlyingSystemAssets
-    local assets = self.diContainer:resolve("Shared.Assets")
+    local assets = self.diContainer:resolve("Assets")
     local defaultJetpack = assets.DefaultJetpack
     local defaultJetpackInstance = defaultJetpack:Clone()
     defaultJetpackInstance.Parent = playerEntity.player.StarterGear

@@ -1,113 +1,19 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [v0.1.9] - 2025-01-15
+## [v0.2.0] - 2024
 
 ### Added
-- **JetpackService**: New service for managing jetpack setup and initialization
-  - Added `setupStarterJetpack` method for default jetpack assignment
-  - Integrated with Assets system for jetpack management
-- **Assets System**: Added Assets module to FlyingSystem Shared layer
-  - DefaultJetpack asset registration
-  - Asset management infrastructure
+- FlyingSystem: Добавлен клиентский FlyingService для обработки изменений состояния полета
+- FlyingSystem: Добавлена инфраструктура репозиториев на клиенте (FlyingRepository)
+- FlyingSystem: Добавлены ассеты FlyingData.model.json и leaderstats
+- FlyingSystem: Реализована обработка событий sprint на сервере
 
 ### Changed
-- **Repository Architecture**: Refactored repository structure
-  - Removed duplicate PlayerRepository from FlyingSystem (now uses shared Server repository)
-  - Improved FlyingRepository implementation with better caching and entity management
-  - Simplified ShopSystem repositories by removing redundant code
-- **FlyingEntity**: Enhanced FlyingEntity with additional state management
-- **Service Registration**: Improved service initialization and dependency injection
-
-### Removed
-- **Duplicate Code**: Removed redundant PlayerRepository from FlyingSystem
-- **Code Duplication**: Cleaned up duplicate repository implementations in ShopSystem
-
-## [v0.1.8] - 2025-01-15
-
-### Added
-- **RaceSystem**: New racing system with client/server architecture
-  - Race UI components with rank display
-  - Race system initialization integrated into main game loop
-- **ShopSystem**: New shop system infrastructure
-  - Client and server components
-  - UI presentation layer
-  - Player service integration
-- **UI Components**: New UI presentation components
-  - Main UI components
-  - Visual UI components
-  - Jetpack UI components
-  - LiveLeaderboard UI components
-
-### Changed
-- **System Initialization**: Enhanced initialization across all systems
-  - Updated FlyingSystem initialization with improved input handling
-  - Enhanced LiveLeaderboardSystem initialization
-  - Improved PetSystem and RewardsSystem initialization
-- **Player Entity**: Extended Player entity with additional functionality
-- **Project Structure**: Added new systems and UI components to default.project.json
-
-## [v0.1.0] - 2025-12-14
-
-### Changed
-- **Project Structure Refactoring**: Major restructuring of the project layout
-  - Moved from `src/` directory structure to flat root-level organization
-  - Created separate `Client/`, `Server/`, `Shared/`, and `Systems/` directories
-  - Reorganized systems into dedicated folders (FlyingSystem, LiveLeaderboardSystem, PetSystem)
-  - Improved separation of concerns between client, server, and shared code
-
-### Removed
-- Old `src/` directory structure and all contained files
-- Redundant initialization files from previous structure
-
-### Added
-- New modular architecture with clear system separation
-- Improved code organization for better maintainability
-- Process documentation and development pipeline notes
-
-### Documentation
-- Added development workflow documentation (`.docs/notes.md`)
-- Created project documentation structure (`.dev/` directory)
-- Added commit process and version management guidelines
-
-## [v0.1.1] - 2025-12-14
+- FlyingSystem: Обновлена инициализация сервисов на клиенте и сервере
+- FlyingSystem: Улучшена интеграция репозиториев в DI контейнер
 
 ### Fixed
-- **PlayerEntity Constructor Bug**: Fixed `PlayerRepository:getPlayerEntity()` calls to provide all required parameters (`player`, `_playerData`, `data`) to `PlayerEntity.new()` in FlyingSystem and PetSystem
-- **Debug Statements Removal**: Removed all debug `warn()` statements from client initialization files and shared application files in FlyingSystem, PetSystem, and LiveLeaderboardSystem
-- **Service Reference Bug**: Fixed `connectToEvents` methods to reference `self.services.playerService` instead of non-existent `self.playerService` in all server Application classes
-- **ShopService Runtime Error**: Removed calls to non-existent `self.services.shopService:init()` from all Application:init() methods to prevent runtime errors
+- Исправлена работа с FlyingEntity на сервере
 
-## [v0.1.5] - 2025-12-14
-
-### Added
-- **RewardsSystem Integration**: Fully integrated RewardsSystem into the main game initialization
-  - Added RewardsSystemServer to server initialization with player event handling
-  - Added RewardsSystemClient to client initialization
-  - Fixed Logger service registration timing issues in DI container
-  - Added comprehensive logging throughout the RewardsSystem for debugging
-
-### Fixed
-- **Syntax Error**: Removed stray character causing "Incomplete statement" error in Server/init.server.luau
-- **DI Container Logger Registration**: Fixed Logger service resolution timing by moving Logger-dependent operations from constructors to init() methods
-- **RewardsSystem Client Path**: Fixed incorrect Shared module path in RewardsSystem/Client/init.luau
-
-### Changed
-- **RewardsSystem Architecture**: Enhanced RewardsSystem with proper dependency injection and logging infrastructure
-- **Initialization Order**: Improved component initialization sequence to ensure services are available when needed
-
-## [v0.1.4] - 2025-12-14
-
-### Changed
-- **Dependency Injection Enhancement**: Improved dependency injection by passing `DIContainer` to system client constructors (PetSystemClient, FlyingSystemClient, LiveLeaderboardSystemClient)
-- **Architecture Refinement**: Enhanced client initialization to properly inject shared infrastructure dependencies across all game systems
-
-## [v0.1.3] - 2025-12-14
-
-### Changed
-- **Dependency Injection Enhancement**: Improved dependency injection by passing `DIContainer` to system client constructors (PetSystemClient, FlyingSystemClient, LiveLeaderboardSystemClient)
-- **Architecture Refinement**: Enhanced client initialization to properly inject shared infrastructure dependencies across all game systems
+## [v0.1.9] - 2024
+- Предыдущая версия

@@ -7,6 +7,7 @@ FlyingRepository.__index = FlyingRepository
 function FlyingRepository.new(diContainer)
 	local self = setmetatable({}, FlyingRepository)
 	self.diContainer = diContainer
+	self._cache = {}
 	return self
 end
 
@@ -17,18 +18,19 @@ function FlyingRepository:getFlyingEntity(player: Player): any
 		return self._cache[player]
 	end
 
-	local gameStats = self.playerSystem:GetGameStats(player)
-	local stats = self.playerSystem:GetStats(player)
+	---@type FlyingSystemAssets
+	local assets = self.diContainer:resolve("Assets")
+	local flyingData = assets.FlyingData:Clone()
 
-	local initialState = {
-		IsActive = gameStats.InGame.Value,
-		SpeedMultiplier = gameStats.Sprint.Value,
-		ChargeLevel = gameStats.Charge.Value,
-		SprintActivated = gameStats.Sprint.Value > 1,
-		MaxCharge = 100, -- or from constants based on player level
-	}
+	---@type PlayerEntity
+	local playerEntity = self.diContainer:resolve("PlayerRepository"):getPlayerEntity(player)
 
-	local flyingEntity = self.flyingEntityFactory(initialState)
+	---@type FlyingEntity
+	local entities = self.diContainer:resolve("Entities")
+	---@type FlyingEntity
+	local FlyingEntity = entities.FlyingEntity
+
+	local flyingEntity = FlyingEntity.new(playerEntity, flyingData)
 	self._cache[player] = flyingEntity
 
 	return flyingEntity

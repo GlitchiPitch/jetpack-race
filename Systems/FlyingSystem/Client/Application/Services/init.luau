@@ -1,4 +1,5 @@
 local InputService = require(script.InputService)
+local FlyingService = require(script.FlyingService)
 
 ---@class FlyingSystemApplicationServices
 ---@field diContainer DIContainer
@@ -17,6 +18,9 @@ end
 function Services:_register()
 	self.diContainer:singleton("InputService", function(c)
 		return InputService.new(c)
+	end)
+	self.diContainer:singleton("FlyingService", function(c)
+		return FlyingService.new(c)
 	end)
 end
 

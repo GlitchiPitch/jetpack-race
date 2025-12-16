@@ -48,7 +48,7 @@ function Shared:_register()
 	self.Infrastructure.DIContainer:singleton("Shared.Constants", function()
 		return self.Constants
 	end)
-	self.Infrastructure.DIContainer:singleton("Shared.Assets", function()
+	self.Infrastructure.DIContainer:singleton("Assets", function()
 		return self.Assets
 	end)
 end

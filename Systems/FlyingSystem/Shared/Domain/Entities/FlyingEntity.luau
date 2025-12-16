@@ -1,53 +1,60 @@
 ---@class FlyingEntity
----@field isActive boolean
----@field speedMultiplier number
----@field chargeLevel number
----@field sprintActivated boolean
----@field maxCharge number
+---@field playerEntity PlayerEntity
+---@field isActive BoolValue
+---@field speedMultiplier NumberValue
+---@field chargeLevel NumberValue
+---@field sprintActivated BoolValue
+---@field maxCharge NumberValue
 local FlyingEntity = {}
 FlyingEntity.__index = FlyingEntity
 
+---@param playerEntity PlayerEntity
+---@param flyingData Configuration
 ---@return FlyingEntity
-function FlyingEntity.new()
+function FlyingEntity.new(playerEntity, flyingData)
 	local self = setmetatable({}, FlyingEntity)
-	self.isActive = false
-	self.speedMultiplier = 1.0
-	self.chargeLevel = 100
-	self.sprintActivated = false
-	self.maxCharge = 100
+	self.playerEntity = playerEntity
+	self.isActive = flyingData.IsActive
+	self.speedMultiplier = flyingData.SpeedMultiplier
+	self.chargeLevel = flyingData.ChargeLevel
+	self.sprintActivated = flyingData.SprintActivated
+	self.maxCharge = flyingData.MaxCharge
+	self.flyingData = flyingData
+
+	self.flyingData.Parent = self.playerEntity.player
 	return self
 end
 
 ---@return boolean
-function FlyingEntity:CanFly(): boolean
+function FlyingEntity:canFly(): boolean
 	return self.isActive and self.chargeLevel > 0
 end
 
 ---@return boolean
-function FlyingEntity:CanSprint(): boolean
-	return self:CanFly() and self.chargeLevel > 5
+function FlyingEntity:canSprint(): boolean
+	return self:canFly() and self.chargeLevel > 5
 end
 
 ---@param baseSpeed number
 ---@param sprintMultiplier number
 ---@return number
-function FlyingEntity:CalculateSpeed(baseSpeed: number, sprintMultiplier: number): number
+function FlyingEntity:calculateSpeed(baseSpeed: number, sprintMultiplier: number): number
 	local multiplier = self.sprintActivated and sprintMultiplier or 1
 	return baseSpeed * multiplier
 end
 
 ---@param amount number
 ---@return boolean
-function FlyingEntity:ConsumeCharge(amount: number): boolean
+function FlyingEntity:consumeCharge(amount: number): boolean
 	if self.chargeLevel >= amount then
-		self:UpdateCharge(-amount)
+		self:updateCharge(-amount)
 		return true
 	end
 	return false
 end
 
 ---@param value number
-function FlyingEntity:UpdateCharge(value)
+function FlyingEntity:updateCharge(value)
 	self.chargeLevel += value
 end
 
