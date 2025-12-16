@@ -1,4 +1,7 @@
 ---@class PlayerEntity
+---@field player Player
+---@field sprintActivated boolean
+---@field skillsConfig table<string, any>
 local PlayerEntity = {}
 PlayerEntity.__index = PlayerEntity
 

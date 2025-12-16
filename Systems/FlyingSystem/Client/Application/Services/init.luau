@@ -1,5 +1,6 @@
 local InputService = require(script.InputService)
 local FlyingService = require(script.FlyingService)
+local JetpackService = require(script.JetpackService)
 
 ---@class FlyingSystemApplicationServices
 ---@field diContainer DIContainer
@@ -21,6 +22,9 @@ function Services:_register()
 	end)
 	self.diContainer:singleton("FlyingService", function(c)
 		return FlyingService.new(c)
+	end)
+	self.diContainer:singleton("JetpackService", function(c)
+		return JetpackService.new(c)
 	end)
 end
 

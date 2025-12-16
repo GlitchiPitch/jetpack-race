@@ -27,6 +27,9 @@ function Application:_register()
 	end)
 end
 
-function Application:init() end
+function Application:init() 
+	local services = self.diContainer:resolve("Server.Application.Services")
+	services:init()
+end
 
 return Application

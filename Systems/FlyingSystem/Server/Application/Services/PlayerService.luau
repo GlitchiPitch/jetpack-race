@@ -14,21 +14,13 @@ end
 function PlayerService:onPlayerAdded(player)
 	---@type LoggerService
 	local logger = self.diContainer:resolve("Logger")
-	---@type FlyingSystemServerServices
-	local services = self.diContainer:resolve("Server.Application.Services")
-	---@type FlyingSystemServerJetpackService
-	local jetpackService = services.jetpackService
+		
 	logger:info("FlyingSystemPlayerService", "Player added to flying system:", player.Name, "(ID:", player.UserId, ")")
 
-	---@type PlayerRepository
-	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	local playerEntity = playerRepository:getPlayerEntity(player)
 	---@type FlyingRepository
 	local flyingRepository = self.diContainer:resolve("FlyingRepository")
 	---@type FlyingEntity
 	local flyingEntity = flyingRepository:getFlyingEntity(player)
-	warn(flyingEntity)
-	jetpackService:setupStarterJetpack(playerEntity)
 end
 
 function PlayerService:onPlayerRemoving(player) end

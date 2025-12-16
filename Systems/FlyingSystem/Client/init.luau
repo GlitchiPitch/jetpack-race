@@ -29,7 +29,7 @@ function Client:init()
 	self.logger = self.iocContainer:resolve("Logger")
 	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
 	self.mainEntities = self.iocContainer:resolve("Entities")
-	
+
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
 	end)
@@ -47,8 +47,6 @@ function Client:init()
 	self.application:init()
 	self.presentation:init()
 
-	-- Активировать UI для обработки ввода
-	self.presentation.ui:Activate()
 end
 
 return Client

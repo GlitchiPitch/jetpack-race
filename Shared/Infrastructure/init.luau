@@ -11,6 +11,7 @@ Infrastructure.__index = Infrastructure
 function Infrastructure.new()
     local self = setmetatable({}, Infrastructure)
     self.DIContainer = DIContainer.new()
+    self.IoCContainer = DIContainer.new()
     self.Services = Services.new(self.DIContainer)
     return self
 end

@@ -53,6 +53,11 @@ function FlyingEntity:consumeCharge(amount: number): boolean
 	return false
 end
 
+---@param jetpack Jetpack
+function FlyingEntity:setJetpack(jetpack)
+	self.jetpack = jetpack
+end
+
 ---@param value number
 function FlyingEntity:updateCharge(value)
 	self.chargeLevel += value

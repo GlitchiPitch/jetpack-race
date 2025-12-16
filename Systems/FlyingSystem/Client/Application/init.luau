@@ -22,7 +22,9 @@ function Application:init()
 	---@type FlyingSystemClientFlyingService
 	local flyingService = self.diContainer:resolve("FlyingService")
 	flyingService:init()
-    
+	---@type ClientJetpackService
+	local jetpackService = self.diContainer:resolve("JetpackService")
+	jetpackService:init()
 end
 
 return Application

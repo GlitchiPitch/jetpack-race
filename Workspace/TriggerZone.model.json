@@ -1,0 +1,8 @@
+{
+    "className": "Part",
+    "children": [
+        {
+            "className": "ProximityPrompt"
+        }
+    ]
+}

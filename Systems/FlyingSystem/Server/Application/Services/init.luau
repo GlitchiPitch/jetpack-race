@@ -3,6 +3,7 @@ local JetpackService = require(script.JetpackService)
 
 ---@class FlyingSystemServerServices
 ---@field playerService FlyingSystemServerPlayerService
+---@field jetpackService FlyingSystemServerJetpackService
 local Services = {}
 Services.__index = Services
 

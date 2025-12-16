@@ -1,4 +1,5 @@
 local UserInputService = game:GetService("UserInputService")
+local JetpackUI = require(script.Jetpack)
 
 ---@class FlyingSystemUI
 local UI = {}
@@ -11,6 +12,7 @@ function UI.new(diContainer)
 	self.diContainer = diContainer
 	self.isActive = false
 	self._connections = {}
+	self.jetpackUI = JetpackUI.new(self.diContainer)
 	return self
 end
 
@@ -18,6 +20,27 @@ function UI:init()
 	self.remoteEventService = self.diContainer:resolve("RemoteEventService")
 	self.inputService = self.diContainer:resolve("InputService")
 	self.constants = self.diContainer:resolve("Shared.Constants")
+
+	---@type FlyingSystemClientRepository
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	local flyingEntity = flyingRepository:getFlyingEntity()
+
+    flyingEntity.isActive.Changed:Connect(function(value)
+        self.jetpackUI:set(value)
+    end)
+    flyingEntity.speedMultiplier.Changed:Connect(function(value)
+        self.jetpackUI:setSpeedMultiplier(value)
+    end)
+    flyingEntity.chargeLevel.Changed:Connect(function(value)
+        self.jetpackUI:setChargeLevel(value)
+    end)
+    flyingEntity.sprintActivated.Changed:Connect(function(value)
+        self.jetpackUI:setSprintActivated(value)
+    end)
+    flyingEntity.maxCharge.Changed:Connect(function(value)
+        self.jetpackUI:setMaxCharge(value)
+    end)
+
 end
 
 function UI:Activate()

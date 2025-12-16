@@ -1,19 +1,38 @@
 # Changelog
 
+## [v0.3.0] - 2024
+
+### Added
+- RaceSystem: Added RaceService for handling race start with proximity prompts
+- RaceSystem: Added TriggerZone model with ProximityPrompt for race interaction
+- FlyingSystem: Added client-side JetpackService (basic implementation)
+- FlyingSystem: Added EventService infrastructure for event handling
+- FlyingSystem: Enhanced jetpack equipping logic in RaceService
+- FlyingSystem: Improved UI components for jetpack display
+
+### Changed
+- FlyingSystem: Enhanced JetpackService on server with jetpack equipping functionality
+- FlyingSystem: Updated PlayerService to integrate with jetpack mechanics
+- RaceSystem: Improved service initialization and integration
+- Shared: Enhanced Player entity with additional properties
+
+### Fixed
+- Fixed various service initialization issues across systems
+
 ## [v0.2.0] - 2024
 
 ### Added
-- FlyingSystem: Добавлен клиентский FlyingService для обработки изменений состояния полета
-- FlyingSystem: Добавлена инфраструктура репозиториев на клиенте (FlyingRepository)
-- FlyingSystem: Добавлены ассеты FlyingData.model.json и leaderstats
-- FlyingSystem: Реализована обработка событий sprint на сервере
+- FlyingSystem: Added client-side FlyingService for handling flight state changes
+- FlyingSystem: Added client infrastructure repositories (FlyingRepository)
+- FlyingSystem: Added FlyingData.model.json and leaderstats assets
+- FlyingSystem: Implemented sprint event handling on server
 
 ### Changed
-- FlyingSystem: Обновлена инициализация сервисов на клиенте и сервере
-- FlyingSystem: Улучшена интеграция репозиториев в DI контейнер
+- FlyingSystem: Updated service initialization on client and server
+- FlyingSystem: Improved repository integration in DI container
 
 ### Fixed
-- Исправлена работа с FlyingEntity на сервере
+- Fixed FlyingEntity handling on server
 
 ## [v0.1.9] - 2024
-- Предыдущая версия
+- Previous version

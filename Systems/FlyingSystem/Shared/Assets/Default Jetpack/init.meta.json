@@ -1,3 +1,4 @@
 {
-    "className": "Tool"
+    "className": "Accessory",
+    "ignoreUnknownInstances": true
 }

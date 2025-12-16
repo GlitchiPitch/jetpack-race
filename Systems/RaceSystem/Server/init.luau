@@ -28,30 +28,24 @@ function Server:init()
 	self.logger = self.iocContainer:resolve("Logger")
 	---@type RemoteEventService
 	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
+
+	---@type FlyingSystemServerJetpackService
+	self.jetpackService = self.iocContainer:resolve("JetpackService")
+
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
 	end)
 
-	
+	self.shared.Infrastructure.DIContainer:singleton("JetpackService", function()
+		return self.jetpackService
+	end)
+
 	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
 		return self.remoteEventService
 	end)
 
-
-	self.logger:info("RaceSystemServer", "Initializing RaceSystem server...")
-	self.logger:debug("RaceSystemServer", "Setting up DI container and shared infrastructure")
-
-	-- Initialize infrastructure first
-	self.logger:debug("RaceSystemServer", "Initializing server infrastructure...")
 	self.infrastructure:init()
-	self.logger:debug("RaceSystemServer", "Server infrastructure initialized")
-
-	-- Initialize application layer
-	self.logger:debug("RaceSystemServer", "Initializing server application...")
 	self.application:init()
-	self.logger:debug("RaceSystemServer", "Server application initialized")
-
-	self.logger:info("RaceSystemServer", "RaceSystem server initialized successfully")
 end
 
 function Server:onPlayerAdded(player)

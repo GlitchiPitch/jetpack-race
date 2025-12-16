@@ -38,6 +38,9 @@ function Client.new()
 end
 
 function Client:init()
+
+
+
 	self.petSystemClient:init()
 	self.flyingSystemClient:init()
 	self.liveLeaderboardSystemClient:init()
