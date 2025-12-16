@@ -2,9 +2,7 @@
 ---@field playerEntity PlayerEntity
 ---@field isActive BoolValue
 ---@field speedMultiplier NumberValue
----@field chargeLevel NumberValue
 ---@field sprintActivated BoolValue
----@field maxCharge NumberValue
 local FlyingEntity = {}
 FlyingEntity.__index = FlyingEntity
 
@@ -16,9 +14,7 @@ function FlyingEntity.new(playerEntity, flyingData)
 	self.playerEntity = playerEntity
 	self.isActive = flyingData.IsActive
 	self.speedMultiplier = flyingData.SpeedMultiplier
-	self.chargeLevel = flyingData.ChargeLevel
 	self.sprintActivated = flyingData.SprintActivated
-	self.maxCharge = flyingData.MaxCharge
 	self.flyingData = flyingData
 
 	self.flyingData.Parent = self.playerEntity.player
@@ -27,12 +23,12 @@ end
 
 ---@return boolean
 function FlyingEntity:canFly(): boolean
-	return self.isActive and self.chargeLevel > 0
+	return self.isActive
 end
 
 ---@return boolean
 function FlyingEntity:canSprint(): boolean
-	return self:canFly() and self.chargeLevel > 5
+	return self:canFly()
 end
 
 ---@param baseSpeed number
@@ -43,43 +39,42 @@ function FlyingEntity:calculateSpeed(baseSpeed: number, sprintMultiplier: number
 	return baseSpeed * multiplier
 end
 
----@param amount number
----@return boolean
-function FlyingEntity:consumeCharge(amount: number): boolean
-	if self.chargeLevel >= amount then
-		self:updateCharge(-amount)
-		return true
-	end
-	return false
-end
-
----@param jetpack Jetpack
+---@param jetpack any
 function FlyingEntity:setJetpack(jetpack)
 	self.jetpack = jetpack
-end
-
----@param value number
-function FlyingEntity:updateCharge(value)
-	self.chargeLevel += value
 end
 
 ---@return table
 function FlyingEntity:GetState()
 	return {
-		isActive = self.isActive,
-		speedMultiplier = self.speedMultiplier,
-		chargeLevel = self.chargeLevel,
-		sprintActivated = self.sprintActivated,
-		maxCharge = self.maxCharge,
+		isActive = self.isActive.Value,
+		speedMultiplier = self.speedMultiplier.Value,
+		sprintActivated = self.sprintActivated.Value,
 	}
 end
 
 function FlyingEntity:setSprintActivated(active)
-	self.sprintActivated = active
+	self.sprintActivated.Value = active
 end
 
 function FlyingEntity:isSprintActivated()
-	return self.sprintActivated
+	return self.sprintActivated.Value
+end
+
+---@param active boolean
+function FlyingEntity:setFlyingActive(active)
+	self.isActive.Value = active
+end
+
+function FlyingEntity:activateFlying()
+	self.isActive.Value = true
+	self.sprintActivated.Value = false
+	warn("FlyingEntity: Activated flying - Active:", self.isActive.Value)
+end
+
+function FlyingEntity:deactivateFlying()
+	self.isActive.Value = false
+	self.sprintActivated.Value = false
 end
 
 return FlyingEntity

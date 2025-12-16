@@ -39,19 +39,9 @@ function JetpackUI:setSpeedMultiplier(speedMultiplier)
 	self.ui.SpeedMultiplier.Text = speedMultiplier
 end
 
----@param chargeLevel number
-function JetpackUI:setChargeLevel(chargeLevel)
-	self.ui.ChargeLevel.Text = chargeLevel
-end
-
 ---@param sprintActivated boolean
 function JetpackUI:setSprintActivated(sprintActivated)
 	self.ui.SprintActivated.Text = sprintActivated
-end
-
----@param maxCharge number
-function JetpackUI:setMaxCharge(maxCharge)
-	self.ui.MaxCharge.Text = maxCharge
 end
 
 return JetpackUI

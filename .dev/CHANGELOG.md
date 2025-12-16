@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.3.1] - 2025
+
+### Process
+- [Process] Code refactoring and process improvements
+- Updated game version to v0.3.1
+
 ## [v0.3.0] - 2024
 
 ### Added

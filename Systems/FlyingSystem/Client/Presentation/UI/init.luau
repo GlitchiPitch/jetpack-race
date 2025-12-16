@@ -25,22 +25,25 @@ function UI:init()
 	local flyingRepository = self.diContainer:resolve("FlyingRepository")
 	local flyingEntity = flyingRepository:getFlyingEntity()
 
-    flyingEntity.isActive.Changed:Connect(function(value)
-        self.jetpackUI:set(value)
-    end)
-    flyingEntity.speedMultiplier.Changed:Connect(function(value)
-        self.jetpackUI:setSpeedMultiplier(value)
-    end)
-    flyingEntity.chargeLevel.Changed:Connect(function(value)
-        self.jetpackUI:setChargeLevel(value)
-    end)
-    flyingEntity.sprintActivated.Changed:Connect(function(value)
-        self.jetpackUI:setSprintActivated(value)
-    end)
-    flyingEntity.maxCharge.Changed:Connect(function(value)
-        self.jetpackUI:setMaxCharge(value)
-    end)
+	flyingEntity.isActive.Changed:Connect(function(value)
+		self.jetpackUI:set(value)
+		if value then
+			self:Activate()
+		else
+			self:Deactivate()
+		end
+	end)
 
+	-- Check initial state
+	if flyingEntity.isActive then
+		self:Activate()
+	end
+	flyingEntity.speedMultiplier.Changed:Connect(function(value)
+		self.jetpackUI:setSpeedMultiplier(value)
+	end)
+	flyingEntity.sprintActivated.Changed:Connect(function(value)
+		self.jetpackUI:setSprintActivated(value)
+	end)
 end
 
 function UI:Activate()
@@ -49,7 +52,11 @@ function UI:Activate()
 	end
 	self.isActive = true
 
-	self._connections.inputChanged = UserInputService.InputChanged:Connect(function()
+	warn("FlyingSystem UI: Activating flying controls")
+
+	-- Отслеживание изменений камеры через RunService
+	local RunService = game:GetService("RunService")
+	self._connections.cameraChanged = RunService.RenderStepped:Connect(function()
 		self:OnCameraChanged()
 	end)
 
@@ -80,7 +87,28 @@ function UI:OnCameraChanged()
 		return
 	end
 
+	-- Проверить, экипирован ли джетпак (наличие BodyPosition и BodyGyro)
+	local player = game.Players.LocalPlayer
+	local character = player.Character
+	if not character then
+		return
+	end
+
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoidRootPart then
+		return
+	end
+
+	local hasBodyPosition = humanoidRootPart:FindFirstChild("BodyPosition") ~= nil
+	local hasBodyGyro = humanoidRootPart:FindFirstChild("BodyGyro") ~= nil
+
+	if not (hasBodyPosition and hasBodyGyro) then
+		-- Джетпак не экипирован, не отправлять обновления
+		return
+	end
+
 	local cameraCFrame = self.inputService:GetCameraCFrame()
+	warn("FlyingSystem UI: Sending flying update with camera position:", cameraCFrame.Position)
 	self.remoteEventService:fireServer("flying", cameraCFrame)
 end
 

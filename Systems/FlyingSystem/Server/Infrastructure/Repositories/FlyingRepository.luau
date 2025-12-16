@@ -43,7 +43,6 @@ function FlyingRepository:SaveFlyingEntity(player: Player, entity: any)
 
 	local gameStats = self.playerSystem:GetGameStats(player)
 	gameStats.Sprint.Value = entity.State.SpeedMultiplier
-	gameStats.Charge.Value = entity.State.ChargeLevel
 end
 
 ---@param player Player

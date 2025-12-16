@@ -30,7 +30,6 @@ function Server:init()
 	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
 	---@type PlayerRepository
 	self.playerRepository = self.iocContainer:resolve("PlayerRepository")
-	
 
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
@@ -39,11 +38,10 @@ function Server:init()
 	self.shared.Infrastructure.DIContainer:singleton("PlayerRepository", function()
 		return self.playerRepository
 	end)
-	
+
 	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
 		return self.remoteEventService
 	end)
-
 
 	self.logger:info("FlyingSystemServer", "Initializing FlyingSystem server...")
 
@@ -55,7 +53,6 @@ function Server:init()
 	self.remoteEventService:connectToEvent("sprint", function(player, isSprintActive)
 		self:onSprintToggle(player, isSprintActive)
 	end)
-
 end
 
 function Server:onPlayerAdded(player)
@@ -77,8 +74,13 @@ function Server:onPlayerRemoving(player)
 end
 
 function Server:onFlyingUpdate(player, cameraCFrame)
-	self.logger:debug("FlyingSystemServer", "Received flying update from", player.Name, "camera:", cameraCFrame.Position)
-	-- TODO: Обработать обновление камеры для полета
+	---@type FlyingSystemServerServices
+	local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
+	---@type FlyingSystemServerMovementService
+	local movementService = applicationServices.movementService
+
+	-- Обработать движение с помощью body movers
+	movementService:handleFlyingMovement(player, cameraCFrame)
 end
 
 function Server:onSprintToggle(player, isSprintActive)

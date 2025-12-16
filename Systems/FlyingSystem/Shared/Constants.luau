@@ -26,6 +26,19 @@ local Constants = {
 	-- Input keys
 	INPUT_KEYS = {
 		SPRINT = Enum.KeyCode.LeftShift,
+		SWITCH_SHOULDER = Enum.KeyCode.X,
+	},
+
+	-- Camera settings
+	CAMERA_OFFSET = {
+		Z = 8,
+		Y = 2,
+		X = 3,
+	},
+	CAMERA_SETTINGS = {
+		SPEED_MULTIPLIER = 0.2,
+		Y_EXTREME = 25,
+		AUTO_ROTATE_DELAY = 0.5,
 	},
 }
 
