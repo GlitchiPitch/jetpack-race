@@ -1,10 +1,16 @@
 # TODO List
 
-## Current Tasks [v0.3.3]
+## Completed Tasks [v0.3.3] ✅
 - [x] Implement FlyingSystem core functionality
 - [x] Update flying entity and services
 - [x] Enhance movement and jetpack controls
 - [x] Improve UI presentation layer
+
+## Completed Tasks [v0.3.4] ✅
+- [x] Enhanced camera, input, and movement services
+- [x] Updated RaceSystem client integration
+- [x] Improved jetpack controls and validation
+- [x] Refined flying entity logic and configurations
 
 ## Next Version Plan [v0.4.0]
 - [ ] Add collision detection system

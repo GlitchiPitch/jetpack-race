@@ -29,6 +29,23 @@ function InputService:IsFlyInputActive()
 	return UserInputService:IsKeyDown(Enum.KeyCode.Space)
 end
 
+---@return boolean
+function InputService:_hasJetpackEquipped()
+	local player = game.Players.LocalPlayer
+	local character = player.Character
+	if not character then
+		return false
+	end
+
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoidRootPart then
+		return false
+	end
+
+	-- Check for BodyVelocity which indicates jetpack is equipped
+	return humanoidRootPart:FindFirstChild("BodyVelocity") ~= nil
+end
+
 ---@return Vector3
 function InputService:GetMovementInput()
 	---@type FlyingSystemConstants
@@ -42,11 +59,18 @@ function InputService:GetMovementInput()
 	if UserInputService:IsKeyDown(constants.INPUT_KEYS.MOVE_RIGHT) then
 		moveVector = moveVector + Vector3.new(1, 0, 0)
 	end
-	if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-		moveVector = moveVector + Vector3.new(0, 0, -1) -- Negative Z for forward
-	end
-	if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-		moveVector = moveVector + Vector3.new(0, 0, 1) -- Positive Z for backward
+
+	-- Check if player has jetpack equipped (BodyPosition on HumanoidRootPart indicates jetpack)
+	local hasJetpack = self:_hasJetpackEquipped()
+
+	if not hasJetpack then
+		-- Only process W/S keys if no jetpack equipped
+		if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+			moveVector = moveVector + Vector3.new(0, 0, -1) -- Negative Z for forward
+		end
+		if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+			moveVector = moveVector + Vector3.new(0, 0, 1) -- Positive Z for backward
+		end
 	end
 
 	return moveVector.Unit

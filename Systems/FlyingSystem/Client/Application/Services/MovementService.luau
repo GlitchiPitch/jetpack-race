@@ -38,8 +38,8 @@ function MovementService:startMovementUpdates()
 	local RunService = game:GetService("RunService")
 
 	-- Update movement every frame for smooth control
-	self._connection = RunService.RenderStepped:Connect(function(deltaTime)
-		self:_updateMovement(deltaTime)
+	self._connection = RunService.RenderStepped:Connect(function()
+		self:_updateMovement()
 	end)
 
 	warn("ClientMovementService: Started movement updates")
@@ -59,8 +59,7 @@ function MovementService:stopMovementUpdates()
 	warn("ClientMovementService: Stopped movement updates")
 end
 
----@param deltaTime number
-function MovementService:_updateMovement(deltaTime)
+function MovementService:_updateMovement()
 	---@type FlyingSystemClientRepository
 	local flyingRepository = self.diContainer:resolve("FlyingRepository")
 	local flyingEntity = flyingRepository:getFlyingEntity()
@@ -80,10 +79,10 @@ function MovementService:_updateMovement(deltaTime)
 		return
 	end
 
-	local hasBodyPosition = humanoidRootPart:FindFirstChild("BodyPosition") ~= nil
+	local hasBodyVelocity = humanoidRootPart:FindFirstChild("BodyVelocity") ~= nil
 	local hasBodyGyro = humanoidRootPart:FindFirstChild("BodyGyro") ~= nil
 
-	if not (hasBodyPosition and hasBodyGyro) then
+	if not (hasBodyVelocity and hasBodyGyro) then
 		-- Jetpack not equipped, skip movement
 		return
 	end
@@ -95,22 +94,14 @@ function MovementService:_updateMovement(deltaTime)
 	local characterForward = characterCFrame.LookVector
 	local characterRight = characterCFrame.RightVector
 
-	-- Get movement input from WASD keys
-	local movementInput = self.inputService:GetMovementInput()
+	-- Always fly forward automatically (ignore W/S completely, only A/D for lateral movement)
+	local inputService = self.diContainer:resolve("InputService")
 
-	-- Check if auto-forward movement is active
-	local isAutoForward = flyingEntity:isAutoForwardMovement()
+	local movementInput = inputService:GetMovementInput()
+	local lateralInput = movementInput.X
 
-	-- If auto-forward is active, force forward movement regardless of input
-	local finalMovementInput = movementInput
-	if isAutoForward then
-		-- Force forward movement (Z = -1 means forward)
-		finalMovementInput = Vector3.new(movementInput.X, movementInput.Y, -1)
-	end
-
-	-- movementInput.Z is -1 for W (forward) and +1 for S (backward)
-	-- We need to negate it so W moves forward and S moves backward
-	local horizontalInput = characterRight * finalMovementInput.X + characterForward * -finalMovementInput.Z
+	-- Only lateral movement from A/D keys, always forward
+	local horizontalInput = characterRight * lateralInput + characterForward * 1
 
 	-- Only normalize if there's input, otherwise use zero vector
 	local moveDirection = horizontalInput.Magnitude > 0 and horizontalInput.Unit or Vector3.new(0, 0, 0)
@@ -122,12 +113,12 @@ function MovementService:_updateMovement(deltaTime)
 
 	-- Apply body movers
 	local camera = workspace.CurrentCamera
-	self:_applyBodyPosition(humanoidRootPart, moveDirection, speed, deltaTime)
+	self:_applyBodyVelocity(humanoidRootPart, moveDirection, speed)
 	self:_applyBodyGyro(humanoidRootPart, camera.CFrame)
 
 	-- Send position update to server for validation (throttled)
-	local constants = self.diContainer:resolve("Shared.Constants")
-	local updateInterval = constants.POSITION_VALIDATION.POSITION_UPDATE_INTERVAL
+	local sharedConstants = self.diContainer:resolve("Shared.Constants")
+	local updateInterval = sharedConstants.POSITION_VALIDATION.POSITION_UPDATE_INTERVAL
 	local currentTime = tick()
 
 	if not self._lastUpdateTime or (currentTime - self._lastUpdateTime) >= updateInterval then
@@ -139,35 +130,56 @@ end
 ---@param humanoidRootPart BasePart
 ---@param direction Vector3
 ---@param speed number
----@param deltaTime number
-function MovementService:_applyBodyPosition(humanoidRootPart, direction, speed, deltaTime)
-	local bodyPosition = humanoidRootPart:FindFirstChild("BodyPosition")
-	if not bodyPosition then
-		warn("ClientMovementService: BodyPosition not found - jetpack may not be equipped")
+function MovementService:_applyBodyVelocity(humanoidRootPart, direction, speed)
+	local bodyVelocity = humanoidRootPart:FindFirstChild("BodyVelocity")
+	if not bodyVelocity then
+		warn("ClientMovementService: BodyVelocity not found - jetpack may not be equipped")
 		return
 	end
 
-	local currentPosition = humanoidRootPart.Position
+	---@type FlyingSystemClientRepository
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	local flyingEntity = flyingRepository:getFlyingEntity()
+	local constants = self.diContainer:resolve("Shared.Constants")
 
-	-- Calculate horizontal movement per second, then multiply by deltaTime
-	local horizontalMovement = Vector3.new(0, 0, 0)
+	-- Calculate horizontal velocity
+	local horizontalVelocity = Vector3.new(0, 0, 0)
 	if direction.Magnitude > 0 then
-		-- Apply horizontal movement based on direction
-		local horizontalSpeed = speed * 0.8 -- horizontal movement speed per second
-		horizontalMovement = direction * horizontalSpeed * deltaTime
+		-- Apply horizontal velocity based on direction
+		local horizontalSpeed = speed * 0.5 -- horizontal velocity multiplier
+		horizontalVelocity = direction * horizontalSpeed
 	end
 
-	-- Calculate vertical movement (upward) per second, then multiply by deltaTime
-	local upwardSpeed = speed * 0.1 -- upward movement speed per second
-	local verticalMovement = Vector3.new(0, upwardSpeed * deltaTime, 0)
+	-- Calculate additional velocity based on flying mode
+	local additionalVelocity = Vector3.new(0, 0, 0)
 
-	-- Combine movements
-	local totalMovement = horizontalMovement + verticalMovement
-	local targetPosition = currentPosition + totalMovement
+	if flyingEntity:isRaceStarted() then
+		-- Race mode: forward movement instead of upward
+		local forwardSpeed = speed * 0.3 -- forward velocity multiplier for race
+		local character = game.Players.LocalPlayer.Character
+		if character and character.PrimaryPart then
+			local forwardDirection = character.PrimaryPart.CFrame.LookVector
+			additionalVelocity = forwardDirection * forwardSpeed
+		end
+	else
+		-- Normal flying mode: upward movement
+		local upwardSpeed = speed * 0.05 -- upward velocity multiplier
+		additionalVelocity = Vector3.new(0, upwardSpeed, 0)
+	end
 
-	bodyPosition.Position = targetPosition
-	bodyPosition.MaxForce = Vector3.new(4000, 4000, 4000) -- force on all axes
-	bodyPosition.D = 100 -- damping
+	-- Combine velocities
+	local totalVelocity = horizontalVelocity + additionalVelocity
+
+	-- Clamp vertical velocity if approaching max height
+	local currentY = humanoidRootPart.Position.Y
+	local maxHeight = constants.JETPACK_HEIGHTS.MAX_FLYING_HEIGHT
+	if currentY >= maxHeight - 10 then -- start reducing upward velocity near max height
+		local heightFactor = math.max(0, (maxHeight - currentY) / 10)
+		totalVelocity = Vector3.new(totalVelocity.X, totalVelocity.Y * heightFactor, totalVelocity.Z)
+	end
+
+	bodyVelocity.Velocity = totalVelocity
+	bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000) -- force on all axes
 end
 
 ---@param humanoidRootPart BasePart
@@ -213,9 +225,10 @@ function MovementService:_disableBodyMovers()
 		return
 	end
 
-	local bodyPosition = humanoidRootPart:FindFirstChild("BodyPosition")
-	if bodyPosition then
-		bodyPosition.MaxForce = Vector3.new(0, 0, 0)
+	local bodyVelocity = humanoidRootPart:FindFirstChild("BodyVelocity")
+	if bodyVelocity then
+		bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+		bodyVelocity.MaxForce = Vector3.new(0, 0, 0)
 	end
 
 	local bodyGyro = humanoidRootPart:FindFirstChild("BodyGyro")

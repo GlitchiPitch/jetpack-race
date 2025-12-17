@@ -34,12 +34,12 @@ function RaceService:setupRemoteEventListeners()
 	end)
 
 	-- Listen for race started event
-	remoteEventService:connectToEvent(constants.REMOTE_EVENTS.RACE_STARTED, function(data)
+	remoteEventService:connectToEvent(constants.REMOTE_EVENTS.RACE_STARTED, function(_data)
 		self:onRaceStarted()
 	end)
 
 	-- Listen for race finished event
-	remoteEventService:connectToEvent(constants.REMOTE_EVENTS.RACE_FINISHED, function(data)
+	remoteEventService:connectToEvent(constants.REMOTE_EVENTS.RACE_FINISHED, function(_data)
 		self:onRaceFinished()
 	end)
 end
@@ -65,6 +65,12 @@ function RaceService:onRaceStarted()
 
 	self.raceState = "Started"
 
+	-- Set race started flag in FlyingEntity
+	---@type FlyingSystemClientRepository
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	local flyingEntity = flyingRepository:getFlyingEntity()
+	flyingEntity:setRaceStarted(true)
+
 	-- Show race started UI
 	self:showRaceUI("Гонка началась! Ждите разрешения на движение...", 1)
 end
@@ -76,6 +82,12 @@ function RaceService:onRaceFinished()
 	logger:info("RaceSystemClientRaceService", "Race finished!")
 
 	self.raceState = "Finished"
+
+	-- Reset race started flag in FlyingEntity
+	---@type FlyingSystemClientRepository
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	local flyingEntity = flyingRepository:getFlyingEntity()
+	flyingEntity:setRaceStarted(false)
 
 	-- Show race finished UI
 	self:showRaceUI("Гонка завершена!", 2)
@@ -109,8 +121,8 @@ function RaceService:showRaceUI(message, duration)
 	notification.Parent = playerGui
 
 	local frame = Instance.new("Frame")
-	frame.Size = UDim2.new(0.5, 0, 0.2, 0)
-	frame.Position = UDim2.new(0.25, 0, 0.4, 0)
+	frame.Size = UDim2.fromScale(0.5, 0.2)
+	frame.Position = UDim2.fromScale(0.25, 0.4)
 	frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	frame.BackgroundTransparency = 0.3
 	frame.BorderSizePixel = 2
@@ -122,7 +134,7 @@ function RaceService:showRaceUI(message, duration)
 	uiCorner.Parent = frame
 
 	local textLabel = Instance.new("TextLabel")
-	textLabel.Size = UDim2.new(1, 0, 1, 0)
+	textLabel.Size = UDim2.fromScale(1, 1)
 	textLabel.BackgroundTransparency = 1
 	textLabel.Text = message
 	textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)

@@ -57,6 +57,11 @@ function Client:init()
 		return self.shared.Infrastructure.DIContainer:resolve("Entities")
 	end)
 
+	self.shared.Infrastructure.IoCContainer:singleton("FlyingRepository", function()
+		local flyingRepository = self.flyingSystemClient.shared.Infrastructure.DIContainer:resolve("FlyingRepository")
+		return flyingRepository
+	end)
+
 	self.petSystemClient:init()
 	self.flyingSystemClient:init()
 	self.liveLeaderboardSystemClient:init()

@@ -137,6 +137,12 @@ function JetpackService:_moveToFlyingHeight()
 		return
 	end
 
+	-- Удалить BodyVelocity если он существует
+	local bodyVelocity = humanoidRootPart:FindFirstChild("BodyVelocity")
+	if bodyVelocity then
+		bodyVelocity:Destroy()
+	end
+
 	-- Установить позицию на высоте полета (Y=50)
 	local flyingHeight = 50
 	local currentPosition = humanoidRootPart.Position
@@ -146,7 +152,7 @@ function JetpackService:_moveToFlyingHeight()
 	bodyPosition.MaxForce = Vector3.new(4000, 4000, 4000)
 	bodyPosition.D = 100
 
-	-- Также настроить BodyGyro для ориентации
+	-- Также настроить BodyGyro для ориентации с ограничением Y оси
 	local bodyGyro = humanoidRootPart:FindFirstChild("BodyGyro")
 	if bodyGyro then
 		local camera = workspace.CurrentCamera
@@ -156,9 +162,12 @@ function JetpackService:_moveToFlyingHeight()
 		-- Project look vector onto horizontal plane to remove vertical component
 		local horizontalLook = Vector3.new(cameraLookVector.X, 0, cameraLookVector.Z).Unit
 		bodyGyro.CFrame = CFrame.new(cameraPosition, cameraPosition + horizontalLook)
-		bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
+		-- Ограничить Y ось до 50, оставить X и Z полными
+		bodyGyro.MaxTorque = Vector3.new(4000, 50, 4000)
 		bodyGyro.D = 100
 	end
+
+	-- BodyGyro используется для левитации и ориентации
 end
 
 return JetpackService

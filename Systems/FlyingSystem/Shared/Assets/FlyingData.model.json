@@ -20,6 +20,10 @@
         {
             "className": "BoolValue",
             "name": "AutoForwardMovement"
+        },
+        {
+            "className": "BoolValue",
+            "name": "RaceStarted"
         }
     ]
 }

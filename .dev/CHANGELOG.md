@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.3.4] - 2025-12-17 [ Complete ]
+
+### Changes
+- Enhanced FlyingSystem with camera, input, and movement services
+- Updated RaceSystem client integration and services
+- Improved jetpack controls and position validation
+- Refined flying entity logic and asset configurations
+
 ## [v0.3.3] - 2025-12-17 [ Process ]
 
 ### Changes

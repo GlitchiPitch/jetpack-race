@@ -28,6 +28,10 @@ function FlyingService:init()
 	flyingEntity.isActive.Changed:Connect(function(value)
 		warn("FlyingService: isActive changed to:", value)
 		print(value)
+		if value then
+			warn("FlyingService: Flying activated, enabling auto-forward movement")
+			flyingEntity:setAutoForwardMovement(true)
+		end
 	end)
 	flyingEntity.speedMultiplier.Changed:Connect(function(value)
 		print(value)

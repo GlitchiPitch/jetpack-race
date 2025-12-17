@@ -13,6 +13,7 @@ local Constants = {
 	BODY_VELOCITY_P = 1000,
 	BODY_GYRO_P = 1000,
 	BODY_POSITION_P = 1000,
+	BODY_GYRO_Y_LIMIT = 30, -- degrees limit for pitch rotation
 
 	-- Position validation
 	POSITION_VALIDATION = {
@@ -44,6 +45,7 @@ local Constants = {
 	JETPACK_HEIGHTS = {
 		GROUND = -50,
 		FLYING = 50,
+		MAX_FLYING_HEIGHT = 50, -- maximum height limit for jetpack flight
 	},
 
 	-- Input keys

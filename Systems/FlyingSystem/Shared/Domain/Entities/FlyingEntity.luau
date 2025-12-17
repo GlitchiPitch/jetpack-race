@@ -5,6 +5,7 @@
 ---@field sprintActivated BoolValue
 ---@field jetpackState StringValue
 ---@field autoForwardMovement BoolValue
+---@field raceStarted BoolValue
 local FlyingEntity = {}
 FlyingEntity.__index = FlyingEntity
 
@@ -19,6 +20,7 @@ function FlyingEntity.new(playerEntity, flyingData)
 	self.sprintActivated = flyingData.SprintActivated
 	self.jetpackState = flyingData.JetpackState
 	self.autoForwardMovement = flyingData.AutoForwardMovement
+	self.raceStarted = flyingData.RaceStarted
 	self.flyingData = flyingData
 
 	-- Set initial state
@@ -59,6 +61,7 @@ function FlyingEntity:GetState()
 		sprintActivated = self.sprintActivated.Value,
 		jetpackState = self.jetpackState.Value,
 		autoForwardMovement = self.autoForwardMovement.Value,
+		raceStarted = self.raceStarted.Value,
 	}
 end
 
@@ -76,6 +79,14 @@ end
 
 function FlyingEntity:isAutoForwardMovement()
 	return self.autoForwardMovement.Value
+end
+
+function FlyingEntity:setRaceStarted(raceStarted)
+	self.raceStarted.Value = raceStarted
+end
+
+function FlyingEntity:isRaceStarted()
+	return self.raceStarted.Value
 end
 
 ---@return string
@@ -147,6 +158,7 @@ function FlyingEntity:deactivateFlying()
 	self.isActive.Value = false
 	self.sprintActivated.Value = false
 	self.autoForwardMovement.Value = false
+	self.raceStarted.Value = false
 
 	-- Reset humanoid state when stopping flying
 	local character = self.playerEntity.player.Character

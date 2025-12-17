@@ -162,9 +162,13 @@ function PositionValidator:_correctPlayerPosition(player, correctPosition)
 	local correctionVector = correctPosition - currentPosition
 
 	-- Apply correction via body movers if available
-	local bodyPosition = humanoidRootPart:FindFirstChild("BodyPosition")
-	if bodyPosition then
-		bodyPosition.Position = correctPosition
+	local bodyVelocity = humanoidRootPart:FindFirstChild("BodyVelocity")
+	if bodyVelocity then
+		-- Calculate velocity needed to reach correct position
+		local distance = (correctPosition - currentPosition).Magnitude
+		local correctionVelocity = (correctPosition - currentPosition).Unit * math.min(distance * 5, 50) -- cap max correction speed
+		bodyVelocity.Velocity = correctionVelocity
+		bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
 	else
 		-- Fallback: direct position set (less smooth)
 		humanoidRootPart.Position = correctPosition

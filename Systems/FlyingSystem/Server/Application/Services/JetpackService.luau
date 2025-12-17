@@ -64,12 +64,11 @@ function JetpackService:_setupBodyMovers(character)
 		return
 	end
 
-	-- Создать и добавить BodyPosition
-	local bodyPosition = assets.BodyMovers.BodyPosition:Clone()
-	bodyPosition.Parent = humanoidRootPart
-	bodyPosition.Position = humanoidRootPart.Position
-	bodyPosition.MaxForce = Vector3.new(0, 0, 0) -- отключить до начала полета
-	bodyPosition.D = 100
+	-- Создать и добавить BodyVelocity
+	local bodyVelocity = assets.BodyMovers.BodyVelocity:Clone()
+	bodyVelocity.Parent = humanoidRootPart
+	bodyVelocity.Velocity = Vector3.new(0, 0, 0) -- отключить до начала полета
+	bodyVelocity.MaxForce = Vector3.new(0, 0, 0) -- отключить до начала полета
 
 	-- Создать и добавить BodyGyro
 	local bodyGyro = assets.BodyMovers.BodyGyro:Clone()

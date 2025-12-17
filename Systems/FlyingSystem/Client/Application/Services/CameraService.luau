@@ -166,7 +166,7 @@ end
 function CameraService:updateCamera()
 	self.currentCamera.CameraType = Enum.CameraType.Scriptable
 
-	local deltaCframe = CFrame.Angles(math.rad(-self.cameraOrientation.Y), 0, 0)
+	local deltaCframe = CFrame.new() -- Y axis locked, no vertical rotation
 	local primaryPart = self.currentCharacter.PrimaryPart
 	if primaryPart then
 		self.currentCamera.CFrame = primaryPart.CFrame:ToWorldSpace(
@@ -178,15 +178,10 @@ end
 function CameraService:onMouseMovement()
 	local mouseDelta = UserInputService:GetMouseDelta()
 	local xDelta = mouseDelta.X * self.cameraConstants.settings.SPEED_MULTIPLIER
-	local yDelta = mouseDelta.Y * self.cameraConstants.settings.SPEED_MULTIPLIER
 
 	self.cameraOrientation = Vector2.new(
 		self.cameraOrientation.X + xDelta,
-		math.clamp(
-			self.cameraOrientation.Y + yDelta,
-			-self.cameraConstants.settings.Y_EXTREME,
-			self.cameraConstants.settings.Y_EXTREME
-		)
+		self.cameraOrientation.Y -- Y axis locked, no vertical rotation
 	)
 
 	local deltaXCframe = CFrame.Angles(0, math.rad(-xDelta), 0)
