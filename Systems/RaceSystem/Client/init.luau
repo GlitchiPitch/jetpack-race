@@ -29,7 +29,6 @@ function Client:init()
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
 	end)
-
 	
 	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
 		return self.remoteEventService

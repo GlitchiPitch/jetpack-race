@@ -4,6 +4,7 @@
 ---@field speedMultiplier NumberValue
 ---@field sprintActivated BoolValue
 ---@field jetpackState StringValue
+---@field autoForwardMovement BoolValue
 local FlyingEntity = {}
 FlyingEntity.__index = FlyingEntity
 
@@ -17,6 +18,7 @@ function FlyingEntity.new(playerEntity, flyingData)
 	self.speedMultiplier = flyingData.SpeedMultiplier
 	self.sprintActivated = flyingData.SprintActivated
 	self.jetpackState = flyingData.JetpackState
+	self.autoForwardMovement = flyingData.AutoForwardMovement
 	self.flyingData = flyingData
 
 	-- Set initial state
@@ -56,6 +58,7 @@ function FlyingEntity:GetState()
 		speedMultiplier = self.speedMultiplier.Value,
 		sprintActivated = self.sprintActivated.Value,
 		jetpackState = self.jetpackState.Value,
+		autoForwardMovement = self.autoForwardMovement.Value,
 	}
 end
 
@@ -65,6 +68,14 @@ end
 
 function FlyingEntity:isSprintActivated()
 	return self.sprintActivated.Value
+end
+
+function FlyingEntity:setAutoForwardMovement(active)
+	self.autoForwardMovement.Value = active
+end
+
+function FlyingEntity:isAutoForwardMovement()
+	return self.autoForwardMovement.Value
 end
 
 ---@return string
@@ -112,20 +123,16 @@ function FlyingEntity:activateFlying()
 	warn("FlyingEntity: Activated flying")
 	self.isActive.Value = true
 	self.sprintActivated.Value = false
+	self.autoForwardMovement.Value = false
 
 	-- Set humanoid stand to false when flying
 	local character = self.playerEntity.player.Character
 	if character then
 		local humanoid = character:FindFirstChildOfClass("Humanoid")
 		if humanoid then
-			local originalPlatformStand = humanoid.PlatformStand
 			humanoid.PlatformStand = true
 			humanoid.Sit = false
 			humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
-
-			if originalPlatformStand and humanoid.PlatformStand then
-				warn("FlyingEntity: PlatformStand was not disabled - still true after setting to false")
-			end
 		else
 			warn("FlyingEntity: Humanoid not found in character")
 		end
@@ -139,6 +146,7 @@ end
 function FlyingEntity:deactivateFlying()
 	self.isActive.Value = false
 	self.sprintActivated.Value = false
+	self.autoForwardMovement.Value = false
 
 	-- Reset humanoid state when stopping flying
 	local character = self.playerEntity.player.Character

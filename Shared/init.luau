@@ -37,6 +37,10 @@ function Shared:_register()
         return self.Config
     end)
 
+    self.Infrastructure.DIContainer:singleton("Shared.Constants", function()
+        return self.Constants
+    end)
+
     self.Infrastructure.DIContainer:singleton("Shared.Application", function()
         return self.Application
     end)

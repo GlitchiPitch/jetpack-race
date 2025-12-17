@@ -150,7 +150,12 @@ function JetpackService:_moveToFlyingHeight()
 	local bodyGyro = humanoidRootPart:FindFirstChild("BodyGyro")
 	if bodyGyro then
 		local camera = workspace.CurrentCamera
-		bodyGyro.CFrame = camera.CFrame
+		-- Lock pitch (Y axis) while allowing yaw and roll to follow camera
+		local cameraPosition = camera.CFrame.Position
+		local cameraLookVector = camera.CFrame.LookVector
+		-- Project look vector onto horizontal plane to remove vertical component
+		local horizontalLook = Vector3.new(cameraLookVector.X, 0, cameraLookVector.Z).Unit
+		bodyGyro.CFrame = CFrame.new(cameraPosition, cameraPosition + horizontalLook)
 		bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000)
 		bodyGyro.D = 100
 	end

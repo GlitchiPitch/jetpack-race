@@ -61,6 +61,11 @@ function Server:init()
 		return flyingServices.jetpackService
 	end)
 
+	self.shared.Infrastructure.IoCContainer:singleton("FlyingRepository", function()
+		local flyingRepository = self.flyingSystemServer.shared.Infrastructure.DIContainer:resolve("FlyingRepository")
+		return flyingRepository
+	end)
+
 	self.flyingSystemServer:init()
 	self.petSystemServer:init()
 	self.liveLeaderboardSystemServer:init()

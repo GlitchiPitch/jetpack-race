@@ -3,6 +3,7 @@ local Services = require(script.Services)
 
 ---@class Infrastructure
 ---@field DIContainer DIContainer
+---@field IoCContainer DIContainer
 ---@field Services SharedInfrastructureServices
 local Infrastructure = {}
 Infrastructure.__index = Infrastructure

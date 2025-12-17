@@ -3,7 +3,7 @@ local Shared = require(ReplicatedStorage.JetpackRace.Systems.FlyingSystem)
 
 local Presentation = require(script.Presentation)
 local Application = require(script.Application)
-local Infrastructure = require(script.Infrastructure)	
+local Infrastructure = require(script.Infrastructure)
 
 ---@class FlyingSystemClient
 ---@field shared Shared
@@ -26,27 +26,27 @@ function Client.new(iocContainer)
 end
 
 function Client:init()
-	self.logger = self.iocContainer:resolve("Logger")
-	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
-	self.mainEntities = self.iocContainer:resolve("Entities")
-
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
-		return self.logger
+		return self.iocContainer:resolve("Logger")
+	end)
+
+	self.shared.Infrastructure.DIContainer:singleton("RaceSystemConstants", function()
+		return self.iocContainer:resolve("RaceSystemConstants")
 	end)
 
 	self.shared.Infrastructure.DIContainer:singleton("Main.Entities", function()
-		return self.mainEntities
+		return self.iocContainer:resolve("Entities")
 	end)
 
 	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
-		return self.remoteEventService
+		return self.iocContainer:resolve("RemoteEventService")
 	end)
 
+	self.logger = self.iocContainer:resolve("Logger")
 	self.logger:info("FlyingSystemClient", "Initializing FlyingSystem client...")
 
 	self.application:init()
 	self.presentation:init()
-
 end
 
 return Client

@@ -9,7 +9,7 @@ local FlyingSystemClient = require(script.Systems.FlyingSystem)
 local LiveLeaderboardSystemClient = require(script.Systems.LiveLeaderboardSystem)
 local RewardsSystemClient = require(script.Systems.RewardsSystem)
 local ShopSystemClient = require(script.Systems.ShopSystem)
-
+local RaceSystemClient = require(script.Systems.RaceSystem)
 
 ---@class Client
 ---@field shared Shared
@@ -19,6 +19,7 @@ local ShopSystemClient = require(script.Systems.ShopSystem)
 ---@field flyingSystemClient FlyingSystemClient
 ---@field liveLeaderboardSystemClient LiveLeaderboardSystemClient
 ---@field rewardsSystemClient RewardsSystemClient
+---@field raceSystemClient RaceSystemClient
 ---@field shopSystemClient ShopSystemClient
 local Client = {}
 Client.__index = Client
@@ -29,22 +30,38 @@ function Client.new()
 	self.shared = Shared.new()
 	self.application = Application.new(self.shared.Infrastructure.DIContainer)
 	self.presentation = Presentation.new(self.shared.Infrastructure.DIContainer)
-	self.petSystemClient = PetSystemClient.new(self.shared.Infrastructure.DIContainer)
-	self.flyingSystemClient = FlyingSystemClient.new(self.shared.Infrastructure.DIContainer)
-	self.liveLeaderboardSystemClient = LiveLeaderboardSystemClient.new(self.shared.Infrastructure.DIContainer)
-	self.rewardsSystemClient = RewardsSystemClient.new(self.shared.Infrastructure.DIContainer)
-	self.shopSystemClient = ShopSystemClient.new(self.shared.Infrastructure.DIContainer)
+
+	self.petSystemClient = PetSystemClient.new(self.shared.Infrastructure.IoCContainer)
+	self.flyingSystemClient = FlyingSystemClient.new(self.shared.Infrastructure.IoCContainer)
+	self.liveLeaderboardSystemClient = LiveLeaderboardSystemClient.new(self.shared.Infrastructure.IoCContainer)
+	self.rewardsSystemClient = RewardsSystemClient.new(self.shared.Infrastructure.IoCContainer)
+	self.shopSystemClient = ShopSystemClient.new(self.shared.Infrastructure.IoCContainer)
+	self.raceSystemClient = RaceSystemClient.new(self.shared.Infrastructure.IoCContainer)
 	return self
 end
 
 function Client:init()
+	self.shared.Infrastructure.IoCContainer:singleton("RaceSystemConstants", function()
+		return self.raceSystemClient.shared.Infrastructure.DIContainer:resolve("Shared.Constants")
+	end)
 
+	self.shared.Infrastructure.IoCContainer:singleton("Logger", function()
+		return self.shared.Infrastructure.DIContainer:resolve("Logger")
+	end)
 
+	self.shared.Infrastructure.IoCContainer:singleton("RemoteEventService", function()
+		return self.shared.Infrastructure.DIContainer:resolve("RemoteEventService")
+	end)
+
+	self.shared.Infrastructure.IoCContainer:singleton("Entities", function()
+		return self.shared.Infrastructure.DIContainer:resolve("Entities")
+	end)
 
 	self.petSystemClient:init()
 	self.flyingSystemClient:init()
 	self.liveLeaderboardSystemClient:init()
 	self.rewardsSystemClient:init()
+	self.raceSystemClient:init()
 
 	self.application:init()
 	self.presentation:init()

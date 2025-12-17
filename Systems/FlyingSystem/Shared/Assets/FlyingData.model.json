@@ -16,6 +16,10 @@
         {
             "className": "StringValue",
             "name": "JetpackState"
+        },
+        {
+            "className": "BoolValue",
+            "name": "AutoForwardMovement"
         }
     ]
 }

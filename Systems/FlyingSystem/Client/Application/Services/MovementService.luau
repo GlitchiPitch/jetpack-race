@@ -89,8 +89,6 @@ function MovementService:_updateMovement(deltaTime)
 	end
 
 	-- Get movement direction from character orientation (character rotates with camera horizontally)
-	local player = game.Players.LocalPlayer
-	local character = player.Character
 	local characterCFrame = character and character.PrimaryPart and character.PrimaryPart.CFrame or CFrame.new()
 
 	-- Use character's orientation for movement (character rotates with horizontal camera movement)
@@ -100,9 +98,19 @@ function MovementService:_updateMovement(deltaTime)
 	-- Get movement input from WASD keys
 	local movementInput = self.inputService:GetMovementInput()
 
+	-- Check if auto-forward movement is active
+	local isAutoForward = flyingEntity:isAutoForwardMovement()
+
+	-- If auto-forward is active, force forward movement regardless of input
+	local finalMovementInput = movementInput
+	if isAutoForward then
+		-- Force forward movement (Z = -1 means forward)
+		finalMovementInput = Vector3.new(movementInput.X, movementInput.Y, -1)
+	end
+
 	-- movementInput.Z is -1 for W (forward) and +1 for S (backward)
 	-- We need to negate it so W moves forward and S moves backward
-	local horizontalInput = characterRight * movementInput.X + characterForward * -movementInput.Z
+	local horizontalInput = characterRight * finalMovementInput.X + characterForward * -finalMovementInput.Z
 
 	-- Only normalize if there's input, otherwise use zero vector
 	local moveDirection = horizontalInput.Magnitude > 0 and horizontalInput.Unit or Vector3.new(0, 0, 0)
@@ -114,7 +122,7 @@ function MovementService:_updateMovement(deltaTime)
 
 	-- Apply body movers
 	local camera = workspace.CurrentCamera
-	self:_applyBodyPosition(humanoidRootPart, moveDirection, speed)
+	self:_applyBodyPosition(humanoidRootPart, moveDirection, speed, deltaTime)
 	self:_applyBodyGyro(humanoidRootPart, camera.CFrame)
 
 	-- Send position update to server for validation (throttled)
@@ -131,7 +139,8 @@ end
 ---@param humanoidRootPart BasePart
 ---@param direction Vector3
 ---@param speed number
-function MovementService:_applyBodyPosition(humanoidRootPart, direction, speed)
+---@param deltaTime number
+function MovementService:_applyBodyPosition(humanoidRootPart, direction, speed, deltaTime)
 	local bodyPosition = humanoidRootPart:FindFirstChild("BodyPosition")
 	if not bodyPosition then
 		warn("ClientMovementService: BodyPosition not found - jetpack may not be equipped")
@@ -140,17 +149,17 @@ function MovementService:_applyBodyPosition(humanoidRootPart, direction, speed)
 
 	local currentPosition = humanoidRootPart.Position
 
-	-- Calculate horizontal movement
+	-- Calculate horizontal movement per second, then multiply by deltaTime
 	local horizontalMovement = Vector3.new(0, 0, 0)
 	if direction.Magnitude > 0 then
 		-- Apply horizontal movement based on direction
-		local horizontalSpeed = speed * 0.8 -- horizontal movement speed
-		horizontalMovement = direction * horizontalSpeed
+		local horizontalSpeed = speed * 0.8 -- horizontal movement speed per second
+		horizontalMovement = direction * horizontalSpeed * deltaTime
 	end
 
-	-- Calculate vertical movement (upward)
-	local upwardSpeed = speed * 0.1 -- upward movement speed
-	local verticalMovement = Vector3.new(0, upwardSpeed, 0)
+	-- Calculate vertical movement (upward) per second, then multiply by deltaTime
+	local upwardSpeed = speed * 0.1 -- upward movement speed per second
+	local verticalMovement = Vector3.new(0, upwardSpeed * deltaTime, 0)
 
 	-- Combine movements
 	local totalMovement = horizontalMovement + verticalMovement
@@ -170,7 +179,12 @@ function MovementService:_applyBodyGyro(humanoidRootPart, cameraCFrame)
 		return
 	end
 
-	bodyGyro.CFrame = cameraCFrame
+	-- Lock pitch (Y axis) while allowing yaw and roll to follow camera
+	local cameraPosition = cameraCFrame.Position
+	local cameraLookVector = cameraCFrame.LookVector
+	-- Project look vector onto horizontal plane to remove vertical component
+	local horizontalLook = Vector3.new(cameraLookVector.X, 0, cameraLookVector.Z).Unit
+	bodyGyro.CFrame = CFrame.new(cameraPosition, cameraPosition + horizontalLook)
 	bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000) -- maximum torque
 	bodyGyro.D = 100 -- damping
 end

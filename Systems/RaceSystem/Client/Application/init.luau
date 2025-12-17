@@ -30,6 +30,12 @@ function Application:init()
 		logger:debug("RaceSystemClientApplication", "Client application services initialized")
 	end
 
+	-- Initialize RaceService
+	---@type RaceSystemClientRaceService
+	local raceService = self.diContainer:resolve("RaceService")
+	raceService:init()
+	logger:debug("RaceSystemClientApplication", "RaceService initialized")
+
 	logger:debug("RaceSystemClientApplication", "Client application initialization completed")
 end
 

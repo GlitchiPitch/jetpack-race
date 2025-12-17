@@ -50,8 +50,6 @@ local Constants = {
 	INPUT_KEYS = {
 		SPRINT = Enum.KeyCode.LeftShift,
 		SWITCH_SHOULDER = Enum.KeyCode.X,
-		MOVE_FORWARD = Enum.KeyCode.W,
-		MOVE_BACKWARD = Enum.KeyCode.S,
 		MOVE_LEFT = Enum.KeyCode.A,
 		MOVE_RIGHT = Enum.KeyCode.D,
 	},

@@ -31,6 +31,8 @@ function Server:init()
 
 	---@type FlyingSystemServerJetpackService
 	self.jetpackService = self.iocContainer:resolve("JetpackService")
+	---@type FlyingSystemServerFlyingRepository
+	self.flyingRepository = self.iocContainer:resolve("FlyingRepository")
 
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
@@ -38,6 +40,10 @@ function Server:init()
 
 	self.shared.Infrastructure.DIContainer:singleton("JetpackService", function()
 		return self.jetpackService
+	end)
+
+	self.shared.Infrastructure.DIContainer:singleton("FlyingRepository", function()
+		return self.flyingRepository
 	end)
 
 	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()

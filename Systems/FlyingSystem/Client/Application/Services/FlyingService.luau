@@ -16,6 +16,15 @@ function FlyingService:init()
 	local flyingRepository = self.diContainer:resolve("FlyingRepository")
 	local flyingEntity = flyingRepository:getFlyingEntity()
 
+	-- Listen for enable forward movement event
+	local remoteEventService = self.diContainer:resolve("RemoteEventService")
+	local RaceSystemConstants = self.diContainer:resolve("RaceSystemConstants")
+	warn(RaceSystemConstants)
+	remoteEventService:connectToEvent(RaceSystemConstants.REMOTE_EVENTS.ENABLE_FORWARD_MOVEMENT, function()
+		warn("FlyingService: Received enable forward movement event")
+		flyingEntity:setAutoForwardMovement(true)
+	end)
+
 	flyingEntity.isActive.Changed:Connect(function(value)
 		warn("FlyingService: isActive changed to:", value)
 		print(value)
