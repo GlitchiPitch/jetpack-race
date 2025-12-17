@@ -12,6 +12,10 @@
         {
             "className": "NumberValue",
             "name": "SpeedMultiplier"
+        },
+        {
+            "className": "StringValue",
+            "name": "JetpackState"
         }
     ]
 }

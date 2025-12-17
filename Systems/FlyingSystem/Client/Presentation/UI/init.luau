@@ -19,6 +19,7 @@ end
 function UI:init()
 	self.remoteEventService = self.diContainer:resolve("RemoteEventService")
 	self.inputService = self.diContainer:resolve("InputService")
+	self.jetpackService = self.diContainer:resolve("JetpackService")
 	self.constants = self.diContainer:resolve("Shared.Constants")
 
 	---@type FlyingSystemClientRepository
@@ -91,12 +92,16 @@ end
 function UI:OnInputBegan(input)
 	if input.KeyCode == self.constants.INPUT_KEYS.SPRINT then
 		self.remoteEventService:fireServer("sprint", true)
+	elseif input.KeyCode == Enum.KeyCode.Space then
+		self.jetpackService:startFlying()
 	end
 end
 
 function UI:OnInputEnded(input)
 	if input.KeyCode == self.constants.INPUT_KEYS.SPRINT then
 		self.remoteEventService:fireServer("sprint", false)
+	elseif input.KeyCode == Enum.KeyCode.Space then
+		self.jetpackService:stopFlying()
 	end
 end
 

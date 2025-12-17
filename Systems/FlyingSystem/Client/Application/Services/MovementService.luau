@@ -13,6 +13,8 @@ function MovementService.new(diContainer)
 end
 
 function MovementService:init()
+	self.inputService = self.diContainer:resolve("InputService")
+
 	---@type FlyingSystemClientRepository
 	local flyingRepository = self.diContainer:resolve("FlyingRepository")
 	local flyingEntity = flyingRepository:getFlyingEntity()
@@ -28,7 +30,9 @@ function MovementService:init()
 end
 
 function MovementService:startMovementUpdates()
-	if self.isActive then return end
+	if self.isActive then
+		return
+	end
 	self.isActive = true
 
 	local RunService = game:GetService("RunService")
@@ -67,10 +71,14 @@ function MovementService:_updateMovement(deltaTime)
 
 	local player = game.Players.LocalPlayer
 	local character = player.Character
-	if not character then return end
+	if not character then
+		return
+	end
 
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-	if not humanoidRootPart then return end
+	if not humanoidRootPart then
+		return
+	end
 
 	local hasBodyPosition = humanoidRootPart:FindFirstChild("BodyPosition") ~= nil
 	local hasBodyGyro = humanoidRootPart:FindFirstChild("BodyGyro") ~= nil
@@ -80,10 +88,24 @@ function MovementService:_updateMovement(deltaTime)
 		return
 	end
 
-	-- Get camera direction for movement
-	local camera = workspace.CurrentCamera
-	local cameraDirection = camera.CFrame.LookVector
-	local moveDirection = Vector3.new(cameraDirection.X, 0, cameraDirection.Z).Unit
+	-- Get movement direction from character orientation (character rotates with camera horizontally)
+	local player = game.Players.LocalPlayer
+	local character = player.Character
+	local characterCFrame = character and character.PrimaryPart and character.PrimaryPart.CFrame or CFrame.new()
+
+	-- Use character's orientation for movement (character rotates with horizontal camera movement)
+	local characterForward = characterCFrame.LookVector
+	local characterRight = characterCFrame.RightVector
+
+	-- Get movement input from WASD keys
+	local movementInput = self.inputService:GetMovementInput()
+
+	-- movementInput.Z is -1 for W (forward) and +1 for S (backward)
+	-- We need to negate it so W moves forward and S moves backward
+	local horizontalInput = characterRight * movementInput.X + characterForward * -movementInput.Z
+
+	-- Only normalize if there's input, otherwise use zero vector
+	local moveDirection = horizontalInput.Magnitude > 0 and horizontalInput.Unit or Vector3.new(0, 0, 0)
 
 	-- Calculate flying speed
 	local baseSpeed = 50 -- base flying speed
@@ -91,6 +113,7 @@ function MovementService:_updateMovement(deltaTime)
 	local speed = flyingEntity:calculateSpeed(baseSpeed, sprintMultiplier)
 
 	-- Apply body movers
+	local camera = workspace.CurrentCamera
 	self:_applyBodyPosition(humanoidRootPart, moveDirection, speed)
 	self:_applyBodyGyro(humanoidRootPart, camera.CFrame)
 
@@ -115,12 +138,23 @@ function MovementService:_applyBodyPosition(humanoidRootPart, direction, speed)
 		return
 	end
 
-	-- Calculate target position with fixed height Y=50
-	local targetPosition = Vector3.new(
-		humanoidRootPart.Position.X + direction.X * speed * 0.1,
-		50, -- fixed flying height
-		humanoidRootPart.Position.Z + direction.Z * speed * 0.1
-	)
+	local currentPosition = humanoidRootPart.Position
+
+	-- Calculate horizontal movement
+	local horizontalMovement = Vector3.new(0, 0, 0)
+	if direction.Magnitude > 0 then
+		-- Apply horizontal movement based on direction
+		local horizontalSpeed = speed * 0.8 -- horizontal movement speed
+		horizontalMovement = direction * horizontalSpeed
+	end
+
+	-- Calculate vertical movement (upward)
+	local upwardSpeed = speed * 0.1 -- upward movement speed
+	local verticalMovement = Vector3.new(0, upwardSpeed, 0)
+
+	-- Combine movements
+	local totalMovement = horizontalMovement + verticalMovement
+	local targetPosition = currentPosition + totalMovement
 
 	bodyPosition.Position = targetPosition
 	bodyPosition.MaxForce = Vector3.new(4000, 4000, 4000) -- force on all axes
@@ -149,17 +183,21 @@ function MovementService:_sendPositionUpdate(position, timestamp)
 
 	remoteEventService:fireServer(constants.REMOTE_EVENTS.POSITION_UPDATE, {
 		position = position,
-		timestamp = timestamp
+		timestamp = timestamp,
 	})
 end
 
 function MovementService:_disableBodyMovers()
 	local player = game.Players.LocalPlayer
 	local character = player.Character
-	if not character then return end
+	if not character then
+		return
+	end
 
 	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-	if not humanoidRootPart then return end
+	if not humanoidRootPart then
+		return
+	end
 
 	local bodyPosition = humanoidRootPart:FindFirstChild("BodyPosition")
 	if bodyPosition then

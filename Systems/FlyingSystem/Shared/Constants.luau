@@ -31,10 +31,29 @@ local Constants = {
 		INTERMISSION = "Intermission",
 	},
 
+	-- Jetpack states
+	JETPACK_STATES = {
+		INACTIVE = "Inactive",
+		ACTIVATING = "Activating",
+		IDLE = "Idle",
+		FLYING = "Flying",
+		DEACTIVATING = "Deactivating",
+	},
+
+	-- Jetpack heights
+	JETPACK_HEIGHTS = {
+		GROUND = -50,
+		FLYING = 50,
+	},
+
 	-- Input keys
 	INPUT_KEYS = {
 		SPRINT = Enum.KeyCode.LeftShift,
 		SWITCH_SHOULDER = Enum.KeyCode.X,
+		MOVE_FORWARD = Enum.KeyCode.W,
+		MOVE_BACKWARD = Enum.KeyCode.S,
+		MOVE_LEFT = Enum.KeyCode.A,
+		MOVE_RIGHT = Enum.KeyCode.D,
 	},
 
 	-- Remote events

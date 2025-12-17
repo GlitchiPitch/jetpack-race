@@ -43,9 +43,9 @@ function JetpackService:equipDefaultJetpack(player)
 			self:_setupBodyMovers(character)
 			logger:info("JetpackService", "BodyMovers set up for player:", player.Name)
 
-			-- Активировать систему полета после экипировки джетпака
-			flyingEntity:activateFlying()
-			logger:info("JetpackService", "Flying system activated for player:", player.Name)
+			-- Начать процесс активации джетпака
+			flyingEntity:startActivating()
+			logger:info("JetpackService", "Jetpack activation started for player:", player.Name)
 		else
 			logger:warn("JetpackService", "Humanoid not found for player:", player.Name)
 		end

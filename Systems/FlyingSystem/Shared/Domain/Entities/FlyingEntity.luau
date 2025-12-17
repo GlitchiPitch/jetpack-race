@@ -3,6 +3,7 @@
 ---@field isActive BoolValue
 ---@field speedMultiplier NumberValue
 ---@field sprintActivated BoolValue
+---@field jetpackState StringValue
 local FlyingEntity = {}
 FlyingEntity.__index = FlyingEntity
 
@@ -15,7 +16,11 @@ function FlyingEntity.new(playerEntity, flyingData)
 	self.isActive = flyingData.IsActive
 	self.speedMultiplier = flyingData.SpeedMultiplier
 	self.sprintActivated = flyingData.SprintActivated
+	self.jetpackState = flyingData.JetpackState
 	self.flyingData = flyingData
+
+	-- Set initial state
+	self.jetpackState.Value = "Inactive"
 
 	self.flyingData.Parent = self.playerEntity.player
 	return self
@@ -50,6 +55,7 @@ function FlyingEntity:GetState()
 		isActive = self.isActive.Value,
 		speedMultiplier = self.speedMultiplier.Value,
 		sprintActivated = self.sprintActivated.Value,
+		jetpackState = self.jetpackState.Value,
 	}
 end
 
@@ -59,6 +65,42 @@ end
 
 function FlyingEntity:isSprintActivated()
 	return self.sprintActivated.Value
+end
+
+---@return string
+function FlyingEntity:getJetpackState()
+	return self.jetpackState.Value
+end
+
+---@param state string
+function FlyingEntity:setJetpackState(state)
+	self.jetpackState.Value = state
+end
+
+function FlyingEntity:startActivating()
+	self:setJetpackState("Activating")
+	self.isActive.Value = true
+	self:activateFlying()
+end
+
+function FlyingEntity:startIdle()
+	self:setJetpackState("Idle")
+	self.isActive.Value = true
+end
+
+function FlyingEntity:startFlying()
+	self:setJetpackState("Flying")
+	self.isActive.Value = true
+end
+
+function FlyingEntity:startDeactivating()
+	self:setJetpackState("Deactivating")
+	self.isActive.Value = true
+end
+
+function FlyingEntity:deactivate()
+	self:setJetpackState("Inactive")
+	self.isActive.Value = false
 end
 
 ---@param active boolean
@@ -76,10 +118,19 @@ function FlyingEntity:activateFlying()
 	if character then
 		local humanoid = character:FindFirstChildOfClass("Humanoid")
 		if humanoid then
-			humanoid.PlatformStand = false
+			local originalPlatformStand = humanoid.PlatformStand
+			humanoid.PlatformStand = true
 			humanoid.Sit = false
 			humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+
+			if originalPlatformStand and humanoid.PlatformStand then
+				warn("FlyingEntity: PlatformStand was not disabled - still true after setting to false")
+			end
+		else
+			warn("FlyingEntity: Humanoid not found in character")
 		end
+	else
+		warn("FlyingEntity: Character not found for player", self.playerEntity.player.Name)
 	end
 
 	warn("FlyingEntity: Activated flying - Active:", self.isActive.Value)
