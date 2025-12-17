@@ -34,10 +34,6 @@ function UI:init()
 		end
 	end)
 
-	-- Check initial state
-	if flyingEntity.isActive then
-		self:Activate()
-	end
 	flyingEntity.speedMultiplier.Changed:Connect(function(value)
 		self.jetpackUI:setSpeedMultiplier(value)
 	end)
@@ -87,29 +83,9 @@ function UI:OnCameraChanged()
 		return
 	end
 
-	-- Проверить, экипирован ли джетпак (наличие BodyPosition и BodyGyro)
-	local player = game.Players.LocalPlayer
-	local character = player.Character
-	if not character then
-		return
-	end
-
-	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-	if not humanoidRootPart then
-		return
-	end
-
-	local hasBodyPosition = humanoidRootPart:FindFirstChild("BodyPosition") ~= nil
-	local hasBodyGyro = humanoidRootPart:FindFirstChild("BodyGyro") ~= nil
-
-	if not (hasBodyPosition and hasBodyGyro) then
-		-- Джетпак не экипирован, не отправлять обновления
-		return
-	end
-
-	local cameraCFrame = self.inputService:GetCameraCFrame()
-	warn("FlyingSystem UI: Sending flying update with camera position:", cameraCFrame.Position)
-	self.remoteEventService:fireServer("flying", cameraCFrame)
+	-- Camera changes are now handled by the client-side MovementService
+	-- No need to send camera CFrame to server anymore
+	-- Position updates are sent automatically by MovementService
 end
 
 function UI:OnInputBegan(input)

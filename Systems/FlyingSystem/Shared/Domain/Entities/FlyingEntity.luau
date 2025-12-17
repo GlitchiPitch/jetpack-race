@@ -67,14 +67,36 @@ function FlyingEntity:setFlyingActive(active)
 end
 
 function FlyingEntity:activateFlying()
+	warn("FlyingEntity: Activated flying")
 	self.isActive.Value = true
 	self.sprintActivated.Value = false
+
+	-- Set humanoid stand to false when flying
+	local character = self.playerEntity.player.Character
+	if character then
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		if humanoid then
+			humanoid.PlatformStand = false
+			humanoid.Sit = false
+			humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+		end
+	end
+
 	warn("FlyingEntity: Activated flying - Active:", self.isActive.Value)
 end
 
 function FlyingEntity:deactivateFlying()
 	self.isActive.Value = false
 	self.sprintActivated.Value = false
+
+	-- Reset humanoid state when stopping flying
+	local character = self.playerEntity.player.Character
+	if character then
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		if humanoid then
+			humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
+		end
+	end
 end
 
 return FlyingEntity

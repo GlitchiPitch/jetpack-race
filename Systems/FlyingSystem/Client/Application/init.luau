@@ -26,6 +26,10 @@ function Application:init()
 	---@type FlyingSystemClientCameraService
 	local cameraService = self.diContainer:resolve("CameraService")
 	cameraService:init()
+
+	---@type FlyingSystemClientMovementService
+	local movementService = self.diContainer:resolve("MovementService")
+	movementService:init()
 end
 
 return Application

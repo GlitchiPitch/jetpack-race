@@ -14,6 +14,14 @@ local Constants = {
 	BODY_GYRO_P = 1000,
 	BODY_POSITION_P = 1000,
 
+	-- Position validation
+	POSITION_VALIDATION = {
+		MAX_SPEED = 120, -- units per second (base 50 * sprint 2 * buffer 1.2)
+		POSITION_UPDATE_INTERVAL = 0.1, -- seconds between position updates
+		MAX_VIOLATIONS = 10, -- violations before severe action
+		BOUNDS_CHECK_ENABLED = true, -- enable out-of-bounds character reload
+	},
+
 	-- Game states
 	GAME_STATES = {
 		ROUND = "Round",
@@ -27,6 +35,13 @@ local Constants = {
 	INPUT_KEYS = {
 		SPRINT = Enum.KeyCode.LeftShift,
 		SWITCH_SHOULDER = Enum.KeyCode.X,
+	},
+
+	-- Remote events
+	REMOTE_EVENTS = {
+		PLAYER_UPDATED = "player_updated",
+		POSITION_UPDATE = "position_update",
+		SPRINT = "sprint",
 	},
 
 	-- Camera settings

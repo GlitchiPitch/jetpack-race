@@ -46,11 +46,12 @@ function Server:init()
 	self.logger:info("FlyingSystemServer", "Initializing FlyingSystem server...")
 
 	-- Подключение к remote событиям
-	self.remoteEventService:connectToEvent("flying", function(player, cameraCFrame)
-		self:onFlyingUpdate(player, cameraCFrame)
+	local constants = self.shared.Constants
+	self.remoteEventService:connectToEvent(constants.REMOTE_EVENTS.POSITION_UPDATE, function(player, positionData)
+		self:onPositionUpdate(player, positionData)
 	end)
 
-	self.remoteEventService:connectToEvent("sprint", function(player, isSprintActive)
+	self.remoteEventService:connectToEvent(constants.REMOTE_EVENTS.SPRINT, function(player, isSprintActive)
 		self:onSprintToggle(player, isSprintActive)
 	end)
 end
@@ -73,14 +74,14 @@ function Server:onPlayerRemoving(player)
 	playerService:onPlayerRemoving(player)
 end
 
-function Server:onFlyingUpdate(player, cameraCFrame)
+function Server:onPositionUpdate(player, positionData)
 	---@type FlyingSystemServerServices
 	local applicationServices = self.infrastructure.diContainer:resolve("Server.Application.Services")
 	---@type FlyingSystemServerMovementService
 	local movementService = applicationServices.movementService
 
-	-- Обработать движение с помощью body movers
-	movementService:handleFlyingMovement(player, cameraCFrame)
+	-- Validate player position for anti-cheat
+	movementService:validatePlayerPosition(player, positionData)
 end
 
 function Server:onSprintToggle(player, isSprintActive)

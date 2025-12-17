@@ -29,3 +29,6 @@
 - [x] TriggerZone model for race start
 - [x] Client and server JetpackService implementations
 - [x] EventService infrastructure
+- [x] Enhanced FlyingSystem services architecture
+- [x] Added MovementService client implementation
+- [x] Added PositionValidator server service

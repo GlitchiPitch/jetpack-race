@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.3.2] - 2025
+
+### Process
+- [Process] Enhanced FlyingSystem services and architecture improvements
+- [Process] Added MovementService client implementation
+- [Process] Added PositionValidator server service for validation logic
+- Updated game version to v0.3.2
+
 ## [v0.3.1] - 2025
 
 ### Process
