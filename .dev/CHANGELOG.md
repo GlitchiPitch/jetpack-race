@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.4.0] - 2025-12-18 [ Process ]
+
+### Changes
+- Refactored FlyingSystem client architecture with service reorganization
+- Moved CameraService from Shared to Client layer for better separation
+- Updated JetpackService initialization and service integration
+- Enhanced Constants configuration for FlyingSystem components
+- Improved service initialization and dependency management
+
 ## [v0.3.5] - 2025-12-18 [ Complete ]
 
 ### Changes

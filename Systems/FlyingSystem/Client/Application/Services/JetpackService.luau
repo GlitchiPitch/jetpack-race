@@ -13,14 +13,12 @@ function JetpackService.new(diContainer)
 end
 
 function JetpackService:init()
-	self.cameraService = self.diContainer:resolve("CameraService")
+	warn("JetpackService: Initializing")
 	self.flyingRepository = self.diContainer:resolve("FlyingRepository")
-	local flyingEntity = self.flyingRepository:getFlyingEntity()
+	local _flyingEntity = self.flyingRepository:getFlyingEntity()
 
-	-- Listen for flying activation/deactivation to control camera
-	flyingEntity.isActive.Changed:Connect(function(isActive)
-		self.cameraService:setActive(isActive)
-	end)
+	self.cameraService = self.diContainer:resolve("CameraService")
+	-- self.cameraService:activate()
 end
 
 ---@param jetpack any
@@ -59,12 +57,18 @@ function JetpackService:equipJetpack(jetpack)
 
 	-- Начать процесс активации джетпака
 	flyingEntity:startActivating()
+
+	-- Activate custom camera
+	self.cameraService:activate()
 end
 
----@param jetpack any
-function JetpackService:unequipJetpack(jetpack)
+---@param _jetpack any
+function JetpackService:unequipJetpack(_jetpack)
 	local flyingEntity = self.flyingRepository:getFlyingEntity()
 	flyingEntity:startDeactivating()
+
+	-- Deactivate custom camera
+	self.cameraService:deactivate()
 end
 
 function JetpackService:startFlying()

@@ -67,9 +67,13 @@ local Constants = {
 
 	-- Camera settings
 	CAMERA_OFFSET = {
-		Z = 15,
+		Z = 8,
 		Y = 2,
 		X = 3,
+	},
+	CAMERA_SHOULDER = {
+		LEFT = -3, -- X offset for left shoulder
+		RIGHT = 3, -- X offset for right shoulder
 	},
 	CAMERA_SETTINGS = {
 		SPEED_MULTIPLIER = 0.2,

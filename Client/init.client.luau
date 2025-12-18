@@ -29,7 +29,9 @@ function Client.new()
 	local self = setmetatable({}, Client)
 	self.shared = Shared.new()
 	self.application = Application.new(self.shared.Infrastructure.DIContainer)
+	warn("Application created")
 	self.presentation = Presentation.new(self.shared.Infrastructure.DIContainer)
+	warn("Presentation created")
 
 	self.petSystemClient = PetSystemClient.new(self.shared.Infrastructure.IoCContainer)
 	self.flyingSystemClient = FlyingSystemClient.new(self.shared.Infrastructure.IoCContainer)
@@ -37,6 +39,8 @@ function Client.new()
 	self.rewardsSystemClient = RewardsSystemClient.new(self.shared.Infrastructure.IoCContainer)
 	self.shopSystemClient = ShopSystemClient.new(self.shared.Infrastructure.IoCContainer)
 	self.raceSystemClient = RaceSystemClient.new(self.shared.Infrastructure.IoCContainer)
+
+	warn("Client created")
 	return self
 end
 
@@ -69,11 +73,15 @@ function Client:init()
 	self.raceSystemClient:init()
 
 	self.application:init()
+	warn("Application initialized")
 	self.presentation:init()
+	warn("Presentation initialized")
+
+	warn("Client initialized")
 end
 
 local client = Client.new()
-print(client)
+
 if ReplicatedStorage:GetAttribute(client.shared.Constants.SERVER_IS_LOADED) then
 	client:init()
 else

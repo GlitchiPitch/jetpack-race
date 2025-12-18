@@ -1,8 +1,8 @@
 local InputService = require(script.InputService)
 local FlyingService = require(script.FlyingService)
 local JetpackService = require(script.JetpackService)
-local CameraService = require(script.CameraService)
 local MovementService = require(script.MovementService)
+local CameraService = require(script.CameraService)
 
 ---@class FlyingSystemApplicationServices
 ---@field diContainer DIContainer
@@ -28,11 +28,11 @@ function Services:_register()
 	self.diContainer:singleton("JetpackService", function(c)
 		return JetpackService.new(c)
 	end)
-	self.diContainer:singleton("CameraService", function(c)
-		return CameraService.new(c)
-	end)
 	self.diContainer:singleton("MovementService", function(c)
 		return MovementService.new(c)
+	end)
+	self.diContainer:singleton("CameraService", function(c)
+		return CameraService.new(c)
 	end)
 end
 

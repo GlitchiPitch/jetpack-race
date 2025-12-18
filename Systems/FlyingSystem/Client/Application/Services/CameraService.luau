@@ -5,107 +5,177 @@ local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
 
 ---@class FlyingSystemClientCameraService
----@field diContainer DIContainer
----@field cameraConstants table
 ---@field currentCamera Camera
 ---@field localPlayer Player
 ---@field currentCharacter Model
----@field cameraInitialized boolean
+---@field isActive boolean
 ---@field cameraOrientation Vector2
 ---@field xOffset number
----@field isActive boolean
+---@field renderConnection RBXScriptConnection?
+---@field steppedConnection RBXScriptConnection?
 local CameraService = {}
 CameraService.__index = CameraService
 
----@param diContainer DIContainer
 ---@return FlyingSystemClientCameraService
 function CameraService.new(diContainer)
 	local self = setmetatable({}, CameraService)
 	self.diContainer = diContainer
+	-- Initialize properties
 	self.currentCamera = workspace.CurrentCamera
 	self.localPlayer = Players.LocalPlayer
-	self.cameraInitialized = false
-	self.cameraOrientation = Vector2.new(0, 0)
+	self.currentCharacter = self.localPlayer.Character or self.localPlayer.CharacterAdded:Wait()
 	self.isActive = false
+	self.cameraOrientation = Vector2.new(0, 0)
 
-	-- Get camera constants from shared constants
-	local sharedConstants = diContainer:resolve("Shared.Constants")
-	self.cameraConstants = {
-		offset = sharedConstants.CAMERA_OFFSET,
-		settings = sharedConstants.CAMERA_SETTINGS,
-		inputKeys = {
-			switchShoulder = sharedConstants.INPUT_KEYS.SWITCH_SHOULDER,
-		},
-	}
-	self.xOffset = self.cameraConstants.offset.X
+	local sharedConstants = self.diContainer:resolve("Shared.Constants")
+	self.xOffset = sharedConstants.CAMERA_OFFSET.X
+	self.renderConnection = nil
+	self.steppedConnection = nil
+
+	warn("CameraService: Created new instance for player:", self.localPlayer.Name)
+
+	-- Set up character handling
+	if self.localPlayer.Character then
+		warn("CameraService: Character already exists, setting up for player:", self.localPlayer.Name)
+		self:_onCharacterAdded(self.localPlayer.Character)
+	end
+	self.localPlayer.CharacterAdded:Connect(function(character)
+		self:_onCharacterAdded(character)
+	end)
 
 	return self
 end
 
-function CameraService:init()
-	-- Handle existing character
-	if self.localPlayer.Character then
-		self.currentCharacter = self.localPlayer.Character
-	else
-		self.currentCharacter = self.localPlayer.CharacterAdded:Wait()
-	end
-
-	-- Ensure camera follows player by default
-	self.currentCamera.CameraType = Enum.CameraType.Custom
-
-	self.localPlayer.CharacterAdded:Connect(function(newCharacter)
-		self.currentCharacter = newCharacter
-		if self.isActive then
-			self:disableAutoRotate()
-		end
-	end)
-end
-
----@param active boolean
-function CameraService:setActive(active)
-	if active and not self.isActive then
-		self:activateCamera()
-	elseif not active and self.isActive then
-		self:deactivateCamera()
-	end
-end
-
-function CameraService:activateCamera()
+-- Private methods
+---@param newCharacter Model
+function CameraService:_onCharacterAdded(newCharacter)
+	warn("CameraService: Character added/changed for player:", self.localPlayer.Name)
+	self.currentCharacter = newCharacter
 	if self.isActive then
+		self:_disableAutoRotate()
+	end
+end
+
+function CameraService:_disableAutoRotate()
+	local humanoid = self.currentCharacter:FindFirstChildOfClass("Humanoid")
+	local sharedConstants = self.diContainer:resolve("Shared.Constants")
+	if humanoid then
+		print("disabling auto rotate")
+		humanoid.AutoRotate = false
+	else
+		task.delay(sharedConstants.CAMERA_SETTINGS.AUTO_ROTATE_DELAY, function()
+			self:_disableAutoRotate()
+		end)
+	end
+end
+
+function CameraService:_enableAutoRotate()
+	local humanoid = self.currentCharacter:FindFirstChildOfClass("Humanoid")
+	if humanoid then
+		humanoid.AutoRotate = true
+	end
+end
+
+function CameraService:_updateNeckTransform()
+	local head: Instance = self.currentCharacter:FindFirstChild("Head")
+	local neckMotor: Motor6D? = head:FindFirstChildOfClass("Motor6D")
+	if not neckMotor then
 		return
 	end
 
+	local delta_cframe: CFrame = CFrame.Angles(math.rad(-self.cameraOrientation.Y), 0, 0)
+	neckMotor.Transform = neckMotor.Transform * delta_cframe
+end
+
+-- Private camera manipulation methods
+function CameraService:_updateCamera()
+	self.currentCamera.CameraType = Enum.CameraType.Scriptable
+
+	local sharedConstants = self.diContainer:resolve("Shared.Constants")
+	local delta_cframe: CFrame = CFrame.Angles(math.rad(-self.cameraOrientation.Y), 0, 0)
+	self.currentCamera.CFrame = (self.currentCharacter.PrimaryPart :: BasePart).CFrame:ToWorldSpace(
+		CFrame.new(self.xOffset, sharedConstants.CAMERA_OFFSET.Y, sharedConstants.CAMERA_OFFSET.Z)
+	) * delta_cframe
+end
+
+function CameraService:_onMouseMovement()
+	local sharedConstants = self.diContainer:resolve("Shared.Constants")
+	local mouse_delta: Vector2 = UserInputService:GetMouseDelta()
+	local x_delta: number = mouse_delta.X * sharedConstants.CAMERA_SETTINGS.SPEED_MULTIPLIER
+	local y_delta: number = mouse_delta.Y * sharedConstants.CAMERA_SETTINGS.SPEED_MULTIPLIER
+
+	self.cameraOrientation = Vector2.new(
+		self.cameraOrientation.X + x_delta,
+		math.clamp(
+			self.cameraOrientation.Y + y_delta,
+			-sharedConstants.CAMERA_SETTINGS.Y_EXTREME,
+			sharedConstants.CAMERA_SETTINGS.Y_EXTREME
+		)
+	)
+
+	local delta_x_cframe: CFrame = CFrame.Angles(0, math.rad(-x_delta), 0)
+	local root_part: BasePart? = self.currentCharacter.PrimaryPart
+	local root_part_cframe = root_part :: BasePart
+	root_part_cframe.CFrame *= delta_x_cframe
+end
+
+function CameraService:_onSwitchShoulder(_, input_state)
+	if input_state == Enum.UserInputState.Begin then
+		self.xOffset = -self.xOffset
+		warn("CameraService: Switched to " .. (self.xOffset > 0 and "right" or "left") .. " shoulder")
+	end
+end
+
+-- Public API
+function CameraService:activate()
+	if self.isActive then
+		warn("CameraService: Already active, skipping activation")
+		return
+	end
+
+	warn("CameraService: Activating camera for player:", self.localPlayer.Name)
+
 	self.isActive = true
-	self.cameraInitialized = false
+	local sharedConstants = self.diContainer:resolve("Shared.Constants")
+	self.xOffset = sharedConstants.CAMERA_OFFSET.X -- reset to right shoulder
 	self.cameraOrientation = Vector2.new(0, 0)
-	self:disableAutoRotate()
+
+	self:_disableAutoRotate()
 
 	-- Bind input actions
-	ContextActionService:BindAction("MoveMouse", function(actionName, inputState)
-		self:onMouseMovement()
-	end, false, Enum.UserInputType.MouseMovement)
+	local function onMouseMovementHandler(...)
+		self:_onMouseMovement(...)
+	end
+	local function onSwitchShoulderHandler(...)
+		self:_onSwitchShoulder(...)
+	end
 
-	ContextActionService:BindAction("SwitchShoulder", function(actionName, inputState)
-		if inputState == Enum.UserInputState.Begin then
-			self:onSwitchShoulder()
-		end
-	end, false, self.cameraConstants.inputKeys.switchShoulder)
+	ContextActionService:BindAction("MoveMouse", onMouseMovementHandler, false, Enum.UserInputType.MouseMovement)
+	ContextActionService:BindAction(
+		"SwitchShoulder",
+		onSwitchShoulderHandler,
+		false,
+		sharedConstants.INPUT_KEYS.SWITCH_SHOULDER
+	)
 
 	-- Connect update loops
-	self.renderSteppedConnection = RunService.RenderStepped:Connect(function()
+	self.renderConnection = RunService.RenderStepped:Connect(function()
 		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-		self:updateCamera()
+		self:_updateCamera()
 	end)
 
 	self.steppedConnection = RunService.Stepped:Connect(function()
-		self:updateNeckTransform()
+		self:_updateNeckTransform()
 	end)
 end
 
-function CameraService:deactivateCamera()
+function CameraService:deactivate()
 	if not self.isActive then
+		warn("CameraService: Already inactive, skipping deactivation")
 		return
 	end
+
+	warn("CameraService: Deactivating camera for player:", self.localPlayer.Name)
 
 	self.isActive = false
 
@@ -114,9 +184,9 @@ function CameraService:deactivateCamera()
 	ContextActionService:UnbindAction("SwitchShoulder")
 
 	-- Disconnect update loops
-	if self.renderSteppedConnection then
-		self.renderSteppedConnection:Disconnect()
-		self.renderSteppedConnection = nil
+	if self.renderConnection then
+		self.renderConnection:Disconnect()
+		self.renderConnection = nil
 	end
 
 	if self.steppedConnection then
@@ -129,70 +199,7 @@ function CameraService:deactivateCamera()
 	UserInputService.MouseBehavior = Enum.MouseBehavior.Default
 
 	-- Re-enable auto rotate
-	self:enableAutoRotate()
-end
-
--- Character Handling
-function CameraService:disableAutoRotate()
-	local humanoid = self.currentCharacter:FindFirstChildOfClass("Humanoid")
-	if humanoid then
-		humanoid.AutoRotate = false
-	else
-		task.delay(self.cameraConstants.settings.AUTO_ROTATE_DELAY, function()
-			self:disableAutoRotate()
-		end)
-	end
-end
-
-function CameraService:enableAutoRotate()
-	local humanoid = self.currentCharacter:FindFirstChildOfClass("Humanoid")
-	if humanoid then
-		humanoid.AutoRotate = true
-	end
-end
-
-function CameraService:updateNeckTransform()
-	local head = self.currentCharacter:FindFirstChild("Head")
-	local neck = head and head:FindFirstChildOfClass("Motor6D")
-	if not neck then
-		return
-	end
-
-	local deltaCframe = CFrame.Angles(math.rad(-self.cameraOrientation.Y), 0, 0)
-	neck.Transform = neck.Transform * deltaCframe
-end
-
--- Camera Manipulation
-function CameraService:updateCamera()
-	self.currentCamera.CameraType = Enum.CameraType.Scriptable
-
-	local deltaCframe = CFrame.new() -- Y axis locked, no vertical rotation
-	local primaryPart = self.currentCharacter.PrimaryPart
-	if primaryPart then
-		self.currentCamera.CFrame = primaryPart.CFrame:ToWorldSpace(
-			CFrame.new(self.xOffset, self.cameraConstants.offset.Y, self.cameraConstants.offset.Z)
-		) * deltaCframe
-	end
-end
-
-function CameraService:onMouseMovement()
-	local mouseDelta = UserInputService:GetMouseDelta()
-	local xDelta = mouseDelta.X * self.cameraConstants.settings.SPEED_MULTIPLIER
-
-	self.cameraOrientation = Vector2.new(
-		self.cameraOrientation.X + xDelta,
-		self.cameraOrientation.Y -- Y axis locked, no vertical rotation
-	)
-
-	local deltaXCframe = CFrame.Angles(0, math.rad(-xDelta), 0)
-	local rootPart = self.currentCharacter.PrimaryPart
-	if rootPart then
-		rootPart.CFrame = rootPart.CFrame * deltaXCframe
-	end
-end
-
-function CameraService:onSwitchShoulder()
-	self.xOffset = -self.xOffset
+	self:_enableAutoRotate()
 end
 
 return CameraService
