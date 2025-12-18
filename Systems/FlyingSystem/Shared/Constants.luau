@@ -3,6 +3,8 @@ local Constants = {
 	-- Speed values
 	BASE_SPRINT_VALUE = 1.0,
 	ACTIVATED_SPRINT_VALUE = 2.5,
+	BASE_SIDE_MOVE_SPEED = 25, -- speed for A/D lateral movement
+	BASE_FORWARD_MOVE_SPEED = 15, -- speed for forward movement in race mode
 	CAMERA_SPEED = { X = 40, Y = 60 },
 
 	-- Charge system
@@ -65,7 +67,7 @@ local Constants = {
 
 	-- Camera settings
 	CAMERA_OFFSET = {
-		Z = 8,
+		Z = 15,
 		Y = 2,
 		X = 3,
 	},

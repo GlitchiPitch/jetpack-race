@@ -12,6 +12,12 @@
 - [x] Improved jetpack controls and validation
 - [x] Refined flying entity logic and configurations
 
+## Completed Tasks [v0.3.5] ✅
+- [x] Refactored jetpack movement system with independent speed constants
+- [x] Added BASE_SIDE_MOVE_SPEED for A/D lateral movement control
+- [x] Added BASE_FORWARD_MOVE_SPEED for forward movement in race mode
+- [x] Updated MovementService to use separate speed values
+
 ## Next Version Plan [v0.4.0]
 - [ ] Add collision detection system
 - [ ] Implement advanced physics calculations

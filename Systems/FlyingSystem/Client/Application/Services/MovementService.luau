@@ -106,14 +106,9 @@ function MovementService:_updateMovement()
 	-- Only normalize if there's input, otherwise use zero vector
 	local moveDirection = horizontalInput.Magnitude > 0 and horizontalInput.Unit or Vector3.new(0, 0, 0)
 
-	-- Calculate flying speed
-	local baseSpeed = 50 -- base flying speed
-	local sprintMultiplier = 2 -- sprint multiplier
-	local speed = flyingEntity:calculateSpeed(baseSpeed, sprintMultiplier)
-
 	-- Apply body movers
 	local camera = workspace.CurrentCamera
-	self:_applyBodyVelocity(humanoidRootPart, moveDirection, speed)
+	self:_applyBodyVelocity(humanoidRootPart, moveDirection)
 	self:_applyBodyGyro(humanoidRootPart, camera.CFrame)
 
 	-- Send position update to server for validation (throttled)
@@ -129,8 +124,7 @@ end
 
 ---@param humanoidRootPart BasePart
 ---@param direction Vector3
----@param speed number
-function MovementService:_applyBodyVelocity(humanoidRootPart, direction, speed)
+function MovementService:_applyBodyVelocity(humanoidRootPart, direction)
 	local bodyVelocity = humanoidRootPart:FindFirstChild("BodyVelocity")
 	if not bodyVelocity then
 		warn("ClientMovementService: BodyVelocity not found - jetpack may not be equipped")
@@ -146,7 +140,7 @@ function MovementService:_applyBodyVelocity(humanoidRootPart, direction, speed)
 	local horizontalVelocity = Vector3.new(0, 0, 0)
 	if direction.Magnitude > 0 then
 		-- Apply horizontal velocity based on direction
-		local horizontalSpeed = speed * 0.5 -- horizontal velocity multiplier
+		local horizontalSpeed = constants.BASE_SIDE_MOVE_SPEED
 		horizontalVelocity = direction * horizontalSpeed
 	end
 
@@ -155,7 +149,7 @@ function MovementService:_applyBodyVelocity(humanoidRootPart, direction, speed)
 
 	if flyingEntity:isRaceStarted() then
 		-- Race mode: forward movement instead of upward
-		local forwardSpeed = speed * 0.3 -- forward velocity multiplier for race
+		local forwardSpeed = constants.BASE_FORWARD_MOVE_SPEED
 		local character = game.Players.LocalPlayer.Character
 		if character and character.PrimaryPart then
 			local forwardDirection = character.PrimaryPart.CFrame.LookVector
@@ -163,7 +157,7 @@ function MovementService:_applyBodyVelocity(humanoidRootPart, direction, speed)
 		end
 	else
 		-- Normal flying mode: upward movement
-		local upwardSpeed = speed * 0.05 -- upward velocity multiplier
+		local upwardSpeed = constants.BASE_FORWARD_MOVE_SPEED * 0.05 -- upward velocity multiplier
 		additionalVelocity = Vector3.new(0, upwardSpeed, 0)
 	end
 

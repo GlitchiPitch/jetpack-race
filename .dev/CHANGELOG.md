@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.3.5] - 2025-12-18 [ Complete ]
+
+### Changes
+- Refactored jetpack movement system with independent speed constants
+- Added BASE_SIDE_MOVE_SPEED constant for A/D lateral movement control
+- Added BASE_FORWARD_MOVE_SPEED constant for forward movement in race mode
+- Updated MovementService to use separate speed values instead of multipliers
+
 ## [v0.3.4] - 2025-12-17 [ Complete ]
 
 ### Changes
