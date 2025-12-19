@@ -38,4 +38,17 @@ function PlayerService:updatePlayer(player)
 	})
 end
 
+---@param player Player
+function PlayerService:savePlayerData(player)
+	local playerRepository = self.diContainer:resolve("PlayerRepository")
+	playerRepository:savePlayerData(player)
+end
+
+---@param player Player
+---@return PlayerEntity
+function PlayerService:getPlayerEntity(player)
+	local playerRepository = self.diContainer:resolve("PlayerRepository")
+	return playerRepository:getPlayerEntity(player)
+end
+
 return PlayerService

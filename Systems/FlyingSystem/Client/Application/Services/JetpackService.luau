@@ -26,6 +26,12 @@ function JetpackService:equipJetpack(jetpack)
 	local flyingEntity = self.flyingRepository:getFlyingEntity()
 	flyingEntity:setJetpack(jetpack)
 
+	-- Apply cosmetic accessories
+	local accessoryService = self.diContainer:resolve("Shared.Services").accessoryService
+	if accessoryService then
+		accessoryService:applyPlayerAccessories(game.Players.LocalPlayer)
+	end
+
 	-- Найти Handle часть в модели джетпака
 	local handle = jetpack:FindFirstChild("Handle")
 	if not handle then
@@ -66,6 +72,12 @@ end
 function JetpackService:unequipJetpack(_jetpack)
 	local flyingEntity = self.flyingRepository:getFlyingEntity()
 	flyingEntity:startDeactivating()
+
+	-- Clear cosmetic accessories
+	local accessoryService = self.diContainer:resolve("Shared.Services").accessoryService
+	if accessoryService then
+		accessoryService:clearPlayerEffects(game.Players.LocalPlayer)
+	end
 
 	-- Deactivate custom camera
 	self.cameraService:deactivate()

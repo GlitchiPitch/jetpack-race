@@ -27,6 +27,20 @@ local Constants = {
 	INPUT_KEYS = {
 		SPRINT = Enum.KeyCode.LeftShift,
 	},
+
+	-- Remote events
+	REMOTE_EVENTS = {
+		SHOP_OPENED = "ShopOpened",
+		SHOP_CLOSED = "ShopClosed",
+		ITEM_PURCHASED = "ItemPurchased",
+		SHOP_ITEM_SELECTED = "ShopItemSelected",
+		SHOP_PURCHASE_REQUEST = "ShopPurchaseRequest",
+		SHOP_EQUIP_REQUEST = "ShopEquipRequest",
+		SHOP_UNEQUIP_REQUEST = "ShopUnequipRequest",
+		SHOP_PURCHASE_SUCCESS = "ShopPurchaseSuccess",
+		SHOP_PURCHASE_FAILED = "ShopPurchaseFailed",
+		SHOP_DEV_PRODUCT_REQUEST = "ShopDevProductRequest",
+	},
 }
 
 return Constants

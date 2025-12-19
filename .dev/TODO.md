@@ -1,69 +1,69 @@
 # TODO List
 
-## Completed Tasks [v0.3.3] ✅
-- [x] Implement FlyingSystem core functionality
-- [x] Update flying entity and services
-- [x] Enhance movement and jetpack controls
-- [x] Improve UI presentation layer
+## Current Tasks [v0.4.6]
 
-## Completed Tasks [v0.3.4] ✅
-- [x] Enhanced camera, input, and movement services
-- [x] Updated RaceSystem client integration
-- [x] Improved jetpack controls and validation
-- [x] Refined flying entity logic and configurations
+### ✅ Completed
+- [x] Implement Shop System UI components
+- [x] Create ShopFrame with item catalog display
+- [x] Add ShopCatalog for item browsing
+- [x] Implement ItemPreview for detailed views
+- [x] Create PurchaseDialog for transactions
+- [x] Add DeveloperProductsService for monetization
+- [x] Implement ShopService for server management
+- [x] Create AccessoryService for item management
+- [x] Add InventoryService for player inventory
+- [x] Implement MarketplaceService for marketplace operations
+- [x] Add PlayerRepository for data persistence
 
-## Completed Tasks [v0.4.5] ✅
-- [x] Increased boost spawn rate in RaceSystem (reduced interval from 10-15s to 5-8s)
-- [x] Updated boost spawning constants for better gameplay balance
+### 🔄 In Progress
+- [ ] Testing Shop System integration
+- [ ] UI polish and animations
+- [ ] Performance optimization
 
-## Completed Tasks [v0.4.4] ✅
-- [x] Changed sprint logic from toggle to hold-to-sprint (hold mouse button to sprint)
-- [x] Updated sprint button color indication system
-- [x] Swapped sprint button colors: green for ready-to-sprint, yellow for sprinting active
-- [x] Removed interactive sprint button, mouse button now controls sprint directly
-- [x] Moved sprint activation logic from UI to CameraService for better input handling
+## Next Version [v0.4.7] - Planned Features
 
-## Completed Tasks [v0.4.1] ✅
-- [x] Added race countdown sequence (3, 2, 1, Go!) in RaceService
-- [x] Enhanced camera settings with X_EXTREME limit for better control
-- [x] Optimized jetpack movement logic by commenting out redundant BodyVelocity cleanup
-- [x] Improved race preparation flow with countdown UI
+### High Priority
+- [ ] Add item usage/consumption mechanics
+- [ ] Implement item durability system
+- [ ] Add shop categories and filtering
+- [ ] Create item rarity system
+- [ ] Add special event items
 
-## Completed Tasks [v0.4.0] ✅
-- [x] Refactored FlyingSystem client architecture with service reorganization
-- [x] Moved CameraService from Shared to Client layer for better separation
-- [x] Updated JetpackService initialization and service integration
-- [x] Enhanced Constants configuration for FlyingSystem components
-- [x] Improved service initialization and dependency management
+### Medium Priority
+- [ ] Enhance UI with animations and effects
+- [ ] Add sound effects for shop interactions
+- [ ] Implement item tooltips and help system
+- [ ] Add shop statistics and analytics
+- [ ] Create admin panel for shop management
 
-## Next Version Plan [v0.5.0]
-- [ ] Add collision detection system
-- [ ] Implement advanced physics calculations
-- [ ] Add visual effects for flying
-- [ ] Create performance optimization layer
-- [ ] Add multiplayer synchronization
-- [ ] Implement leaderboard integration
-- [ ] Add sound effects and audio feedback
+### Low Priority
+- [ ] Add item preview in 3D space
+- [ ] Implement item trading between players
+- [ ] Add shop achievements and rewards
+- [ ] Create seasonal shop events
+- [ ] Add player feedback system
 
-## Development Priority
-1. **High Priority**: Physics improvements and collision detection
-2. **Medium Priority**: Visual effects and performance optimization
-3. **Low Priority**: Social features and advanced gameplay modes
+## Future Versions
 
-## Completed Tasks [v0.3.5] ✅
-- [x] Refactored jetpack movement system with independent speed constants
-- [x] Added BASE_SIDE_MOVE_SPEED for A/D lateral movement control
-- [x] Added BASE_FORWARD_MOVE_SPEED for forward movement in race mode
-- [x] Updated MovementService to use separate speed values
+### v0.5.0 - Major Features
+- [ ] Advanced customization system
+- [ ] Multiplayer features
+- [ ] Tournament system
+- [ ] Advanced analytics
 
-## Future Features
-- [ ] Race mode enhancements
-- [ ] Pet system integration
-- [ ] Shop system expansion
-- [ ] Achievement system
-- [ ] Social features and friends system
+### v0.6.0 - Performance & Polish
+- [ ] Performance optimizations
+- [ ] UI/UX improvements
+- [ ] Bug fixes and stability
+- [ ] Mobile optimization
 
-## Development Priority
-1. **High Priority**: Physics improvements and collision detection
-2. **Medium Priority**: Visual effects and performance optimization
-3. **Low Priority**: Social features and advanced gameplay modes
+## Technical Debt
+- [ ] Code documentation improvements
+- [ ] Unit test coverage expansion
+- [ ] Refactor duplicate code in UI components
+- [ ] Optimize asset loading
+
+## Notes
+- Shop System is now fully implemented and ready for testing
+- Focus on polish and user experience for next iteration
+- Consider performance impact of new UI components

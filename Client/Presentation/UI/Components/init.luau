@@ -1,6 +1,7 @@
 local BaseFrame = require(script.BaseFrame)
 
 ---@class Components
+---@field BaseFrame BaseFrame
 local Components = {}
 Components.__index = Components
 
@@ -9,7 +10,7 @@ Components.__index = Components
 function Components.new(diContainer)
 	local self = setmetatable({}, Components)
 	self.diContainer = diContainer
-	self.baseFrame = BaseFrame
+	self.BaseFrame = BaseFrame
 	return self
 end
 

@@ -14,7 +14,7 @@ local RaceSystemClient = require(script.Systems.RaceSystem)
 ---@class Client
 ---@field shared Shared
 ---@field application ClientApplication
----@field presentation ClientPresentation
+---@field presentation Presentation
 ---@field petSystemClient PetSystemClient
 ---@field flyingSystemClient FlyingSystemClient
 ---@field liveLeaderboardSystemClient LiveLeaderboardSystemClient
@@ -66,6 +66,9 @@ function Client:init()
 		return flyingRepository
 	end)
 
+	self.shared.Infrastructure.IoCContainer:singleton("UIComponents", function()
+		return self.presentation.ui.components
+	end)
 	self.petSystemClient:init()
 	self.flyingSystemClient:init()
 	self.liveLeaderboardSystemClient:init()

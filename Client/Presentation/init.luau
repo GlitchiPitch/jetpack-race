@@ -2,6 +2,7 @@ local UI = require(script.UI)
 
 
 ---@class Presentation
+---@field ui UI
 local Presentation = {}
 Presentation.__index = Presentation
 

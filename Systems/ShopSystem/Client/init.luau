@@ -30,11 +30,13 @@ function Client:init()
 		return self.logger
 	end)
 
-	
+	self.shared.Infrastructure.DIContainer:singleton("UIComponents", function()
+		return self.iocContainer:resolve("UIComponents")
+	end)
+
 	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
 		return self.remoteEventService
 	end)
-
 
 	self.logger:info("ShopSystemClient", "Initializing ShopSystem client...")
 

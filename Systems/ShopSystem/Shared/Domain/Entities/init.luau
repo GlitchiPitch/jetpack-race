@@ -4,7 +4,7 @@ local SharedEntities = require(ReplicatedStorage.JetpackRace.Domain.Entities)
 ---@class ShopSystemEntities
 local Entities = {
 	Player = SharedEntities.Player,
-	FlyingEntity = require(script.FlyingEntity),
+	ShopItem = require(script.FlyingEntity),
 }
 
 return Entities

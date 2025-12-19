@@ -1,62 +1,56 @@
 # Changelog
 
-## [v0.4.5] - 2025-12-19 [ Complete ]
+All notable changes to this project will be documented in this file.
 
-### Changes
-- Increased boost spawn rate in RaceSystem by reducing spawn interval from 10-15 seconds to 5-8 seconds
-- Updated boost spawning constants in RaceSystem/Shared/Constants.luau
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.4.4] - 2025-12-19 [ Complete ]
+## [Unreleased]
 
-### Changes
-- Changed sprint logic from toggle to hold-to-sprint (hold mouse button to sprint)
-- Updated sprint button color indication system
-- Swapped sprint button colors: green for ready-to-sprint, yellow for sprinting active
-- Removed interactive sprint button, now mouse button controls sprint directly
-- Moved sprint activation logic from UI to CameraService for better input handling
+### Added
+- Shop System implementation with complete UI and backend
+  - ShopFrame UI component with item catalog
+  - ShopCatalog for displaying available items
+  - ItemPreview for detailed item information
+  - PurchaseDialog for transaction confirmation
+  - DeveloperProductsService for monetization
+  - ShopService for server-side shop management
+  - AccessoryService for item management
+  - InventoryService for player inventory
+  - MarketplaceService for marketplace operations
+  - PlayerRepository for data persistence
 
-## [v0.4.1] - 2025-12-19 [ Process ]
+### Changed
+- Updated Player entity with shop-related properties
+- Enhanced FlyingSystem with jetpack service improvements
+- Modified UI component initialization for better modularity
 
-### Changes
-- Added race countdown sequence (3, 2, 1, Go!) in RaceService
-- Enhanced camera settings with X_EXTREME limit for better control
-- Optimized jetpack movement logic by commenting out redundant BodyVelocity cleanup
-- Improved race preparation flow with countdown UI
+### Fixed
+- Various UI component integration issues
 
-## [v0.4.0] - 2025-12-18 [ Process ]
+## [0.4.5] - 2024-12-XX
 
-### Changes
-- Refactored FlyingSystem client architecture with service reorganization
-- Moved CameraService from Shared to Client layer for better separation
-- Updated JetpackService initialization and service integration
-- Enhanced Constants configuration for FlyingSystem components
-- Improved service initialization and dependency management
+### Added
+- Flying System enhancements
+- Race System improvements
+- Live Leaderboard System
 
-## [v0.3.5] - 2025-12-18 [ Complete ]
+### Changed
+- Architecture improvements with better separation of concerns
 
-### Changes
-- Refactored jetpack movement system with independent speed constants
-- Added BASE_SIDE_MOVE_SPEED constant for A/D lateral movement control
-- Added BASE_FORWARD_MOVE_SPEED constant for forward movement in race mode
-- Updated MovementService to use separate speed values instead of multipliers
+## [0.4.0] - 2024-12-XX
 
-## [v0.3.4] - 2025-12-17 [ Complete ]
+### Added
+- Initial game architecture with multiple systems
+- Pet System, Rewards System, Race System
+- Clean Architecture implementation
 
-### Changes
-- Enhanced FlyingSystem with camera, input, and movement services
-- Updated RaceSystem client integration and services
-- Improved jetpack controls and position validation
-- Refined flying entity logic and asset configurations
+### Changed
+- Migrated from basic structure to full system architecture
 
-## [v0.3.3] - 2025-12-17 [ Process ]
+## [0.1.0] - 2024-12-XX
 
-### Changes
-- Updated FlyingSystem components and services
-- Modified flying entity logic and constants
-- Updated jetpack and movement services
-- Enhanced input handling and UI presentation
-
-### Previous Versions
-- [v0.3.2] - Previous stable version
-- [v0.3.1] - Initial FlyingSystem implementation
-- [v0.3.0] - Core systems foundation
+### Added
+- Initial project setup
+- Basic game structure
+- Core systems foundation
