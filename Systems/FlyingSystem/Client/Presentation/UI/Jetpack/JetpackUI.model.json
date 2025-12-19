@@ -23,7 +23,27 @@
                     ]
                 },
                 {
-                    "className":"TextLabel"
+                    "className":"TextLabel",
+                    "name": "SpeedMultiplier"
+                },
+                {
+                    "className":"TextLabel",
+                    "name": "SprintActivated"
+                }
+            ]
+        },
+        {
+            "className": "TextButton",
+            "name": "SprintButton",
+            "children": [
+                {
+                    "className": "TextLabel"
+                },
+                {
+                    "className": "ImageLabel"
+                },
+                {
+                    "className": "UIAspectRatioConstraint"
                 }
             ]
         }

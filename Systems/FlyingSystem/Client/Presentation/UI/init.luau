@@ -91,17 +91,50 @@ end
 
 function UI:OnInputBegan(input)
 	if input.KeyCode == self.constants.INPUT_KEYS.SPRINT then
-		self.remoteEventService:fireServer("sprint", true)
+		self:_handleSprintToggle(true)
 	elseif input.KeyCode == Enum.KeyCode.Space then
 		self.jetpackService:startFlying()
+	elseif input.UserInputType == Enum.UserInputType.MouseButton1 then
+		self:_handleMouseSprintToggle()
+	elseif input.UserInputType == Enum.UserInputType.Touch then
+		self:_handleTouchSprintToggle()
 	end
 end
 
 function UI:OnInputEnded(input)
 	if input.KeyCode == self.constants.INPUT_KEYS.SPRINT then
-		self.remoteEventService:fireServer("sprint", false)
+		self:_handleSprintToggle(false)
 	elseif input.KeyCode == Enum.KeyCode.Space then
 		self.jetpackService:stopFlying()
+	end
+end
+
+function UI:_handleSprintToggle(isActive)
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	local flyingEntity = flyingRepository:getFlyingEntity()
+
+	if flyingEntity:canSprint() then
+		self.remoteEventService:fireServer("sprint", isActive)
+	end
+end
+
+function UI:_handleMouseSprintToggle()
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	local flyingEntity = flyingRepository:getFlyingEntity()
+
+	if flyingEntity:canSprint() then
+		local isCurrentlyActive = flyingEntity:isSprintActivated()
+		self.remoteEventService:fireServer("sprint", not isCurrentlyActive)
+	end
+end
+
+function UI:_handleTouchSprintToggle()
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	local flyingEntity = flyingRepository:getFlyingEntity()
+
+	if flyingEntity:canSprint() then
+		local isCurrentlyActive = flyingEntity:isSprintActivated()
+		self.remoteEventService:fireServer("sprint", not isCurrentlyActive)
 	end
 end
 

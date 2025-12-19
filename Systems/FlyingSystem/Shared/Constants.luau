@@ -67,8 +67,8 @@ local Constants = {
 
 	-- Camera settings
 	CAMERA_OFFSET = {
-		Z = 8,
-		Y = 2,
+		Z = 15,
+		Y = 4,
 		X = 3,
 	},
 	CAMERA_SHOULDER = {
