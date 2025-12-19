@@ -12,6 +12,13 @@
 - [x] Improved jetpack controls and validation
 - [x] Refined flying entity logic and configurations
 
+## Completed Tasks [v0.4.4] ✅
+- [x] Changed sprint logic from toggle to hold-to-sprint (hold mouse button to sprint)
+- [x] Updated sprint button color indication system
+- [x] Swapped sprint button colors: green for ready-to-sprint, yellow for sprinting active
+- [x] Removed interactive sprint button, mouse button now controls sprint directly
+- [x] Moved sprint activation logic from UI to CameraService for better input handling
+
 ## Completed Tasks [v0.4.1] ✅
 - [x] Added race countdown sequence (3, 2, 1, Go!) in RaceService
 - [x] Enhanced camera settings with X_EXTREME limit for better control

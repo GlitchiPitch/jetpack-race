@@ -12,10 +12,10 @@
                     "className": "UIListLayout"
                 },
                 {
-                    "className":"UIAspectRatioConstraint"
+                    "className": "UIAspectRatioConstraint"
                 },
                 {
-                    "className":"ImageLabel",
+                    "className": "ImageLabel",
                     "children": [
                         {
                             "className": "UIAspectRatioConstraint"
@@ -23,11 +23,11 @@
                     ]
                 },
                 {
-                    "className":"TextLabel",
+                    "className": "TextLabel",
                     "name": "SpeedMultiplier"
                 },
                 {
-                    "className":"TextLabel",
+                    "className": "TextLabel",
                     "name": "SprintActivated"
                 }
             ]

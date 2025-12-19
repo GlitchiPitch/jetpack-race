@@ -51,9 +51,6 @@ function PlayerService:updatePlayer(player)
 	---@type FlyingSystemConstants
 	local constants = self.diContainer:resolve("Shared.Constants")
 
-	local remoteEventService = self.diContainer:resolve("RemoteEventService")
-	local constants = self.diContainer:resolve("Shared.Constants")
-
 	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
 		playerData = flyingEntity:getData(),
 	})
@@ -79,10 +76,10 @@ function PlayerService:onSprintDeactivated(player)
 	---@type FlyingRepository
 	local flyingRepository = self.diContainer:resolve("FlyingRepository")
 	---@type FlyingEntity
-	local flyingPlayerEntity = flyingRepository:getPlayerEntity(player)
+	local flyingEntity = flyingRepository:getFlyingEntity(player)
 
 	-- Деактивировать спринт в сущности игрока
-	flyingPlayerEntity:setSprintActivated(false)
+	flyingEntity:setSprintActivated(false)
 end
 
 return PlayerService

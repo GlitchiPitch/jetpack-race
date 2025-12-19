@@ -12,8 +12,9 @@ function JetpackUI.new(diContainer)
 	self.ui = script.JetpackUI:Clone()
 	self.player = Players.LocalPlayer
 	self.ui.Parent = self.player.PlayerGui
-	self.remoteEventService = diContainer:resolve("RemoteEventService")
+
 	self:_setupSprintButton()
+	self:hide()
 	self:hide()
 	return self
 end
@@ -28,12 +29,12 @@ end
 
 ---@param state boolean
 function JetpackUI:set(state)
-	warn(state)
 	if state then
 		self:show()
 	else
 		self:hide()
 	end
+	self:_updateSprintButtonState()
 end
 
 ---@param speedMultiplier number
@@ -48,34 +49,43 @@ function JetpackUI:setSprintActivated(sprintActivated)
 	end
 
 	-- Update sprint button appearance
-	if self.sprintButton then
-		if sprintActivated then
-			self.sprintButton.BackgroundColor3 = Color3.fromRGB(100, 255, 100) -- Green when active
-			self.sprintButton.Text = "SPRINTING"
-		else
-			self.sprintButton.BackgroundColor3 = Color3.fromRGB(255, 100, 100) -- Red when inactive
-			self.sprintButton.Text = "SPRINT"
-		end
-	end
+	self:_updateSprintButtonState()
 end
 
 function JetpackUI:_setupSprintButton()
 	self.sprintButton = self.ui:FindFirstChild("SprintButton")
-	if self.sprintButton then
-		self.sprintButton.MouseButton1Click:Connect(function()
-			self:_toggleSprint()
-		end)
-	end
+	warn("SprintButton found:", self.sprintButton ~= nil)
+	-- Button is now just for display, mouse handling moved to CameraService
 end
 
-function JetpackUI:_toggleSprint()
-	-- Check if jetpack is equipped by verifying if sprint can be activated
+function JetpackUI:_updateSprintButtonState()
+	if not self.sprintButton then
+		return
+	end
+
 	local flyingRepository = self.diContainer:resolve("FlyingRepository")
 	local flyingEntity = flyingRepository:getFlyingEntity()
 
-	if flyingEntity:canSprint() then
-		local isCurrentlyActive = flyingEntity:isSprintActivated()
-		self.remoteEventService:fireServer("sprint", not isCurrentlyActive)
+	local canSprint = flyingEntity:canSprint()
+	local isSprintActivated = flyingEntity:isSprintActivated()
+
+	local imageLabel = self.sprintButton:FindFirstChild("ImageLabel")
+	if not imageLabel then
+		return
+	end
+
+	if not canSprint then
+		-- Red: cannot sprint (jetpack not active)
+		imageLabel.ImageColor3 = Color3.fromRGB(255, 100, 100)
+		self.sprintButton.Text = "SPRINT"
+	elseif isSprintActivated then
+		-- Yellow: sprint is active
+		imageLabel.ImageColor3 = Color3.fromRGB(255, 255, 100)
+		self.sprintButton.Text = "SPRINTING"
+	else
+		-- Green: can sprint but not active
+		imageLabel.ImageColor3 = Color3.fromRGB(100, 255, 100)
+		self.sprintButton.Text = "SPRINT"
 	end
 end
 

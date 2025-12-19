@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.4.4] - 2025-12-19 [ Complete ]
+
+### Changes
+- Changed sprint logic from toggle to hold-to-sprint (hold mouse button to sprint)
+- Updated sprint button color indication system
+- Swapped sprint button colors: green for ready-to-sprint, yellow for sprinting active
+- Removed interactive sprint button, now mouse button controls sprint directly
+- Moved sprint activation logic from UI to CameraService for better input handling
+
 ## [v0.4.1] - 2025-12-19 [ Process ]
 
 ### Changes

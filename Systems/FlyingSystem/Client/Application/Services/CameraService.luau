@@ -13,6 +13,8 @@ local ContextActionService = game:GetService("ContextActionService")
 ---@field xOffset number
 ---@field renderConnection RBXScriptConnection?
 ---@field steppedConnection RBXScriptConnection?
+---@field mouseButtonDownConnection RBXScriptConnection?
+---@field mouseButtonUpConnection RBXScriptConnection?
 local CameraService = {}
 CameraService.__index = CameraService
 
@@ -31,6 +33,8 @@ function CameraService.new(diContainer)
 	self.xOffset = sharedConstants.CAMERA_OFFSET.X
 	self.renderConnection = nil
 	self.steppedConnection = nil
+	self.mouseButtonDownConnection = nil
+	self.mouseButtonUpConnection = nil
 
 	warn("CameraService: Created new instance for player:", self.localPlayer.Name)
 
@@ -104,6 +108,7 @@ function CameraService:_onMouseMovement()
 	local x_delta: number = mouse_delta.X * sharedConstants.CAMERA_SETTINGS.SPEED_MULTIPLIER
 	local y_delta: number = mouse_delta.Y * sharedConstants.CAMERA_SETTINGS.SPEED_MULTIPLIER
 
+	local oldOrientation = self.cameraOrientation
 	self.cameraOrientation = Vector2.new(
 		math.clamp(
 			self.cameraOrientation.X + x_delta,
@@ -121,6 +126,58 @@ function CameraService:_onMouseMovement()
 	local root_part: BasePart? = self.currentCharacter.PrimaryPart
 	local root_part_cframe = root_part :: BasePart
 	root_part_cframe.CFrame *= delta_x_cframe
+end
+
+function CameraService:_onMouseButtonDown(input: InputObject, gameProcessedEvent: boolean)
+	if gameProcessedEvent then
+		return
+	end
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		warn("CameraService: Left mouse button pressed")
+		self:_activateSprint()
+	elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
+		warn("CameraService: Right mouse button pressed")
+	elseif input.UserInputType == Enum.UserInputType.MouseButton3 then
+		warn("CameraService: Middle mouse button pressed")
+	end
+end
+
+function CameraService:_onMouseButtonUp(input: InputObject, gameProcessedEvent: boolean)
+	if gameProcessedEvent then
+		return
+	end
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		warn("CameraService: Left mouse button released")
+		self:_deactivateSprint()
+	elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
+		warn("CameraService: Right mouse button released")
+	elseif input.UserInputType == Enum.UserInputType.MouseButton3 then
+		warn("CameraService: Middle mouse button released")
+	end
+end
+
+function CameraService:_activateSprint()
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	local remoteEventService = self.diContainer:resolve("RemoteEventService")
+	local flyingEntity = flyingRepository:getFlyingEntity()
+
+	if flyingEntity:canSprint() then
+		warn("CameraService: Activating sprint")
+		remoteEventService:fireServer("sprint", true)
+	end
+end
+
+function CameraService:_deactivateSprint()
+	local flyingRepository = self.diContainer:resolve("FlyingRepository")
+	local remoteEventService = self.diContainer:resolve("RemoteEventService")
+	local flyingEntity = flyingRepository:getFlyingEntity()
+
+	if flyingEntity:canSprint() then
+		warn("CameraService: Deactivating sprint")
+		remoteEventService:fireServer("sprint", false)
+	end
 end
 
 function CameraService:_onSwitchShoulder(_, input_state)
@@ -155,6 +212,7 @@ function CameraService:activate()
 	end
 
 	ContextActionService:BindAction("MoveMouse", onMouseMovementHandler, false, Enum.UserInputType.MouseMovement)
+	warn("CameraService: Mouse movement action bound - listening for mouse input")
 	ContextActionService:BindAction(
 		"SwitchShoulder",
 		onSwitchShoulderHandler,
@@ -171,6 +229,17 @@ function CameraService:activate()
 	self.steppedConnection = RunService.Stepped:Connect(function()
 		self:_updateNeckTransform()
 	end)
+
+	-- Connect mouse button events
+	local function onMouseButtonDownHandler(input, gameProcessedEvent)
+		self:_onMouseButtonDown(input, gameProcessedEvent)
+	end
+	local function onMouseButtonUpHandler(input, gameProcessedEvent)
+		self:_onMouseButtonUp(input, gameProcessedEvent)
+	end
+
+	self.mouseButtonDownConnection = UserInputService.InputBegan:Connect(onMouseButtonDownHandler)
+	self.mouseButtonUpConnection = UserInputService.InputEnded:Connect(onMouseButtonUpHandler)
 end
 
 function CameraService:deactivate()
@@ -185,6 +254,7 @@ function CameraService:deactivate()
 
 	-- Unbind actions
 	ContextActionService:UnbindAction("MoveMouse")
+	warn("CameraService: Mouse movement action unbound - stopped listening for mouse input")
 	ContextActionService:UnbindAction("SwitchShoulder")
 
 	-- Disconnect update loops
@@ -198,6 +268,16 @@ function CameraService:deactivate()
 		self.steppedConnection = nil
 	end
 
+	if self.mouseButtonDownConnection then
+		self.mouseButtonDownConnection:Disconnect()
+		self.mouseButtonDownConnection = nil
+	end
+
+	if self.mouseButtonUpConnection then
+		self.mouseButtonUpConnection:Disconnect()
+		self.mouseButtonUpConnection = nil
+	end
+
 	-- Reset camera
 	self.currentCamera.CameraType = Enum.CameraType.Custom
 	UserInputService.MouseBehavior = Enum.MouseBehavior.Default
@@ -205,6 +285,5 @@ function CameraService:deactivate()
 	-- Re-enable auto rotate
 	self:_enableAutoRotate()
 end
-
 
 return CameraService
