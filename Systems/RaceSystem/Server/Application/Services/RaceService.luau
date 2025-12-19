@@ -9,6 +9,7 @@ function RaceService.new(diContainer)
 	self.diContainer = diContainer
 	self.playerRaceStates = {} -- player -> race state
 	self.activeTimers = {} -- player -> timer connection
+	self.boostSpawnTimers = {} -- player -> boost spawn timer
 	return self
 end
 
@@ -120,6 +121,9 @@ function RaceService:activateRaceFlying(player)
 
 	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.RACE_STARTED, {})
 
+	-- Start boost spawning for this race
+	self:startBoostSpawning(player)
+
 	-- Start cooldown timer before allowing forward movement
 	local cooldownTime = constants.RACE_SETTINGS.COOLDOWN_TIME
 
@@ -155,6 +159,77 @@ function RaceService:enableForwardMovement(player)
 end
 
 ---@param player Player
+function RaceService:startBoostSpawning(player)
+	---@type LoggerService
+	local logger = self.diContainer:resolve("Logger")
+	local constants = self.diContainer:resolve("Shared.Constants")
+
+	logger:info("RaceSystemServerRaceService", "Starting boost spawning for player:", player.Name)
+
+	-- Stop existing timer if any
+	if self.boostSpawnTimers[player] then
+		self.boostSpawnTimers[player]:Disconnect()
+	end
+
+	-- Start spawning boosts every 10-15 seconds during active race
+	self.boostSpawnTimers[player] = task.spawn(function()
+		while self.playerRaceStates[player] == "Started" do
+			---@type RaceSystemServerApplicationServices
+			local applicationServices = self.diContainer:resolve("Server.Application.Services")
+			---@type RaceSystemServerBoostService
+			local boostService = applicationServices.boostService
+
+			-- Spawn random boost along the track
+			local boostTypes = { constants.BOOST_TYPES.FLYING_SPEED, constants.BOOST_TYPES.FLYING_SPEED_BOOST }
+			local randomType = boostTypes[math.random(1, #boostTypes)]
+
+			boostService:spawnBoostsAlongTrack(
+				randomType,
+				constants.BOOST_SETTINGS.WAYPOINT_SPACING,
+				constants.BOOST_SETTINGS.DEFAULT_DURATION
+			)
+
+			-- Wait random interval before next spawn
+			local delay = constants.BOOST_SETTINGS.SPAWN_INTERVAL_MIN
+				+ math.random(
+					0,
+					constants.BOOST_SETTINGS.SPAWN_INTERVAL_MAX - constants.BOOST_SETTINGS.SPAWN_INTERVAL_MIN
+				)
+			task.wait(delay)
+		end
+	end)
+end
+
+---@param player Player
+function RaceService:stopBoostSpawning(player)
+	---@type LoggerService
+	local logger = self.diContainer:resolve("Logger")
+
+	logger:info("RaceSystemServerRaceService", "Stopping boost spawning for player:", player.Name)
+
+	if self.boostSpawnTimers[player] then
+		self.boostSpawnTimers[player]:Disconnect()
+		self.boostSpawnTimers[player] = nil
+	end
+end
+
+---@param player Player
+function RaceService:cleanupRaceBoosts(player)
+	---@type LoggerService
+	local logger = self.diContainer:resolve("Logger")
+
+	logger:info("RaceSystemServerRaceService", "Cleaning up race boosts for player:", player.Name)
+
+	---@type RaceSystemServerApplicationServices
+	local applicationServices = self.diContainer:resolve("Server.Application.Services")
+	---@type RaceSystemServerBoostService
+	local boostService = applicationServices.boostService
+
+	-- Clean up expired boosts (this will remove all boosts that have timed out)
+	boostService:cleanupExpiredBoosts()
+end
+
+---@param player Player
 function RaceService:finishRace(player)
 	---@type LoggerService
 	local logger = self.diContainer:resolve("Logger")
@@ -163,6 +238,12 @@ function RaceService:finishRace(player)
 
 	-- Set race state to finished
 	self.playerRaceStates[player] = "Finished"
+
+	-- Stop boost spawning
+	self:stopBoostSpawning(player)
+
+	-- Clean up existing boosts
+	self:cleanupRaceBoosts(player)
 
 	-- Notify client about race finish
 	local remoteEventService = self.diContainer:resolve("RemoteEventService")
@@ -189,6 +270,12 @@ function RaceService:onPlayerRemoving(player)
 	local logger = self.diContainer:resolve("Logger")
 
 	logger:info("RaceSystemServerRaceService", "Player removing, cleaning up race state:", player.Name)
+
+	-- Stop boost spawning
+	self:stopBoostSpawning(player)
+
+	-- Clean up boosts
+	self:cleanupRaceBoosts(player)
 
 	-- Cancel any active timers
 	if self.activeTimers[player] then

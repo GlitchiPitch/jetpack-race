@@ -14,6 +14,20 @@ local Constants = {
 		COOLDOWN_TIME = 1, -- seconds before allowing forward movement
 	},
 
+	-- Boost settings
+	BOOST_SETTINGS = {
+		SPAWN_INTERVAL_MIN = 5, -- minimum seconds between spawns
+		SPAWN_INTERVAL_MAX = 8, -- maximum seconds between spawns
+		DEFAULT_DURATION = 20, -- default boost lifetime in seconds
+		WAYPOINT_SPACING = 2, -- spawn every Nth waypoint
+	},
+
+	-- Boost types
+	BOOST_TYPES = {
+		FLYING_SPEED = "flyingSpeed",
+		FLYING_SPEED_BOOST = "flyingSpeedBoost",
+	},
+
 	-- Remote events
 	REMOTE_EVENTS = {
 		RACE_STARTED = "race_started",

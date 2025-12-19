@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.4.5] - 2025-12-19 [ Complete ]
+
+### Changes
+- Increased boost spawn rate in RaceSystem by reducing spawn interval from 10-15 seconds to 5-8 seconds
+- Updated boost spawning constants in RaceSystem/Shared/Constants.luau
+
 ## [v0.4.4] - 2025-12-19 [ Complete ]
 
 ### Changes

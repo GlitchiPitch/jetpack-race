@@ -12,6 +12,10 @@
 - [x] Improved jetpack controls and validation
 - [x] Refined flying entity logic and configurations
 
+## Completed Tasks [v0.4.5] ✅
+- [x] Increased boost spawn rate in RaceSystem (reduced interval from 10-15s to 5-8s)
+- [x] Updated boost spawning constants for better gameplay balance
+
 ## Completed Tasks [v0.4.4] ✅
 - [x] Changed sprint logic from toggle to hold-to-sprint (hold mouse button to sprint)
 - [x] Updated sprint button color indication system

@@ -1,8 +1,10 @@
 local PlayerService = require(script.PlayerService)
 local RaceService = require(script.RaceService)
+local BoostService = require(script.BoostService)
 ---@class RaceSystemServerApplicationServices
 ---@field playerService RaceSystemServerPlayerService
 ---@field raceService RaceSystemServerRaceService
+---@field boostService RaceSystemServerBoostService
 local Services = {}
 Services.__index = Services
 
@@ -13,6 +15,7 @@ function Services.new(diContainer)
     self.diContainer = diContainer
     self.playerService = PlayerService.new(self.diContainer)
     self.raceService = RaceService.new(self.diContainer)
+    self.boostService = BoostService.new()
     return self
 end
 
@@ -28,6 +31,10 @@ function Services:init()
     logger:debug("RaceSystemServerApplicationServices", "Initializing RaceService...")
     self.raceService:init()
     logger:debug("RaceSystemServerApplicationServices", "RaceService initialized")
+
+    logger:debug("RaceSystemServerApplicationServices", "Initializing BoostService...")
+    self.boostService:init()
+    logger:debug("RaceSystemServerApplicationServices", "BoostService initialized")
 end
 
 return Services
