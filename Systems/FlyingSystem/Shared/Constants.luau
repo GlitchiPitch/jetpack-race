@@ -78,6 +78,7 @@ local Constants = {
 	CAMERA_SETTINGS = {
 		SPEED_MULTIPLIER = 0.2,
 		Y_EXTREME = 25,
+		X_EXTREME = 25,
 		AUTO_ROTATE_DELAY = 0.5,
 	},
 }

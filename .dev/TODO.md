@@ -12,6 +12,12 @@
 - [x] Improved jetpack controls and validation
 - [x] Refined flying entity logic and configurations
 
+## Completed Tasks [v0.4.1] ✅
+- [x] Added race countdown sequence (3, 2, 1, Go!) in RaceService
+- [x] Enhanced camera settings with X_EXTREME limit for better control
+- [x] Optimized jetpack movement logic by commenting out redundant BodyVelocity cleanup
+- [x] Improved race preparation flow with countdown UI
+
 ## Completed Tasks [v0.4.0] ✅
 - [x] Refactored FlyingSystem client architecture with service reorganization
 - [x] Moved CameraService from Shared to Client layer for better separation

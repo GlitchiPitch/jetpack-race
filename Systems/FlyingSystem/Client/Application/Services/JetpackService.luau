@@ -141,11 +141,11 @@ function JetpackService:_moveToFlyingHeight()
 		return
 	end
 
-	-- Удалить BodyVelocity если он существует
-	local bodyVelocity = humanoidRootPart:FindFirstChild("BodyVelocity")
-	if bodyVelocity then
-		bodyVelocity:Destroy()
-	end
+	-- -- Удалить BodyVelocity если он существует
+	-- local bodyVelocity = humanoidRootPart:FindFirstChild("BodyVelocity")
+	-- if bodyVelocity then
+	-- 	bodyVelocity:Destroy()
+	-- end
 
 	-- Установить позицию на высоте полета (Y=50)
 	local flyingHeight = 50

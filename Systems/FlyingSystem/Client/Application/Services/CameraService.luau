@@ -105,7 +105,11 @@ function CameraService:_onMouseMovement()
 	local y_delta: number = mouse_delta.Y * sharedConstants.CAMERA_SETTINGS.SPEED_MULTIPLIER
 
 	self.cameraOrientation = Vector2.new(
-		self.cameraOrientation.X + x_delta,
+		math.clamp(
+			self.cameraOrientation.X + x_delta,
+			-sharedConstants.CAMERA_SETTINGS.X_EXTREME,
+			sharedConstants.CAMERA_SETTINGS.X_EXTREME
+		),
 		math.clamp(
 			self.cameraOrientation.Y + y_delta,
 			-sharedConstants.CAMERA_SETTINGS.Y_EXTREME,

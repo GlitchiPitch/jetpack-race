@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.4.1] - 2025-12-19 [ Process ]
+
+### Changes
+- Added race countdown sequence (3, 2, 1, Go!) in RaceService
+- Enhanced camera settings with X_EXTREME limit for better control
+- Optimized jetpack movement logic by commenting out redundant BodyVelocity cleanup
+- Improved race preparation flow with countdown UI
+
 ## [v0.4.0] - 2025-12-18 [ Process ]
 
 ### Changes

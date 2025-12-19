@@ -19,7 +19,6 @@ function FlyingService:init()
 	-- Listen for enable forward movement event
 	local remoteEventService = self.diContainer:resolve("RemoteEventService")
 	local RaceSystemConstants = self.diContainer:resolve("RaceSystemConstants")
-	warn(RaceSystemConstants)
 	remoteEventService:connectToEvent(RaceSystemConstants.REMOTE_EVENTS.ENABLE_FORWARD_MOVEMENT, function()
 		warn("FlyingService: Received enable forward movement event")
 		flyingEntity:setAutoForwardMovement(true)
@@ -101,6 +100,7 @@ function FlyingService:_setupJetpackDetection()
 		end
 	end
 
+	--@TODO: refactor this case
 	-- Set up a periodic check for jetpack (in case it's added later)
 	task.spawn(function()
 		while true do

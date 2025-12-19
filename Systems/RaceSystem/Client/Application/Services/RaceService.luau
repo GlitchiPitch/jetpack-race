@@ -53,8 +53,27 @@ function RaceService:onRacePreparing(preparationTime)
 
 	self.raceState = "Preparing"
 
-	-- Show preparation UI
-	self:showRaceUI("Подготовка к гонке...", preparationTime)
+	-- Start countdown sequence
+	self:startCountdown()
+end
+
+function RaceService:startCountdown()
+	local countdownSequence = {3, 2, 1, "Go!"}
+	local currentIndex = 1
+
+	local function showNextNumber()
+		if currentIndex <= #countdownSequence then
+			local text = countdownSequence[currentIndex]
+			self:showRaceUI(tostring(text), 1)
+			currentIndex = currentIndex + 1
+
+			-- Schedule next number after 1 second
+			task.delay(1, showNextNumber)
+		end
+	end
+
+	-- Start the countdown
+	showNextNumber()
 end
 
 function RaceService:onRaceStarted()
@@ -71,8 +90,8 @@ function RaceService:onRaceStarted()
 	local flyingEntity = flyingRepository:getFlyingEntity()
 	flyingEntity:setRaceStarted(true)
 
-	-- Show race started UI
-	self:showRaceUI("Гонка началась! Ждите разрешения на движение...", 1)
+	-- Race started UI is now handled by countdown sequence
+	-- No need to show additional message here
 end
 
 function RaceService:onRaceFinished()
