@@ -1,6 +1,6 @@
 # TODO
 
-## Current Sprint [v0.1.7]
+## Current Sprint [v0.4.2]
 
 ### Completed ✅
 - [x] Analyze project and identify issues
@@ -11,10 +11,10 @@
 - [x] Resolve linter errors (34 → 22 errors)
 - [x] Update documentation with fixes
 - [x] Update project version to v0.1.7
+- [x] Implement camera controls for jetpack (increased rotation limits to ±45°)
 
 ### In Progress 🚧
 - [ ] Test FlyingModule integration in Roblox Studio
-- [ ] Implement camera controls for jetpack
 - [ ] Add UI for jetpack controls
 - [ ] Test multiplayer functionality
 
@@ -36,7 +36,7 @@
 
 ## Project Status
 
-**Current Version:** v0.1.7
+**Current Version:** v0.4.2
 
 **Architecture:** Clean Architecture (95% complete)
 - Domain Layer: ✅ Complete

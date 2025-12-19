@@ -189,7 +189,7 @@ function MovementService:_applyBodyGyro(humanoidRootPart, cameraCFrame)
 	local cameraPosition = cameraCFrame.Position
 	local cameraLookVector = cameraCFrame.LookVector
 	-- Project look vector onto horizontal plane to remove vertical component
-	local horizontalLook = Vector3.new(cameraLookVector.X, 0, cameraLookVector.Z).Unit
+	local horizontalLook = Vector3.new(cameraLookVector.X, cameraLookVector.Y, cameraLookVector.Z).Unit
 	bodyGyro.CFrame = CFrame.new(cameraPosition, cameraPosition + horizontalLook)
 	bodyGyro.MaxTorque = Vector3.new(4000, 4000, 4000) -- maximum torque
 	bodyGyro.D = 100 -- damping

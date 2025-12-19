@@ -45,10 +45,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated FlyingSystem to properly use shared entities
 - Enhanced project structure consistency
 
+## [0.4.2] - 2025-01-15
+
+### Changed
+- Increased camera rotation limits from ±25° to ±45° for horizontal axis and ±5° to ±45° for vertical axis in FlyingSystem
+- Enhanced camera freedom for better jetpack flight control
+
+## [0.4.1] - 2025-01-15
+
+### Fixed
+- Various system fixes and improvements
+
 ## [Unreleased]
 
 ### Next Features
-- Camera controls implementation
 - UI for jetpack controls
 - Developer Products (speed boosts, rebirths)
 - Complete pet system mechanics

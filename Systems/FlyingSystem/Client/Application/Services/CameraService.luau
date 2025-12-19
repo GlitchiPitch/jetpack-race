@@ -206,4 +206,18 @@ function CameraService:deactivate()
 	self:_enableAutoRotate()
 end
 
+--[[
+Items из SharedModules
+Swords 
+Potions
+Accessories
+Eggs
+Unit
+General
+Packs
+Limited
+
+xmas_token - soft currency
+]]
+
 return CameraService
