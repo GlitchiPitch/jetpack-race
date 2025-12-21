@@ -4,7 +4,7 @@ local Shared = require(ReplicatedStorage.JetpackRace.Systems.LiveLeaderboardSyst
 local Presentation = require(script.Presentation)
 local Application = require(script.Application)
 
----@class ShopClient
+---@class LiveLeaderboardSystemClient
 ---@field shared Shared
 ---@field application LiveLeaderboardSystemClientApplication
 ---@field presentation LiveLeaderboardSystemClientPresentation
@@ -12,7 +12,7 @@ local Application = require(script.Application)
 local Client = {}
 Client.__index = Client
 
----@return ShopClient
+---@return LiveLeaderboardSystemClient
 ---@param iocContainer DIContainer
 function Client.new(iocContainer)
 	local self = setmetatable({}, Client)

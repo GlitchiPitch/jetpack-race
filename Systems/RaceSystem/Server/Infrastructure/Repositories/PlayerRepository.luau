@@ -2,7 +2,7 @@
 local PlayerRepository = {}
 PlayerRepository.__index = PlayerRepository
 
----@param PlayerEntity RaceSystemPlayerEntity
+---@param entities table
 ---@return RaceSystemServerPlayerRepository
 function PlayerRepository.new(entities)
 	local self = setmetatable({}, PlayerRepository)

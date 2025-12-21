@@ -68,7 +68,6 @@ function PlayerService:updatePlayer(player)
 
 	---@type RewardsSystemServerPlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	---@type RewardsSystemPlayerEntity
 	local playerEntity = playerRepository:getPlayerEntity(player)
 
 	---@type RemoteEventService

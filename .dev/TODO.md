@@ -1,6 +1,6 @@
 # TODO List
 
-## Current Tasks [v0.4.7]
+## Current Tasks [v0.4.8]
 
 ### ✅ Completed
 - [x] Implement Shop System UI components
@@ -19,13 +19,18 @@
 - [x] Fix server-side synchronization problems
 - [x] Optimize remote event handling
 - [x] Improve error handling in services
+- [x] Complete Shop System testing and integration
+- [x] Performance optimization across all systems
+- [x] Update Player entities consistency
+- [x] Enhance Flying System camera service
+- [x] Improve Race System services
 
 ### 🔄 In Progress
-- [ ] Testing Shop System integration
+- [x] Testing Shop System integration
 - [ ] UI polish and animations
-- [ ] Performance optimization
+- [x] Performance optimization
 
-## Next Version [v0.4.7] - Planned Features
+## Next Version [v0.4.9] - Planned Features
 
 ### High Priority
 - [ ] Add item usage/consumption mechanics

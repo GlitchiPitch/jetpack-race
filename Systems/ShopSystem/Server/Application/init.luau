@@ -4,7 +4,6 @@ local Services = require(script.Services)
 ---@class ShopSystemServerApplication
 ---@field application ShopSystemSharedApplication
 ---@field diContainer DIContainer
----@field constants ShopSystemSharedConstants
 ---@field useCases ShopSystemServerUseCases
 ---@field commands ShopSystemServerCommands
 ---@field remoteEventService RemoteEventService

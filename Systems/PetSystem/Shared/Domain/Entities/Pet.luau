@@ -1,8 +1,8 @@
----@class PetEntity
+---@class PetSystemPetEntity
 local Pet = {}
 Pet.__index = Pet
 
----@return PetEntity
+---@return PetSystemPetEntity
 function Pet.new()
 	local self = setmetatable({}, Pet)
 	return self

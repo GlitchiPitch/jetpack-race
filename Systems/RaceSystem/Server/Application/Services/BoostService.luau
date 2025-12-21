@@ -57,14 +57,12 @@ function BoostService:spawnBoost(boostType, position, duration)
 
 	self.activeBoosts[boostId] = boostData
 
-	-- Setup proximity prompt for collection
-	local trigger = Instance.new("ProximityPrompt")
-	trigger.ActionText = "Collect " .. boostType
-	trigger.ObjectText = "Boost"
-	trigger.Parent = boost
-
-	trigger.Triggered:Connect(function(player)
-		self:collectBoost(player, boostId)
+	-- Setup touch collection
+	boost.Touched:Connect(function(hit)
+		local player = self:getPlayerFromHit(hit)
+		if player then
+			self:collectBoost(player, boostId)
+		end
 	end)
 
 	-- Auto-despawn after duration
@@ -133,6 +131,29 @@ function BoostService:spawnRandomBoost(boostType, centerPosition, radius, durati
 
 	local position = centerPosition + offset
 	return self:spawnBoost(boostType, position, duration)
+end
+
+-- Get player from touched part
+function BoostService:getPlayerFromHit(hit)
+	if not hit:IsA("BasePart") then
+		return nil
+	end
+
+	-- Find the character that contains this part
+	local character = hit:FindFirstAncestorOfClass("Model")
+	if not character then
+		return nil
+	end
+
+	-- Check if this character has a Humanoid
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then
+		return nil
+	end
+
+	-- Get player from character
+	local player = game.Players:GetPlayerFromCharacter(character)
+	return player
 end
 
 -- Player collects boost

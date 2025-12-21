@@ -31,7 +31,7 @@ function Server:init()
 
 	---@type FlyingSystemServerJetpackService
 	self.jetpackService = self.iocContainer:resolve("JetpackService")
-	---@type FlyingSystemServerFlyingRepository
+	---@type FlyingRepository
 	self.flyingRepository = self.iocContainer:resolve("FlyingRepository")
 
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()

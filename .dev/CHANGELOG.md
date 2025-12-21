@@ -5,29 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.4.7] - 2024-12-21
+## [0.4.8] - 2024-12-21
 
 ### Fixed
-- Shop System bug fixes and integration improvements
-- UI component initialization and rendering fixes
-- Server-side shop service enhancements
-- Player service synchronization issues
+- Shop System integration and bug fixes
+- UI component initialization issues
+- Server-side synchronization problems
 - Remote event handling optimizations
-- Flying system camera and movement corrections
-- Marketplace service error handling
+- Flying system camera corrections
+- Race system boost mechanics
+- Live leaderboard data synchronization
+- Pet system entity updates across all systems
+- Player service repository consistency
+- Infrastructure initialization improvements
 
 ### Changed
-- Enhanced ShopFrame UI with improved layout and functionality
-- Updated ShopCatalog with better item display
-- Improved ItemPreview component performance
-- Enhanced PurchaseDialog user experience
-- Updated Player entity with additional shop properties
-- Optimized RemoteEventService communication
+- Enhanced Shop System with full UI implementation
+- Updated ShopFrame, ShopCatalog, ItemPreview, and PurchaseDialog
+- Improved Player entities across all systems (Race, Rewards, Pet)
+- Enhanced Flying System camera service
+- Updated Race System boost and player services
+- Optimized Live Leaderboard System
+- Refactored infrastructure initialization across systems
+- Improved Shared Config and DIContainer usage
 
 ### Added
-- Additional error handling in shop services
-- Performance improvements for UI rendering
-- Better logging and debugging capabilities
+- Complete Shop System implementation with monetization
+- Enhanced error handling and logging
+- Performance optimizations for UI components
+- Better service integration and communication
+- Improved debugging capabilities
 
 ## [Unreleased]
 

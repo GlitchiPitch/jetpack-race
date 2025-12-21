@@ -19,7 +19,7 @@ function Infrastructure:init()
 
     logger:debug("RaceSystemServerInfrastructure", "Registering PlayerRepository...")
     self.diContainer:singleton("PlayerRepository", function()
-        ---@type RaceSystemPlayerEntity
+        ---@type table
         local entities = self.diContainer:resolve("Entities")
         logger:debug("RaceSystemServerInfrastructure", "Creating PlayerRepository instance")
         return Repositories.PlayerRepository.new(entities)

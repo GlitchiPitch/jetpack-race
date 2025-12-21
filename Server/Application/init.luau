@@ -4,7 +4,6 @@ local Services = require(script.Services)
 ---@class ServerApplication
 ---@field application SharedApplication
 ---@field diContainer DIContainer
----@field constants SharedApplicationConstants
 ---@field useCases ServerUseCases
 ---@field commands ServerCommands
 ---@field remoteEventService RemoteEventService

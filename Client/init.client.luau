@@ -45,51 +45,89 @@ function Client.new()
 end
 
 function Client:init()
-	self.shared.Infrastructure.IoCContainer:singleton("RaceSystemConstants", function()
-		return self.raceSystemClient.shared.Infrastructure.DIContainer:resolve("Shared.Constants")
+	warn("Client: Starting initialization...")
+
+	-- Register cross-system dependencies
+	local success, errorMsg = pcall(function()
+		self.shared.Infrastructure.IoCContainer:singleton("RaceSystemConstants", function()
+			return self.raceSystemClient.shared.Infrastructure.DIContainer:resolve("Shared.Constants")
+		end)
+
+		self.shared.Infrastructure.IoCContainer:singleton("Logger", function()
+			return self.shared.Infrastructure.DIContainer:resolve("Logger")
+		end)
+
+		self.shared.Infrastructure.IoCContainer:singleton("RemoteEventService", function()
+			return self.shared.Infrastructure.DIContainer:resolve("RemoteEventService")
+		end)
+
+		self.shared.Infrastructure.IoCContainer:singleton("Entities", function()
+			return self.shared.Infrastructure.DIContainer:resolve("Entities")
+		end)
+
+		self.shared.Infrastructure.IoCContainer:singleton("FlyingRepository", function()
+			local flyingRepository = self.flyingSystemClient.shared.Infrastructure.DIContainer:resolve("FlyingRepository")
+			return flyingRepository
+		end)
+
+		self.shared.Infrastructure.IoCContainer:singleton("UIComponents", function()
+			return self.presentation.ui.components
+		end)
 	end)
 
-	self.shared.Infrastructure.IoCContainer:singleton("Logger", function()
-		return self.shared.Infrastructure.DIContainer:resolve("Logger")
+	if not success then
+		warn("Client: Failed to register dependencies:", errorMsg)
+		return
+	end
+
+	-- Initialize systems with error handling
+	local systems = {
+		{ name = "PetSystem", init = function() self.petSystemClient:init() end },
+		{ name = "FlyingSystem", init = function() self.flyingSystemClient:init() end },
+		{ name = "LiveLeaderboardSystem", init = function() self.liveLeaderboardSystemClient:init() end },
+		{ name = "RewardsSystem", init = function() self.rewardsSystemClient:init() end },
+		{ name = "ShopSystem", init = function() self.shopSystemClient:init() end },
+		{ name = "RaceSystem", init = function() self.raceSystemClient:init() end },
+	}
+
+	for _, system in ipairs(systems) do
+		local ok, err = pcall(system.init)
+		if ok then
+			warn("Client: " .. system.name .. " initialized successfully")
+		else
+			warn("Client: Failed to initialize " .. system.name .. ":", err)
+		end
+	end
+
+	-- Initialize core application
+	local ok, err = pcall(function()
+		self.application:init()
+		warn("Client: Application initialized")
+		self.presentation:init()
+		warn("Client: Presentation initialized")
 	end)
 
-	self.shared.Infrastructure.IoCContainer:singleton("RemoteEventService", function()
-		return self.shared.Infrastructure.DIContainer:resolve("RemoteEventService")
-	end)
+	if not ok then
+		warn("Client: Failed to initialize core systems:", err)
+		return
+	end
 
-	self.shared.Infrastructure.IoCContainer:singleton("Entities", function()
-		return self.shared.Infrastructure.DIContainer:resolve("Entities")
-	end)
-
-	self.shared.Infrastructure.IoCContainer:singleton("FlyingRepository", function()
-		local flyingRepository = self.flyingSystemClient.shared.Infrastructure.DIContainer:resolve("FlyingRepository")
-		return flyingRepository
-	end)
-
-	self.shared.Infrastructure.IoCContainer:singleton("UIComponents", function()
-		return self.presentation.ui.components
-	end)
-	self.petSystemClient:init()
-	self.flyingSystemClient:init()
-	self.liveLeaderboardSystemClient:init()
-	self.rewardsSystemClient:init()
-	self.shopSystemClient:init()
-	self.raceSystemClient:init()
-
-	self.application:init()
-	warn("Application initialized")
-	self.presentation:init()
-	warn("Presentation initialized")
-
-	warn("Client initialized")
+	warn("Client: Initialization completed successfully")
 end
 
 local client = Client.new()
 
+-- Initialize client immediately - systems should handle server availability gracefully
+client:init()
+
+-- Optional: Wait for server confirmation and perform any post-init setup
+local function onServerLoaded()
+	warn("Client: Server loaded confirmation received")
+	-- Any additional setup that requires server to be ready
+end
+
 if ReplicatedStorage:GetAttribute(client.shared.Constants.SERVER_IS_LOADED) then
-	client:init()
+	onServerLoaded()
 else
-	ReplicatedStorage:GetAttributeChangedSignal(client.shared.Constants.SERVER_IS_LOADED):Connect(function()
-		client:init()
-	end)
+	ReplicatedStorage:GetAttributeChangedSignal(client.shared.Constants.SERVER_IS_LOADED):Connect(onServerLoaded)
 end

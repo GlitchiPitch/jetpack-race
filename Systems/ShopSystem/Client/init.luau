@@ -7,8 +7,8 @@ local Application = require(script.Application)
 ---@class ShopSystemClient
 ---@field shared Shared
 ---@field iocContainer DIContainer
----@field application ShopSystemClientApplication
----@field presentation ShopSystemClientPresentation
+---@field application ShopSystemApplication
+---@field presentation ShopSystemPresentation
 local Client = {}
 Client.__index = Client
 

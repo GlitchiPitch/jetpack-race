@@ -8,8 +8,8 @@ local Infrastructure = require(script.Infrastructure)
 ---@class FlyingSystemClient
 ---@field shared Shared
 ---@field iocContainer DIContainer
----@field application FlyingSystemClientApplication
----@field presentation FlyingSystemClientPresentation
+---@field application FlyingSystemApplication
+---@field presentation FlyingSystemPresentation
 local Client = {}
 Client.__index = Client
 

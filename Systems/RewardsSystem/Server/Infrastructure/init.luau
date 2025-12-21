@@ -19,7 +19,7 @@ function Infrastructure:init()
 
     logger:debug("RewardsSystemServerInfrastructure", "Registering PlayerRepository...")
     self.diContainer:singleton("PlayerRepository", function()
-        ---@type RewardsSystemPlayerEntity
+        ---@type table
         local entities = self.diContainer:resolve("Entities")
         logger:debug("RewardsSystemServerInfrastructure", "Creating PlayerRepository instance")
         return Repositories.PlayerRepository.new(entities)

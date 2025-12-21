@@ -23,7 +23,7 @@
 
 ## Тэги
 ```
-[ Feature Review ], [ BugFix ], [ Test ], [ Complete ], [ Process ]
+[ Feature Review ], [ BugFix ], [ Test ], [ Complete ], [ Process ], [ Start ]
 ```
 *(можно добавить эмодзи)*
 
