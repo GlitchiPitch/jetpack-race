@@ -27,7 +27,7 @@ function JetpackService:equipJetpack(jetpack)
 	flyingEntity:setJetpack(jetpack)
 
 	-- Apply cosmetic accessories
-	local accessoryService = self.diContainer:resolve("Shared.Services").accessoryService
+	local accessoryService = self.diContainer:resolve("Shared.Application.Services").accessoryService
 	if accessoryService then
 		accessoryService:applyPlayerAccessories(game.Players.LocalPlayer)
 	end
@@ -74,7 +74,7 @@ function JetpackService:unequipJetpack(_jetpack)
 	flyingEntity:startDeactivating()
 
 	-- Clear cosmetic accessories
-	local accessoryService = self.diContainer:resolve("Shared.Services").accessoryService
+	local accessoryService = self.diContainer:resolve("Shared.Application.Services").accessoryService
 	if accessoryService then
 		accessoryService:clearPlayerEffects(game.Players.LocalPlayer)
 	end

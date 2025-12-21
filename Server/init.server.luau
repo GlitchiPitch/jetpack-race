@@ -30,7 +30,7 @@ function Server.new()
 	local self = setmetatable({}, Server)
 	self.shared = Shared.new()
 	self.infrastructure = ServerInfrastructure.new(self.shared.Infrastructure.DIContainer)
-	self.application = ServerApplication.new(self.shared.Infrastructure.DIContainer)
+	self.application = ServerApplication.new(self.shared.Infrastructure.DIContainer, self.shared.Infrastructure.IoCContainer)
 
 	self.flyingSystemServer = FlyingSystemServer.new(self.shared.Infrastructure.IoCContainer)
 	self.petSystemServer = PetSystemServer.new(self.shared.Infrastructure.IoCContainer)
@@ -66,10 +66,17 @@ function Server:init()
 		return flyingRepository
 	end)
 
+	self.shared.Infrastructure.IoCContainer:singleton("PlayerService", function()
+		---@type ServerApplicationServices
+		local services = self.shared.Infrastructure.DIContainer:resolve("Server.Application.Services")
+		return services.playerService
+	end)
+
 	self.flyingSystemServer:init()
 	self.petSystemServer:init()
 	self.liveLeaderboardSystemServer:init()
 	self.rewardsSystemServer:init()
+	self.shopSystemServer:init()
 	self.raceSystemServer:init()
 
 	---@type ServerApplicationServices
@@ -85,15 +92,40 @@ function Server:init()
 		self.flyingSystemServer:onPlayerAdded(player)
 		self.petSystemServer:onPlayerAdded(player)
 		self.rewardsSystemServer:onPlayerAdded(player)
+		self.shopSystemServer:onPlayerAdded(player)
 	end)
 
 	Players.PlayerRemoving:Connect(function(player)
 		playerService:onPlayerRemoving(player)
 		self.petSystemServer:onPlayerRemoving(player)
 		self.rewardsSystemServer:onPlayerRemoving(player)
+		self.shopSystemServer:onPlayerRemoving(player)
 	end)
 
 	ReplicatedStorage:SetAttribute(self.shared.Constants.SERVER_IS_LOADED, true)
+
+	-- Add test commands for debugging
+	Players.PlayerAdded:Connect(function(player)
+		player.Chatted:Connect(function(message)
+			if message == "/openshop" then
+				local logger = self.shared.Infrastructure.DIContainer:resolve("Logger")
+				logger:info("Server", "Manual shop opening requested by", player.Name)
+
+				local shopSystemServer = self.shopSystemServer
+				if shopSystemServer then
+					local shopService = shopSystemServer.infrastructure.diContainer:resolve("Server.Application.Services").shopService
+					if shopService then
+						shopService:openShopForPlayer(player)
+						logger:info("Server", "Manual shop opening executed for", player.Name)
+					else
+						logger:warn("Server", "ShopService not found for manual opening")
+					end
+				else
+					logger:warn("Server", "ShopSystemServer not found for manual opening")
+				end
+			end
+		end)
+	end)
 end
 
 local server = Server.new()

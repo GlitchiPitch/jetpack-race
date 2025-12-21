@@ -13,8 +13,6 @@ function BaseFrame.new(diContainer, parent)
 	return self
 end
 
-
-
 function BaseFrame:open()
 	self.frame.Visible = true
 end

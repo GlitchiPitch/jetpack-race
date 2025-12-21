@@ -117,7 +117,7 @@ function ItemPreview:_setupUI()
 end
 
 ---@param itemData table
-function ItemPreview:showItem(itemData)
+function ItemPreview:showItem(itemData, playerData)
 	self.currentItem = itemData
 	self.isVisible = true
 	self.previewFrame.Visible = true
@@ -140,7 +140,7 @@ function ItemPreview:showItem(itemData)
 	self:_setup3DPreview(itemData)
 
 	-- Update action buttons
-	self:_updateActionButtons(itemData)
+	self:_updateActionButtons(itemData, playerData)
 
 	local logger = self.diContainer:resolve("Logger")
 	logger:info("ItemPreview", "Showing preview for item:", itemData.id)
@@ -281,12 +281,16 @@ function ItemPreview:_createTrailPreview(itemData)
 	task.spawn(function()
 		while trailModel.Parent do
 			for i = -2, 2, 0.1 do
-				if not movingPart.Parent then break end
+				if not movingPart.Parent then
+					break
+				end
 				movingPart.Position = Vector3.new(i, 0, 0)
 				task.wait(0.05)
 			end
 			for i = 2, -2, -0.1 do
-				if not movingPart.Parent then break end
+				if not movingPart.Parent then
+					break
+				end
 				movingPart.Position = Vector3.new(i, 0, 0)
 				task.wait(0.05)
 			end
@@ -322,31 +326,29 @@ function ItemPreview:_createEffectPreview(itemData)
 	self.previewViewport.CurrentCamera.CFrame = CFrame.new(Vector3.new(2, 2, 3), Vector3.new(0, 0, 0))
 end
 
-function ItemPreview:_updateActionButtons(itemData)
+function ItemPreview:_updateActionButtons(itemData, playerData)
 	-- Clear existing buttons
 	for _, child in ipairs(self.actionFrame:GetChildren()) do
 		child:Destroy()
 	end
 
 	local player = game.Players.LocalPlayer
-	local marketplaceService = self.diContainer:resolve("Shared.Services").marketplaceService
+	local PlayerEntity = self.diContainer:resolve("Entities").Player
+	local playerEntity = PlayerEntity.new(player, playerData)
+	local marketplaceService = self.diContainer:resolve("Shared.Application.Services").marketplaceService
 
-	local isOwned = marketplaceService:ownsItem(player, itemData.id)
+	local isOwned = marketplaceService:ownsItem(playerEntity, itemData.id)
 	local canPurchase, errorMessage = marketplaceService:canPurchase(player, itemData.id)
 
 	if isOwned then
 		-- Show equip/unequip buttons
-		local equippedItems = marketplaceService:getOwnedItems(player)
+		local equippedItems = marketplaceService:getOwnedItems(playerEntity)
 		local isEquipped = false
 
 		if itemData.type == "jetpack" then
-			local playerService = self.diContainer:resolve("PlayerService")
-			local playerEntity = playerService:getPlayerEntity(player)
 			isEquipped = playerEntity:getJetpack() == itemData.id
 		else
 			-- Check if equipped as accessory
-			local playerService = self.diContainer:resolve("PlayerService")
-			local playerEntity = playerService:getPlayerEntity(player)
 			local accessories = playerEntity:getAccessories()
 			for _, accessory in ipairs(accessories) do
 				if accessory.id == itemData.id then
@@ -424,7 +426,7 @@ function ItemPreview:_equipItem(itemId)
 
 	remoteEventService:fireServer(constants.REMOTE_EVENTS.SHOP_EQUIP_REQUEST, {
 		itemId = itemId,
-		player = game.Players.LocalPlayer
+		player = game.Players.LocalPlayer,
 	})
 end
 
@@ -434,7 +436,7 @@ function ItemPreview:_unequipItem(itemId)
 
 	remoteEventService:fireServer(constants.REMOTE_EVENTS.SHOP_UNEQUIP_REQUEST, {
 		itemId = itemId,
-		player = game.Players.LocalPlayer
+		player = game.Players.LocalPlayer,
 	})
 end
 

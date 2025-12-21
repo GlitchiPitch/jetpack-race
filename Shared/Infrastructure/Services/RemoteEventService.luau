@@ -37,6 +37,7 @@ function RemoteEventService:connectToEvent(event, callback)
 			end
 		end)
 	end
+	return self._connections[event]
 end
 
 ---@param event string

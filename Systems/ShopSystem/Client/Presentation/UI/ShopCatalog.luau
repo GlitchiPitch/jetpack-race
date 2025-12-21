@@ -41,13 +41,13 @@ function ShopCatalog:_setupUI()
 end
 
 function ShopCatalog:_createCategoryFilters()
-	local categories = {"All", "Jetpacks", "Trails", "Effects"}
+	local categories = { "All", "Jetpacks", "Trails", "Effects" }
 	local yOffset = 0
 
 	for i, category in ipairs(categories) do
 		local button = Instance.new("TextButton")
 		button.Size = UDim2.new(0, 100, 0, 30)
-		button.Position = UDim2.new(0, (i-1) * 110, 0, yOffset)
+		button.Position = UDim2.new(0, (i - 1) * 110, 0, yOffset)
 		button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 		button.Text = category
 		button.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -237,14 +237,16 @@ function ShopCatalog:_onItemClicked(itemData)
 
 	remoteEventService:fireServer(constants.REMOTE_EVENTS.SHOP_ITEM_SELECTED, {
 		itemId = itemData.id,
-		player = game.Players.LocalPlayer
+		player = game.Players.LocalPlayer,
 	})
 end
 
-function ShopCatalog:updateOwnedIndicators()
+function ShopCatalog:updateOwnedIndicators(playerData)
 	local player = game.Players.LocalPlayer
-	local marketplaceService = self.diContainer:resolve("Shared.Services").marketplaceService
-	local ownedItems = marketplaceService:getOwnedItems(player)
+	local PlayerEntity = self.diContainer:resolve("Entities").Player
+	local playerEntity = PlayerEntity.new(player, playerData)
+	local marketplaceService = self.diContainer:resolve("Shared.Application.Services").marketplaceService
+	local ownedItems = marketplaceService:getOwnedItems(playerEntity)
 
 	for _, button in ipairs(self.itemButtons) do
 		local itemId = button:GetAttribute("ItemId")

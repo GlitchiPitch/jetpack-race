@@ -6,11 +6,13 @@ local Services = {}
 Services.__index = Services
 
 ---@param diContainer DIContainer
+---@param sharedIoCContainer DIContainer
 ---@return ServerApplicationServices
-function Services.new(diContainer)
+function Services.new(diContainer, sharedIoCContainer)
     local self = setmetatable({}, Services)
     self.diContainer = diContainer
-    self.playerService = PlayerService.new(self.diContainer)
+    local remoteEventService = sharedIoCContainer:resolve("RemoteEventService")
+    self.playerService = PlayerService.new(self.diContainer, remoteEventService)
     return self
 end
 

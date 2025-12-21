@@ -28,8 +28,15 @@ function Server:init()
 	self.logger = self.iocContainer:resolve("Logger")
 	---@type RemoteEventService
 	self.remoteEventService = self.iocContainer:resolve("RemoteEventService")
+	---@type ShopSystemServerPlayerService
+	self.playerService = self.iocContainer:resolve("PlayerService")
+
 	self.shared.Infrastructure.DIContainer:singleton("Logger", function()
 		return self.logger
+	end)
+
+	self.shared.Infrastructure.DIContainer:singleton("PlayerService", function()
+		return self.playerService
 	end)
 
 	self.shared.Infrastructure.DIContainer:singleton("RemoteEventService", function()
@@ -37,6 +44,9 @@ function Server:init()
 	end)
 
 	self.logger:info("ShopSystemServer", "Initializing ShopSystem server...")
+
+	self.infrastructure:init()
+	self.application:init()
 end
 
 function Server:onPlayerAdded(player)

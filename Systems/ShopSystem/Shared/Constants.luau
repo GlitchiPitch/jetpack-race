@@ -40,6 +40,7 @@ local Constants = {
 		SHOP_PURCHASE_SUCCESS = "ShopPurchaseSuccess",
 		SHOP_PURCHASE_FAILED = "ShopPurchaseFailed",
 		SHOP_DEV_PRODUCT_REQUEST = "ShopDevProductRequest",
+		PLAYER_UPDATED = "PlayerUpdated",
 	},
 }
 

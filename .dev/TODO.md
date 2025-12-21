@@ -1,6 +1,6 @@
 # TODO List
 
-## Current Tasks [v0.4.6]
+## Current Tasks [v0.4.7]
 
 ### ✅ Completed
 - [x] Implement Shop System UI components
@@ -14,6 +14,11 @@
 - [x] Add InventoryService for player inventory
 - [x] Implement MarketplaceService for marketplace operations
 - [x] Add PlayerRepository for data persistence
+- [x] Fix Shop System integration bugs
+- [x] Resolve UI component rendering issues
+- [x] Fix server-side synchronization problems
+- [x] Optimize remote event handling
+- [x] Improve error handling in services
 
 ### 🔄 In Progress
 - [ ] Testing Shop System integration

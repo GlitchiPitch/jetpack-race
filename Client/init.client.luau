@@ -73,6 +73,7 @@ function Client:init()
 	self.flyingSystemClient:init()
 	self.liveLeaderboardSystemClient:init()
 	self.rewardsSystemClient:init()
+	self.shopSystemClient:init()
 	self.raceSystemClient:init()
 
 	self.application:init()

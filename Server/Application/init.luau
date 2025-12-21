@@ -13,10 +13,12 @@ local Application = {}
 Application.__index = Application
 
 ---@param diContainer DIContainer
+---@param sharedIoCContainer DIContainer
 ---@return ServerApplication
-function Application.new(diContainer)
+function Application.new(diContainer, sharedIoCContainer)
 	local self = setmetatable({}, Application)
 	self.diContainer = diContainer
+	self.sharedIoCContainer = sharedIoCContainer
 	self:_register()
 	return self
 end
@@ -29,7 +31,7 @@ function Application:_register()
 		return UseCases.new()
 	end)
 	self.diContainer:singleton("Server.Application.Services", function(c)
-		return Services.new(c)
+		return Services.new(c, self.sharedIoCContainer)
 	end)
 end
 

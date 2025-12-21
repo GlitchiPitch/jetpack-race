@@ -31,10 +31,15 @@ function UI:_setupRemoteEventListeners()
 	local logger = self.diContainer:resolve("Logger")
 
 	-- Listen for shop opened event
-	local shopOpenedConnection = self.remoteEventService:listenToClient(self.constants.REMOTE_EVENTS.SHOP_OPENED, function(data)
-		logger:info("ShopSystemUI", "Shop opened for player:", data.playerName)
-		self:openShop()
-	end)
+	logger:info("ShopSystemUI", "Setting up SHOP_OPENED event listener")
+	local shopOpenedConnection = self.remoteEventService:connectToEvent(
+		self.constants.REMOTE_EVENTS.SHOP_OPENED,
+		function(data)
+			logger:info("ShopSystemUI", "Received SHOP_OPENED event for player:", data.playerName, "ID:", data.playerId)
+			logger:info("ShopSystemUI", "Opening shop UI...")
+			self:openShop()
+		end
+	)
 
 	table.insert(self._connections, shopOpenedConnection)
 end
@@ -83,6 +88,5 @@ function UI:destroy()
 		self.shopFrame:destroy()
 	end
 end
-
 
 return UI

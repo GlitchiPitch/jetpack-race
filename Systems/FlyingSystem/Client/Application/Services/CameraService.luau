@@ -105,6 +105,15 @@ end
 function CameraService:_onMouseMovement()
 	local sharedConstants = self.diContainer:resolve("Shared.Constants")
 	local mouse_delta: Vector2 = UserInputService:GetMouseDelta()
+
+	-- Dead zone: ignore small mouse movements (less than MOUSE_DEAD_ZONE pixels)
+	if
+		math.abs(mouse_delta.X) < sharedConstants.CAMERA_SETTINGS.MOUSE_DEAD_ZONE
+		and math.abs(mouse_delta.Y) < sharedConstants.CAMERA_SETTINGS.MOUSE_DEAD_ZONE
+	then
+		return
+	end
+
 	local x_delta: number = mouse_delta.X * sharedConstants.CAMERA_SETTINGS.SPEED_MULTIPLIER
 	local y_delta: number = mouse_delta.Y * sharedConstants.CAMERA_SETTINGS.SPEED_MULTIPLIER
 

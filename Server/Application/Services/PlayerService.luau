@@ -3,10 +3,12 @@ local PlayerService = {}
 PlayerService.__index = PlayerService
 
 ---@param diContainer DIContainer
+---@param remoteEventService RemoteEventService
 ---@return PlayerService
-function PlayerService.new(diContainer)
+function PlayerService.new(diContainer, remoteEventService)
 	local self = setmetatable({}, PlayerService)
 	self.diContainer = diContainer
+	self.remoteEventService = remoteEventService
 	return self
 end
 
@@ -27,14 +29,14 @@ function PlayerService:onPlayerRemoving(player)
 end
 
 function PlayerService:updatePlayer(player)
+	---@type IPlayerRepository
+	local playerRepository = self.diContainer:resolve("PlayerRepository")
 	---@type PlayerEntity
-	local playerEntity = self.playerRepository:getPlayerEntity(player)
-	---@type RemoteEventService
-	local remoteEventService = self.diContainer:resolve("RemoteEventService")
+	local playerEntity = playerRepository:getPlayerEntity(player)
 	---@type SharedConstants
 	local constants = self.diContainer:resolve("Shared.Constants")
 
-	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
+	self.remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
 		playerData = playerEntity:getData(),
 	})
 end

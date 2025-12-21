@@ -80,6 +80,7 @@ local Constants = {
 		Y_EXTREME = 5,
 		X_EXTREME = 45,
 		AUTO_ROTATE_DELAY = 0.5,
+		MOUSE_DEAD_ZONE = 5,
 	},
 }
 

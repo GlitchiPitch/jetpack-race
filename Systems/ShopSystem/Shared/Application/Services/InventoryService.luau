@@ -11,16 +11,14 @@ function InventoryService.new(diContainer)
 	return self
 end
 
----@param player Player
+---@param playerEntity PlayerEntity
 ---@param itemId string
 ---@return boolean
-function InventoryService:addItem(player, itemId)
+function InventoryService:addItem(playerEntity, itemId)
 	local logger = self.diContainer:resolve("Logger")
-	local playerService = self.diContainer:resolve("PlayerService")
 
-	local playerEntity = playerService:getPlayerEntity(player)
 	if not playerEntity then
-		logger:warn("InventoryService", "Player entity not found for:", player.Name)
+		logger:warn("InventoryService", "Player entity is nil")
 		return false
 	end
 
@@ -31,16 +29,13 @@ function InventoryService:addItem(player, itemId)
 
 	playerEntity.inventory[itemId] = true
 
-	logger:info("InventoryService", "Item added to inventory:", player.Name, itemId)
+	logger:info("InventoryService", "Item added to inventory:", playerEntity:getPlayer().Name, itemId)
 	return true
 end
 
----@param player Player
+---@param playerEntity PlayerEntity
 ---@return table -- {itemId = true, ...}
-function InventoryService:getOwnedItems(player)
-	local playerService = self.diContainer:resolve("PlayerService")
-	local playerEntity = playerService:getPlayerEntity(player)
-
+function InventoryService:getOwnedItems(playerEntity)
 	if not playerEntity or not playerEntity.inventory then
 		return {}
 	end
@@ -48,41 +43,36 @@ function InventoryService:getOwnedItems(player)
 	return playerEntity.inventory
 end
 
----@param player Player
+---@param playerEntity PlayerEntity
 ---@param itemId string
 ---@return boolean
-function InventoryService:hasItem(player, itemId)
-	local ownedItems = self:getOwnedItems(player)
+function InventoryService:hasItem(playerEntity, itemId)
+	local ownedItems = self:getOwnedItems(playerEntity)
 	return ownedItems[itemId] or false
 end
 
----@param player Player
+---@param playerEntity PlayerEntity
 ---@param itemId string
 ---@return boolean
-function InventoryService:removeItem(player, itemId)
+function InventoryService:removeItem(playerEntity, itemId)
 	local logger = self.diContainer:resolve("Logger")
-	local playerService = self.diContainer:resolve("PlayerService")
 
-	local playerEntity = playerService:getPlayerEntity(player)
 	if not playerEntity or not playerEntity.inventory then
 		return false
 	end
 
 	if playerEntity.inventory[itemId] then
 		playerEntity.inventory[itemId] = nil
-		logger:info("InventoryService", "Item removed from inventory:", player.Name, itemId)
+		logger:info("InventoryService", "Item removed from inventory:", playerEntity:getPlayer().Name, itemId)
 		return true
 	end
 
 	return false
 end
 
----@param player Player
+---@param playerEntity PlayerEntity
 ---@return table -- Array of item IDs
-function InventoryService:getEquippedItems(player)
-	local playerService = self.diContainer:resolve("PlayerService")
-	local playerEntity = playerService:getPlayerEntity(player)
-
+function InventoryService:getEquippedItems(playerEntity)
 	if not playerEntity then
 		return {}
 	end

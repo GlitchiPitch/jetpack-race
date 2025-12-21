@@ -18,7 +18,7 @@ function PlayerEntity.new(player, data)
 	self.sprintActivated = false
 	self.jetpack = data and data.jetpack or "Default Jetpack"
 	self.accessories = data and data.accessories or {}
-	self.currency = data and data.currency or {coins = 1000, gems = 10} -- Default starting currency
+	self.currency = data and data.currency or { coins = 1000, gems = 10 } -- Default starting currency
 	self.inventory = data and data.inventory or {} -- Owned items
 
 	self.skillsConfig = {
@@ -55,7 +55,7 @@ function PlayerEntity:getData()
 		sprintActivated = self.sprintActivated,
 		skillsConfig = self.skillsConfig,
 		currency = self.currency,
-		inventory = self.inventory
+		inventory = self.inventory,
 	}
 end
 
@@ -91,7 +91,7 @@ end
 function PlayerEntity:addAccessory(accessoryType, accessoryId)
 	table.insert(self.accessories, {
 		type = accessoryType,
-		id = accessoryId
+		id = accessoryId,
 	})
 end
 
@@ -174,8 +174,14 @@ end
 function PlayerEntity:getCurrencyData()
 	return {
 		coins = self.currency.coins or 0,
-		gems = self.currency.gems or 0
+		gems = self.currency.gems or 0,
 	}
+end
+
+--- Get inventory data
+---@return table<string, boolean>
+function PlayerEntity:getInventory()
+	return self.inventory
 end
 
 return PlayerEntity

@@ -136,8 +136,10 @@ function PurchaseDialog:_setupUI()
 	end)
 
 	-- Close on overlay click
-	self.overlay.MouseButton1Click:Connect(function()
-		self:hide()
+	self.overlay.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			self:hide()
+		end
 	end)
 end
 

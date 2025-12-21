@@ -5,28 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Added
-- Shop System implementation with complete UI and backend
-  - ShopFrame UI component with item catalog
-  - ShopCatalog for displaying available items
-  - ItemPreview for detailed item information
-  - PurchaseDialog for transaction confirmation
-  - DeveloperProductsService for monetization
-  - ShopService for server-side shop management
-  - AccessoryService for item management
-  - InventoryService for player inventory
-  - MarketplaceService for marketplace operations
-  - PlayerRepository for data persistence
-
-### Changed
-- Updated Player entity with shop-related properties
-- Enhanced FlyingSystem with jetpack service improvements
-- Modified UI component initialization for better modularity
+## [0.4.7] - 2024-12-21
 
 ### Fixed
-- Various UI component integration issues
+- Shop System bug fixes and integration improvements
+- UI component initialization and rendering fixes
+- Server-side shop service enhancements
+- Player service synchronization issues
+- Remote event handling optimizations
+- Flying system camera and movement corrections
+- Marketplace service error handling
+
+### Changed
+- Enhanced ShopFrame UI with improved layout and functionality
+- Updated ShopCatalog with better item display
+- Improved ItemPreview component performance
+- Enhanced PurchaseDialog user experience
+- Updated Player entity with additional shop properties
+- Optimized RemoteEventService communication
+
+### Added
+- Additional error handling in shop services
+- Performance improvements for UI rendering
+- Better logging and debugging capabilities
+
+## [Unreleased]
 
 ## [0.4.5] - 2024-12-XX
 
