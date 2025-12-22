@@ -12,13 +12,19 @@ function PlayerRepository.new(entities)
 end
 
 ---@param player Player
----@return RaceSystemPlayerEntity
+---@return RacePlayerEntity
 function PlayerRepository:getPlayerEntity(player)
 	if not self.playerEntities[player] then
 		print("[RaceSystemPlayerRepository] Creating new player entity for:", player.Name, "(ID:", player.UserId, ")")
 		self.playerEntities[player] = self.PlayerEntity.new(player, {}, {})
 	else
-		print("[RaceSystemPlayerRepository] Returning existing player entity for:", player.Name, "(ID:", player.UserId, ")")
+		print(
+			"[RaceSystemPlayerRepository] Returning existing player entity for:",
+			player.Name,
+			"(ID:",
+			player.UserId,
+			")"
+		)
 	end
 
 	return self.playerEntities[player]
@@ -39,7 +45,12 @@ function PlayerRepository:removePlayerEntity(player)
 		entityCountAfter = entityCountAfter + 1
 	end
 
-	print("[RaceSystemPlayerRepository] Player entity removed. Entities before:", entityCountBefore, "after:", entityCountAfter)
+	print(
+		"[RaceSystemPlayerRepository] Player entity removed. Entities before:",
+		entityCountBefore,
+		"after:",
+		entityCountAfter
+	)
 end
 
 return PlayerRepository

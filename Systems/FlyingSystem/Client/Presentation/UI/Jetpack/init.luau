@@ -39,13 +39,27 @@ end
 
 ---@param speedMultiplier number
 function JetpackUI:setSpeedMultiplier(speedMultiplier)
-	self.ui.SpeedMultiplier.Text = speedMultiplier
+	if self.ui.SpeedFrame:FindFirstChild("SpeedMultiplier") then
+		self.ui.SpeedFrame.SpeedMultiplier.Text = string.format("%.1fx", speedMultiplier)
+	end
+end
+
+---@param speed number
+function JetpackUI:setSpeed(speed)
+	if self.ui.SpeedFrame:FindFirstChild("SpeedValue") then
+		self.ui.SpeedFrame.SpeedValue.Text = string.format("%.1f", speed)
+	end
 end
 
 ---@param sprintActivated boolean
 function JetpackUI:setSprintActivated(sprintActivated)
 	if self.ui:FindFirstChild("SprintActivated") then
 		self.ui.SprintActivated.Text = sprintActivated and "SPRINT ACTIVE" or "SPRINT INACTIVE"
+	end
+
+	-- Show/hide sprint indicator
+	if self.sprintIndicator then
+		self.sprintIndicator.Visible = sprintActivated
 	end
 
 	-- Update sprint button appearance
@@ -55,6 +69,19 @@ end
 function JetpackUI:_setupSprintButton()
 	self.sprintButton = self.ui:FindFirstChild("SprintButton")
 	warn("SprintButton found:", self.sprintButton ~= nil)
+
+	-- Create sprint indicator ImageLabel
+	if self.sprintButton then
+		self.sprintIndicator = Instance.new("ImageLabel")
+		self.sprintIndicator.Name = "SprintIndicator"
+		self.sprintIndicator.Size = UDim2.new(0.3, 0, 0.3, 0)
+		self.sprintIndicator.Position = UDim2.new(0.7, 0, 0.1, 0)
+		self.sprintIndicator.BackgroundTransparency = 1
+		self.sprintIndicator.Image = "rbxassetid://123456789" -- Placeholder, will be updated
+		self.sprintIndicator.Visible = false
+		self.sprintIndicator.Parent = self.sprintButton
+	end
+
 	-- Button is now just for display, mouse handling moved to CameraService
 end
 

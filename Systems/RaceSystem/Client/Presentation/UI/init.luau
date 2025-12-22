@@ -18,8 +18,12 @@ function UI:init()
 
 	logger:debug("RaceSystemClientUI", "Initializing client UI...")
 
-	-- TODO: Add UI initialization logic here
-	logger:debug("RaceSystemClientUI", "Client UI initialization completed (no UI elements to initialize yet)")
+	-- Initialize RaceUI
+	local RaceUI = require(script.Race.RaceUI)
+	self.raceUI = RaceUI.new(self.diContainer)
+	logger:debug("RaceSystemClientUI", "RaceUI initialized")
+
+	logger:debug("RaceSystemClientUI", "Client UI initialization completed")
 end
 
 return UI

@@ -23,7 +23,7 @@ function ShopFrame:init()
 	local components = self.diContainer:resolve("UIComponents")
 
 	logger:info("ShopFrame", "Creating BaseFrame component")
-	self.baseFrame = components.BaseFrame.new(self.diContainer, self.player.PlayerGui)
+	self.baseFrame = components.BaseFrame.new(self.diContainer, self.player.PlayerGui:WaitForChild("MainUI").Background.Body)
 	self.frame = self.baseFrame.frame
 	logger:info("ShopFrame", "BaseFrame created successfully")
 

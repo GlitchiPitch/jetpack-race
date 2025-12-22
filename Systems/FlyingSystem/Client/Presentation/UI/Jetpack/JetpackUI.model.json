@@ -28,7 +28,7 @@
                 },
                 {
                     "className": "TextLabel",
-                    "name": "SprintActivated"
+                    "name": "SpeedValue"
                 }
             ]
         },

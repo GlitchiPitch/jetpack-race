@@ -12,7 +12,7 @@ function PlayerRepository.new(entities)
 end
 
 ---@param player Player
----@return RewardsSystemPlayerEntity
+---@return RewardsPlayerEntity
 function PlayerRepository:getPlayerEntity(player)
 	if not self.playerEntities[player] then
 		print("[RewardsSystemPlayerRepository] Creating new player entity for:", player.Name, "(ID:", player.UserId, ")")

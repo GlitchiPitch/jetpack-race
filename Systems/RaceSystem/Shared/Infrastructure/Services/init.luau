@@ -1,3 +1,5 @@
+local AssetsSpawnService = require(script.AssetsSpawnService)
+local RingsService = require(script.RingsService)
 ---@class RaceSystemSharedInfrastructureServices
 ---@field diContainer DIContainer
 local Services = {}
@@ -14,6 +16,13 @@ end
 
 function Services:_register()
 	
+	self.diContainer:singleton("AssetsSpawnService", function()
+		return AssetsSpawnService.new()
+	end)
+
+	self.diContainer:singleton("RingsService", function()
+		return RingsService.new()
+	end)
 end
 
 return Services

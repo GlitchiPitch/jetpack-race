@@ -1,6 +1,6 @@
 # TODO List
 
-## Current Tasks [v0.4.8]
+## Current Tasks [v0.4.9]
 
 ### ✅ Completed
 - [x] Implement Shop System UI components
@@ -24,13 +24,20 @@
 - [x] Update Player entities consistency
 - [x] Enhance Flying System camera service
 - [x] Improve Race System services
+- [x] Implement Race System core entities (Race, Ring, Winner)
+- [x] Create RingsService for ring management
+- [x] Add AssetsSpawnService for asset spawning
+- [x] Implement RacePlayer entity with race properties
+- [x] Add ring collection and boost mechanics
+- [x] Integrate winner tracking and rewards
 
 ### 🔄 In Progress
 - [x] Testing Shop System integration
+- [x] Testing Race System integration
 - [ ] UI polish and animations
 - [x] Performance optimization
 
-## Next Version [v0.4.9] - Planned Features
+## Next Version [v0.5.0] - Planned Features
 
 ### High Priority
 - [ ] Add item usage/consumption mechanics
@@ -75,8 +82,10 @@
 
 ## Notes
 - Shop System completed and integrated across all systems
-- Version 0.4.8 released with comprehensive system improvements
+- Race System core implementation completed with entities and services
+- Version 0.4.9 released with Race System enhancements
 - Focus on UI polish, animations, and user experience enhancements
 - Next priority: Item usage mechanics and durability system
+- Race System testing and ring mechanics validation ongoing
 - Performance monitoring and optimization ongoing
 - Ready for extended testing and feedback collection

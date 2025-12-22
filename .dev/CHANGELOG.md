@@ -36,6 +36,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Better service integration and communication
 - Improved debugging capabilities
 
+## [0.4.9] - 2024-12-22
+
+### Added
+- Race System core entities: Race, Ring, Winner
+- RingsService for ring creation and management
+- AssetsSpawnService for asset spawning
+- RacePlayer entity with race-specific properties
+- Ring collection and boost mechanics
+- Winner tracking and reward calculation
+
+### Changed
+- Enhanced Race System architecture with proper entity separation
+- Updated Race System infrastructure services
+- Improved Race UI components integration
+- Refactored Race entities initialization
+
+### Fixed
+- Race System entity imports and dependencies
+- Removed duplicate Pet entity from Race System
+- Fixed Race UI initialization issues
+
 ## [Unreleased]
 
 ## [0.4.5] - 2024-12-XX

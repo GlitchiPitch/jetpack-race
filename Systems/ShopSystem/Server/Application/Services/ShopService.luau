@@ -62,14 +62,6 @@ function ShopService:setupShopPrompt(shopPrompt)
 	)
 
 	proximityPrompt.Triggered:Connect(function(player)
-		logger:info(
-			"ShopSystemServerShopService",
-			"ProximityPrompt triggered by player:",
-			player.Name,
-			"(ID:",
-			player.UserId,
-			")"
-		)
 		
 		self:openShopForPlayer(player)
 	end)

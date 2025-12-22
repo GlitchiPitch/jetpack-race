@@ -6,7 +6,7 @@ local Data = require(script.Data)
 local Constants = require(script.Constants)
 
 ---@class RaceSystemShared
----@field Domain Domain
+---@field Domain RaceSystemDomain
 ---@field Infrastructure Infrastructure
 ---@field Config SharedConfig
 ---@field Application RaceSystemSharedApplication
@@ -42,6 +42,10 @@ function Shared:_register()
 
 	self.Infrastructure.DIContainer:singleton("Shared.Data", function()
 		return self.Data
+	end)
+
+	self.Infrastructure.DIContainer:singleton("Shared.Assets", function()
+		return self.Domain.Assets
 	end)
 
 	self.Infrastructure.DIContainer:singleton("Shared.Constants", function()

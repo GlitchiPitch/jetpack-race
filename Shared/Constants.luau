@@ -3,6 +3,7 @@ local Constants = {
     SERVER_IS_LOADED = "ServerIsLoaded",
     REMOTE_EVENTS = {
         PLAYER_UPDATED = "PlayerUpdated",
+        RACE_UPDATE = "RaceUpdate",
     },
 }
 

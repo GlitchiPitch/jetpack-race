@@ -38,7 +38,7 @@ end
 function PlayerService:updatePlayer(player)
 	---@type PetSystemServerPlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	---@type PetSystemPlayerEntity
+	---@type PetPlayerEntity
 	local playerEntity = playerRepository:getPlayerEntity(player)
 	---@type RemoteEventService
 	local remoteEventService = self.diContainer:resolve("RemoteEventService")

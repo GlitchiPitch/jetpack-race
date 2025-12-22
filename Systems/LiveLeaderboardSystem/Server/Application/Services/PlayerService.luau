@@ -29,7 +29,7 @@ end
 function PlayerService:updatePlayer(player)
 	---@type LiveLeaderboardSystemServerPlayerRepository
 	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	---@type LiveLeaderboardSystemPlayerEntity
+	---@type LeaderboardPlayerEntity
 	local playerEntity = playerRepository:getPlayerEntity(player)
 	---@type RemoteEventService
 	local remoteEventService = self.diContainer:resolve("RemoteEventService")

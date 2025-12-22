@@ -1,7 +1,8 @@
 ---@class RaceSystemEntities
 local Entities = {
 	Player = require(script.Player),
-	Pet = require(script.Pet),
+	Race = require(script.Race),
+	Ring = require(script.Ring),
 }
 
 return Entities

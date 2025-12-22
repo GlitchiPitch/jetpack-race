@@ -2,7 +2,7 @@
 local PlayerRepository = {}
 PlayerRepository.__index = PlayerRepository
 
----@param PlayerEntity LiveLeaderboardSystemPlayerEntity
+---@param PlayerEntity LeaderboardPlayerEntity
 ---@return LiveLeaderboardSystemServerPlayerRepository
 function PlayerRepository.new(PlayerEntity)
 	local self = setmetatable({}, PlayerRepository)
@@ -12,7 +12,7 @@ function PlayerRepository.new(PlayerEntity)
 end
 
 ---@param player Player
----@return LiveLeaderboardSystemPlayerEntity
+---@return LeaderboardPlayerEntity
 function PlayerRepository:getPlayerEntity(player)
 	if not self.playerEntities[player] then
 		self.playerEntities[player] = self.PlayerEntity.new(player)
