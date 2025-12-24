@@ -34,6 +34,9 @@ local Constants = {
 		RACE_FINISHED = "race_finished",
 		RACE_PREPARING = "race_preparing",
 		ENABLE_FORWARD_MOVEMENT = "enable_forward_movement",
+		CHECKPOINT_PASSED = "checkpoint_passed",
+		RACE_COMPLETED = "race_completed",
+		RACE_UPDATE = "race_update",
 	},
 }
 

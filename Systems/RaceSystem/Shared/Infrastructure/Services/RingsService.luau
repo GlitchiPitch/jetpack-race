@@ -18,29 +18,66 @@ function RingsService:init()
 end
 
 ---@param race RaceEntity
----@param ringFolder RaceEntity
-function RingsService:createRings(race, ringFolder)
+---@param ringFolder Instance
+---@param waypoints Instance?
+function RingsService:createRings(race, ringFolder, waypoints)
 	---@type LoggerService
 	local logger = self.diContainer:resolve("Logger")
 	logger:debug("RingsService", "Creating rings for race:", race.id)
 
-    ---@type RaceSystemEntities
-    local entities = self.diContainer:resolve("Entities")
-    local raceEntity = entities.Race.new({
-        id = race.id,
-    })
-    
-	for i = 1, 10 do
+	---@type RaceSystemEntities
+	local entities = self.diContainer:resolve("Entities")
+	local raceEntity = entities.Race.new({
+		id = race.id,
+	})
+
+	-- Get checkpoint waypoints or use default positions
+	local checkpointPositions = self:_getCheckpointPositions(waypoints)
+
+	for i, position in ipairs(checkpointPositions) do
 		---@type RingEntity
-        local ringEntity = entities.Ring.new({
-            model = self.assets.Ring,
-            parent = ringFolder,
-        })
-    
-		raceEntity.rings[ringEntity.id] = ringEntity
+		local ringEntity = entities.Ring.new({
+			model = self.assets.Ring:Clone(),
+			parent = ringFolder,
+			checkpointId = i,
+			position = position,
+		})
+
+		raceEntity.rings[tostring(i)] = ringEntity
+		raceEntity.totalCheckpoints = raceEntity.totalCheckpoints + 1
 	end
 
-    return raceEntity
+	logger:debug("RingsService", "Created", raceEntity.totalCheckpoints, "rings for race:", race.id)
+	return raceEntity
+end
+
+---@param waypoints Instance?
+---@return table<number, CFrame>
+function RingsService:_getCheckpointPositions(waypoints)
+	local positions = {}
+
+	-- If waypoints provided, use them
+	if waypoints then
+		local waypointChildren = waypoints:GetChildren()
+		table.sort(waypointChildren, function(a, b)
+			local aIndex = tonumber(a.Name) or 0
+			local bIndex = tonumber(b.Name) or 0
+			return aIndex < bIndex
+		end)
+
+		for _, waypoint in ipairs(waypointChildren) do
+			local position = waypoint.Position + Vector3.new(0, 3, 0) -- Slightly above waypoint
+			table.insert(positions, CFrame.new(position))
+		end
+	else
+		-- Default positions for testing (10 rings in a line)
+		for i = 1, 10 do
+			local position = Vector3.new(i * 20, 10, 0)
+			table.insert(positions, CFrame.new(position))
+		end
+	end
+
+	return positions
 end
 
 return RingsService

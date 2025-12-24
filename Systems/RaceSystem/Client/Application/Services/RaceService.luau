@@ -28,6 +28,8 @@ function RaceService:setupRemoteEventListeners()
 	---@type RaceSystemConstants
 	local constants = self.diContainer:resolve("Shared.Constants")
 
+	warn(remoteEventService)
+	warn(constants)
 	-- Listen for race preparing event
 	remoteEventService:connectToEvent(constants.REMOTE_EVENTS.RACE_PREPARING, function(data)
 		self:onRacePreparing(data.preparationTime)

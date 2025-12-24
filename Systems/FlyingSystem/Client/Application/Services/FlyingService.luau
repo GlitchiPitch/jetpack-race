@@ -18,6 +18,7 @@ function FlyingService:init()
 
 	-- Listen for enable forward movement event
 	local remoteEventService = self.diContainer:resolve("RemoteEventService")
+	---@type RaceSystemConstants
 	local RaceSystemConstants = self.diContainer:resolve("RaceSystemConstants")
 	remoteEventService:connectToEvent(RaceSystemConstants.REMOTE_EVENTS.ENABLE_FORWARD_MOVEMENT, function()
 		warn("FlyingService: Received enable forward movement event")

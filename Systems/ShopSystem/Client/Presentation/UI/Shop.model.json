@@ -1,0 +1,154 @@
+{
+    "className": "Frame",
+    "children": [
+        {
+            "className": "Frame",
+            "name": "ConfirmPanel",
+            "children": [
+                {
+                    "className": "Frame",
+                    "name": "Buttons",
+                    "children": [
+                        {
+                            "className": "UIListLayout"
+                        },
+                        {
+                            "className": "TextButton",
+                            "name": "ConfirmButton"
+                        },
+                        {
+                            "className": "TextButton",
+                            "name": "CancelButton"
+                        }
+                    ]
+                },
+                {
+                    "className": "Frame",
+                    "name": "Info",
+                    "children": [
+                        {
+                            "className": "TextLabel",
+                            "name": "ItemName"
+                        },
+                        {
+                            "className": "TextLabel",
+                            "name": "Price"
+                        },
+                        {
+                            "className": "TextLabel"
+                        }
+                    ]
+                },
+                {
+                    "className": "TextLabel"
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "Filter",
+            "children": [
+                {
+                    "className": "UIListLayout"
+                },
+                {
+                    "className": "TextButton",
+                    "name": "Template"
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "Header",
+            "children": [
+                {
+                    "className": "TextButton",
+                    "name": "CloseButton",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
+                        }
+                    ]
+                },
+                {
+                    "className": "TextLabel"
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "Preview",
+            "children": [
+                {
+                    "className": "ImageLabel",
+                    "name": "Icon"
+                },
+                {
+                    "className": "TextLabel",
+                    "name": "ItemName"
+                },
+                {
+                    "className": "TextLabel",
+                    "name": "ItemDescription"
+                },
+                {
+                    "className": "TextLabel",
+                    "name": "Sub"
+                },
+                {
+                    "className": "Frame"
+                },
+                {
+                    "className": "Frame"
+                }
+            ]
+        },
+        {
+            "className": "ScrollingFrame",
+            "name": "Catalog",
+            "children": [
+                {
+                    "className": "UIGridLayout",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
+                        }
+                    ]
+                },
+                {
+                    "className": "TextButton",
+                    "name": "Template",
+                    "children": [
+                        {
+                            "className": "ImageLabel",
+                            "name": "Content",
+                            "children": [
+                                {
+                                    "className": "Frame",
+                                    "name": "Price",
+                                    "children": [
+                                        {
+                                            "className": "UIListLayout"
+                                        },
+                                        {
+                                            "className": "ImageLabel",
+                                            "name": "CurrencyIcon",
+                                            "children": [
+                                                {
+                                                    "className": "UIAspectRatioConstraint"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "className": "TextLabel"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

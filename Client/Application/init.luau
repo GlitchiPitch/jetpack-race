@@ -19,10 +19,7 @@ end
 function Application:_register() end
 
 function Application:init()
-	-- self.remoteEventService:connectToEvent(self.constants.BUY_ITEM, function(args)
-	-- 	if self.useCases.SetCoinsPurchase:execute(self.commands.SetCoinsPurchase.new(args)) then
-	-- 	end
-	-- end)
+	
 end
 
 return Application

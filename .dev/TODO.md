@@ -34,8 +34,10 @@
 ### 🔄 In Progress
 - [x] Testing Shop System integration
 - [x] Testing Race System integration
-- [ ] UI polish and animations
+- [x] UI polish and animations
 - [x] Performance optimization
+- [x] Race System entity cleanup and optimization
+- [x] Shop System UI refinements
 
 ## Next Version [v0.5.0] - Planned Features
 

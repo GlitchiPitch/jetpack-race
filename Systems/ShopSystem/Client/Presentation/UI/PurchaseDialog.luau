@@ -4,17 +4,73 @@ PurchaseDialog.__index = PurchaseDialog
 
 ---@param diContainer DIContainer
 ---@param parentFrame Frame
+---@param existingFrame? Frame - Optional existing frame from model
 ---@return PurchaseDialog
-function PurchaseDialog.new(diContainer, parentFrame)
+function PurchaseDialog.new(diContainer, parentFrame, existingFrame)
 	local self = setmetatable({}, PurchaseDialog)
 	self.diContainer = diContainer
 	self.parentFrame = parentFrame
 	self.isVisible = false
 	self.currentItem = nil
 
-	self:_setupUI()
+	if existingFrame then
+		self:_setupFromExistingFrame(existingFrame)
+	else
+		self:_setupUI()
+	end
 
 	return self
+end
+
+function PurchaseDialog:_setupFromExistingFrame(existingFrame)
+	local logger = self.diContainer:resolve("Logger")
+	logger:info("PurchaseDialog", "Setting up from existing frame")
+
+	-- Use the existing frame from the model
+	self.dialogFrame = existingFrame
+	self.dialogFrame.Visible = false
+
+	-- Find buttons from the model
+	local buttonsFrame = existingFrame:FindFirstChild("Buttons")
+	if buttonsFrame then
+		self.confirmButton = buttonsFrame:FindFirstChild("ConfirmButton")
+		self.cancelButton = buttonsFrame:FindFirstChild("CancelButton")
+
+		if self.confirmButton then
+			self.confirmButton.MouseButton1Click:Connect(function()
+				self:_onConfirmPurchase()
+			end)
+		end
+
+		if self.cancelButton then
+			self.cancelButton.MouseButton1Click:Connect(function()
+				self:hide()
+			end)
+		end
+	end
+
+	-- Find info elements from the model
+	local infoFrame = existingFrame:FindFirstChild("Info")
+	if infoFrame then
+		self.itemNameLabel = infoFrame:FindFirstChild("ItemName")
+		self.priceLabel = infoFrame:FindFirstChild("Price")
+
+		-- Find description label (unnamed TextLabel in Info frame)
+		for _, child in ipairs(infoFrame:GetChildren()) do
+			if child:IsA("TextLabel") and child ~= self.itemNameLabel and child ~= self.priceLabel then
+				self.itemDescriptionLabel = child
+				break
+			end
+		end
+	end
+
+	-- Find title label (unnamed TextLabel)
+	local titleLabel = existingFrame:FindFirstChildOfClass("TextLabel")
+	if titleLabel then
+		self.titleLabel = titleLabel
+	end
+
+	logger:info("PurchaseDialog", "Setup from existing frame completed")
 end
 
 function PurchaseDialog:_setupUI()

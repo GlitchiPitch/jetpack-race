@@ -18,92 +18,80 @@ function ShopFrame:init()
 	local logger = self.diContainer:resolve("Logger")
 	logger:info("ShopFrame", "Initializing shop frame for player:", self.player.Name, "(ID:", self.player.UserId, ")")
 
-	-- Create frame using BaseFrame component
-	---@type Components
-	local components = self.diContainer:resolve("UIComponents")
-
 	logger:info("ShopFrame", "Creating BaseFrame component")
-	self.baseFrame = components.BaseFrame.new(self.diContainer, self.player.PlayerGui:WaitForChild("MainUI").Background.Body)
-	self.frame = self.baseFrame.frame
+	
 	logger:info("ShopFrame", "BaseFrame created successfully")
 
-	-- Header section
-	logger:info("ShopFrame", "Setting up header section")
-	local headerFrame = Instance.new("Frame")
-	headerFrame.Size = UDim2.new(1, 0, 0.08, 0)
-	headerFrame.Position = UDim2.new(0, 0, 0, 0)
-	headerFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	headerFrame.BackgroundTransparency = 0.1
-	headerFrame.Parent = self.frame
+	-- Load Shop UI from model
+	logger:info("ShopFrame", "Loading Shop UI from model")
+	self.frame = script.Parent.Shop:Clone()
+	self.frame.Parent = self.player.PlayerGui:WaitForChild("MainUI").Body
 
-	-- Add title
-	local title = Instance.new("TextLabel")
-	title.Size = UDim2.new(0.6, 0, 1, 0)
-	title.Position = UDim2.new(0.05, 0, 0, 0)
-	title.BackgroundTransparency = 1
-	title.Text = "Jetpack Shop"
-	title.TextColor3 = Color3.fromRGB(255, 255, 255)
-	title.TextScaled = true
-	title.Font = Enum.Font.SourceSansBold
-	title.TextXAlignment = Enum.TextXAlignment.Left
-	title.Parent = headerFrame
+	-- Get references to UI elements from the loaded model
+	self.headerFrame = self.frame:FindFirstChild("Header")
+	self.closeButton = self.headerFrame and self.headerFrame:FindFirstChild("CloseButton")
+	self.confirmPanel = self.frame:FindFirstChild("ConfirmPanel")
+	self.filterFrame = self.frame:FindFirstChild("Filter")
+	self.previewFrame = self.frame:FindFirstChild("Preview")
+	self.catalogFrame = self.frame:FindFirstChild("Catalog")
 
-	-- Balance display
-	logger:info("ShopFrame", "Setting up balance display frame")
-	self.balanceFrame = Instance.new("Frame")
-	self.balanceFrame.Size = UDim2.new(0.3, 0, 1, 0)
-	self.balanceFrame.Position = UDim2.new(0.65, 0, 0, 0)
-	self.balanceFrame.BackgroundTransparency = 1
-	self.balanceFrame.Parent = headerFrame
-
-	logger:info("ShopFrame", "Balance display frame created - will be updated when shop opens")
-
-	-- Add close button
-	logger:info("ShopFrame", "Setting up close button")
-	local closeButton = Instance.new("TextButton")
-	closeButton.Size = UDim2.new(0.05, 0, 0.8, 0)
-	closeButton.Position = UDim2.new(0.95, 0, 0.1, 0)
-	closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-	closeButton.Text = "X"
-	closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-	closeButton.TextScaled = true
-	closeButton.Font = Enum.Font.SourceSansBold
-	closeButton.Parent = headerFrame
+	-- Setup balance display in header
+	logger:info("ShopFrame", "Setting up balance display")
+	local headerInfo = self.headerFrame and self.headerFrame:FindFirstChildOfClass("TextLabel")
+	if headerInfo then
+		-- Create balance frame next to the title
+		self.balanceFrame = Instance.new("Frame")
+		self.balanceFrame.Size = UDim2.new(0.3, 0, 1, 0)
+		self.balanceFrame.Position = UDim2.fromScale(0.65, 0)
+		self.balanceFrame.BackgroundTransparency = 1
+		self.balanceFrame.Parent = self.headerFrame
+		logger:info("ShopFrame", "Balance display frame created")
+	else
+		logger:warn("ShopFrame", "Header TextLabel not found in Shop model")
+	end
 
 	-- Connect close button
-	closeButton.MouseButton1Click:Connect(function()
-		logger:info("ShopFrame", "Close button clicked by player:", self.player.Name)
-		self:close()
-	end)
+	if self.closeButton then
+		logger:info("ShopFrame", "Setting up close button connection")
+		self.closeButton.MouseButton1Click:Connect(function()
+			logger:info("ShopFrame", "Close button clicked by player:", self.player.Name)
+			self:close()
+		end)
+	else
+		logger:warn("ShopFrame", "CloseButton not found in Shop model")
+	end
 
-	-- Content area
-	logger:info("ShopFrame", "Setting up content area")
-	local contentFrame = Instance.new("Frame")
-	contentFrame.Size = UDim2.new(1, 0, 0.92, 0)
-	contentFrame.Position = UDim2.new(0, 0, 0.08, 0)
-	contentFrame.BackgroundTransparency = 1
-	contentFrame.Parent = self.frame
+	-- Initialize ShopCatalog in the Catalog frame
+	if self.catalogFrame then
+		local ShopCatalog = require(script.Parent.ShopCatalog)
+		self.shopCatalog = ShopCatalog.new(self.diContainer, self.catalogFrame)
+		logger:info("ShopFrame", "ShopCatalog initialized")
+	else
+		logger:warn("ShopFrame", "Catalog frame not found in Shop model")
+	end
 
-	-- Initialize ShopCatalog
-	logger:info("ShopFrame", "Initializing ShopCatalog component")
-	local ShopCatalog = require(script.Parent.ShopCatalog)
-	self.shopCatalog = ShopCatalog.new(self.diContainer, contentFrame)
+	-- Initialize PurchaseDialog using the ConfirmPanel
+	if self.confirmPanel then
+		local PurchaseDialog = require(script.Parent.PurchaseDialog)
+		self.purchaseDialog = PurchaseDialog.new(self.diContainer, self.frame, self.confirmPanel)
+		logger:info("ShopFrame", "PurchaseDialog initialized")
+	else
+		logger:warn("ShopFrame", "ConfirmPanel not found in Shop model")
+	end
 
-	-- Initialize PurchaseDialog
-	logger:info("ShopFrame", "Initializing PurchaseDialog component")
-	local PurchaseDialog = require(script.Parent.PurchaseDialog)
-	self.purchaseDialog = PurchaseDialog.new(self.diContainer, self.frame)
-
-	-- Initialize ItemPreview
-	logger:info("ShopFrame", "Initializing ItemPreview component")
-	local ItemPreview = require(script.Parent.ItemPreview)
-	self.itemPreview = ItemPreview.new(self.diContainer, self.frame, self.purchaseDialog)
+	-- Initialize ItemPreview using the Preview frame
+	if self.previewFrame then
+		local ItemPreview = require(script.Parent.ItemPreview)
+		self.itemPreview = ItemPreview.new(self.diContainer, self.frame, self.purchaseDialog, self.previewFrame)
+		logger:info("ShopFrame", "ItemPreview initialized")
+	else
+		logger:warn("ShopFrame", "Preview frame not found in Shop model")
+	end
 
 	-- Listen for item selection events
-	logger:info("ShopFrame", "Setting up remote event listeners")
 	self:_setupRemoteEventListeners()
 
-	logger:info("ShopFrame", "ShopFrame initialization completed successfully")
+	logger:info("ShopFrame", "Shop UI initialization completed")
 end
 
 function ShopFrame:_updateBalanceDisplay()
@@ -135,7 +123,7 @@ function ShopFrame:_updateBalanceDisplay()
 	-- Coins display
 	local coinLabel = Instance.new("TextLabel")
 	coinLabel.Size = UDim2.new(0.45, 0, 1, 0)
-	coinLabel.Position = UDim2.new(0, 0, 0, 0)
+	coinLabel.Position = UDim2.fromScale(0, 0)
 	coinLabel.BackgroundTransparency = 1
 	coinLabel.Text = "🪙 " .. tostring(currency.coins)
 	coinLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
@@ -147,7 +135,7 @@ function ShopFrame:_updateBalanceDisplay()
 	-- Gems display
 	local gemLabel = Instance.new("TextLabel")
 	gemLabel.Size = UDim2.new(0.45, 0, 1, 0)
-	gemLabel.Position = UDim2.new(0.55, 0, 0, 0)
+	gemLabel.Position = UDim2.fromScale(0.55, 0)
 	gemLabel.BackgroundTransparency = 1
 	gemLabel.Text = "💎 " .. tostring(currency.gems)
 	gemLabel.TextColor3 = Color3.fromRGB(0, 191, 255)
@@ -171,7 +159,7 @@ function ShopFrame:open()
 	self.isOpen = true
 
 	logger:info("ShopFrame", "Calling frame:open()")
-	self.baseFrame:open()
+	self:open()
 
 	-- Update balance and owned items
 	logger:info("ShopFrame", "Updating balance display")
@@ -199,7 +187,7 @@ function ShopFrame:close()
 	self.isOpen = false
 
 	logger:info("ShopFrame", "Calling frame:close()")
-	self.baseFrame:close()
+	self:close()
 
 	logger:info("ShopFrame", "Shop frame closed successfully")
 end
@@ -395,8 +383,8 @@ function ShopFrame:destroy()
 		end
 	end
 
-	if self.baseFrame and self.baseFrame.frame then
-		self.baseFrame.frame:Destroy()
+	if self.frame then
+		self.frame:Destroy()
 	end
 end
 

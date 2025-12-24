@@ -3,47 +3,45 @@
     "children": [
         {
             "className": "Frame",
-            "name": "Background",
+            "name": "Background"
+        },
+        {
+            "className": "Frame",
+            "name": "Body",
             "children": [
                 {
-                    "className": "Frame",
-                    "name": "Body",
+                    "className": "ScrollingFrame",
                     "children": [
                         {
-                            "className": "ScrollingFrame",
+                            "className": "UIGridLayout",
                             "children": [
                                 {
-                                    "className": "UIGridLayout",
-                                    "children": [
-                                        {
-                                            "className": "UIAspectRatioConstraint"
-                                        }
-                                    ]
-                                },
+                                    "className": "UIAspectRatioConstraint"
+                                }
+                            ]
+                        },
+                        {
+                            "className": "TextButton",
+                            "name": "Template",
+                            "children": [
                                 {
-                                    "className": "TextButton",
-                                    "name": "Template",
+                                    "className": "ImageLabel",
                                     "children": [
                                         {
-                                            "className": "ImageLabel",
+                                            "className": "UIStroke",
                                             "children": [
                                                 {
-                                                    "className": "UIStroke",
-                                                    "children": [
-                                                        {
-                                                            "className": "UIGradient"
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "className": "TextLabel",
-                                                    "name": "ItemNameLabel"
-                                                },
-                                                {
-                                                    "className": "TextLabel",
-                                                    "name": "PriceLabel"
+                                                    "className": "UIGradient"
                                                 }
                                             ]
+                                        },
+                                        {
+                                            "className": "TextLabel",
+                                            "name": "ItemNameLabel"
+                                        },
+                                        {
+                                            "className": "TextLabel",
+                                            "name": "PriceLabel"
                                         }
                                     ]
                                 }
@@ -67,6 +65,9 @@
                     "className": "Frame",
                     "name": "Template",
                     "children": [
+                        {
+                            "className": "UIListLayout"
+                        },
                         {
                             "className": "UICorner"
                         },

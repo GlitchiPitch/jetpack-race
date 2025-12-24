@@ -19,7 +19,7 @@ function UI:init()
 	logger:debug("RaceSystemClientUI", "Initializing client UI...")
 
 	-- Initialize RaceUI
-	local RaceUI = require(script.Race.RaceUI)
+	local RaceUI = require(script.Race)
 	self.raceUI = RaceUI.new(self.diContainer)
 	logger:debug("RaceSystemClientUI", "RaceUI initialized")
 

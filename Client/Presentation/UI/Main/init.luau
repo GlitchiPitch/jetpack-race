@@ -68,6 +68,7 @@ end
 
 function MainUI:_setupRemoteEventListeners()
 	local remoteEventService = self.diContainer:resolve("RemoteEventService")
+	---@type SharedConstants
 	local constants = self.diContainer:resolve("Shared.Constants")
 
 	-- Listen for player data updates

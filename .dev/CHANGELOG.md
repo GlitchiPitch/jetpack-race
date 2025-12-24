@@ -59,6 +59,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Race System entity cleanup - removed duplicate Pet and Rarity entities
+- Shop System UI component refinements
+- Race Service synchronization improvements
+- Remote event model optimizations
+- Flying Service camera corrections
+
+### Changed
+- Enhanced Race System entities (Race, Ring) with better data structures
+- Improved Race UI initialization and component integration
+- Updated Shop UI components (ShopFrame, ShopCatalog, ItemPreview, PurchaseDialog)
+- Optimized AssetsSpawnService and RingsService implementations
+- Enhanced Client application initialization
+
+### Added
+- Shop.model.json for UI configuration
+- Improved error handling in Race System services
+
 ## [0.4.5] - 2024-12-XX
 
 ### Added

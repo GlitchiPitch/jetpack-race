@@ -121,6 +121,11 @@ function RaceService:activateRaceFlying(player)
 
 	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.RACE_STARTED, {})
 
+	-- Create checkpoint rings for this race
+	local raceEntity = self.diContainer:resolve("Entities").Race.new({ id = player.UserId })
+	local ringsService = self.diContainer:resolve("RingsService")
+	ringsService:createRings(player, raceEntity)
+
 	-- Start boost spawning for this race
 	self:startBoostSpawning(player)
 
@@ -239,6 +244,10 @@ function RaceService:finishRace(player)
 	-- Set race state to finished
 	self.playerRaceStates[player] = "Finished"
 
+	-- Destroy checkpoint rings
+	local ringsService = self.diContainer:resolve("RingsService")
+	ringsService:destroyRings(player)
+
 	-- Stop boost spawning
 	self:stopBoostSpawning(player)
 
@@ -270,6 +279,10 @@ function RaceService:onPlayerRemoving(player)
 	local logger = self.diContainer:resolve("Logger")
 
 	logger:info("RaceSystemServerRaceService", "Player removing, cleaning up race state:", player.Name)
+
+	-- Destroy checkpoint rings
+	local ringsService = self.diContainer:resolve("RingsService")
+	ringsService:destroyRings(player)
 
 	-- Stop boost spawning
 	self:stopBoostSpawning(player)

@@ -5,8 +5,9 @@ ItemPreview.__index = ItemPreview
 ---@param diContainer DIContainer
 ---@param parentFrame Frame
 ---@param purchaseDialog PurchaseDialog
+---@param existingFrame? Frame - Optional existing frame from model
 ---@return ItemPreview
-function ItemPreview.new(diContainer, parentFrame, purchaseDialog)
+function ItemPreview.new(diContainer, parentFrame, purchaseDialog, existingFrame)
 	local self = setmetatable({}, ItemPreview)
 	self.diContainer = diContainer
 	self.parentFrame = parentFrame
@@ -14,9 +15,128 @@ function ItemPreview.new(diContainer, parentFrame, purchaseDialog)
 	self.currentItem = nil
 	self.isVisible = false
 
-	self:_setupUI()
+	if existingFrame then
+		self:_setupFromExistingFrame(existingFrame)
+	else
+		self:_setupUI()
+	end
 
 	return self
+end
+
+function ItemPreview:_setupFromExistingFrame(existingFrame)
+	local logger = self.diContainer:resolve("Logger")
+	logger:info("ItemPreview", "Setting up from existing frame")
+
+	-- Use the existing frame from the model
+	self.previewFrame = existingFrame
+	self.previewFrame.Visible = false
+
+	-- Find elements from the model
+	self.iconImage = existingFrame:FindFirstChild("Icon")
+	self.titleLabel = existingFrame:FindFirstChild("ItemName") -- ItemName serves as title
+	self.itemNameLabel = existingFrame:FindFirstChild("ItemName")
+	self.itemDescriptionLabel = existingFrame:FindFirstChild("ItemDescription")
+	self.descriptionLabel = existingFrame:FindFirstChild("ItemDescription") -- Alias for compatibility
+	self.subLabel = existingFrame:FindFirstChild("Sub")
+	self.rarityLabel = existingFrame:FindFirstChild("Sub") -- Sub label can serve as rarity indicator
+
+	-- Find action buttons (unnamed frames)
+	local actionFrames = {}
+	for _, child in ipairs(existingFrame:GetChildren()) do
+		if child:IsA("Frame") and not child.Name:match("Icon|ItemName|ItemDescription|Sub") then
+			table.insert(actionFrames, child)
+		end
+	end
+
+	-- Assume first unnamed frame contains action buttons
+	if #actionFrames >= 1 then
+		local actionFrame = actionFrames[1]
+		self.actionFrame = actionFrame -- Store reference to action frame
+		self.buyButton = actionFrame:FindFirstChild("BuyButton")
+		self.equipButton = actionFrame:FindFirstChild("EquipButton")
+		self.unequipButton = actionFrame:FindFirstChild("UnequipButton")
+
+		-- Connect button events
+		if self.buyButton then
+			self.buyButton.MouseButton1Click:Connect(function()
+				if self.purchaseDialog and self.currentItem then
+					self.purchaseDialog:showPurchaseDialog(self.currentItem)
+				end
+			end)
+		end
+
+		if self.equipButton then
+			self.equipButton.MouseButton1Click:Connect(function()
+				if self.currentItem then
+					self:_equipItem(self.currentItem.id)
+				end
+			end)
+		end
+
+		if self.unequipButton then
+			self.unequipButton.MouseButton1Click:Connect(function()
+				if self.currentItem then
+					self:_unequipItem(self.currentItem.id)
+				end
+			end)
+		end
+	end
+
+	-- Create missing elements that are needed for functionality
+	self:_createMissingElements(existingFrame)
+
+	logger:info("ItemPreview", "Setup from existing frame completed")
+end
+
+function ItemPreview:_createMissingElements(existingFrame)
+	-- Create price frame if it doesn't exist
+	if not existingFrame:FindFirstChild("PriceFrame") then
+		self.priceFrame = Instance.new("Frame")
+		self.priceFrame.Name = "PriceFrame"
+		self.priceFrame.Size = UDim2.new(0.9, 0, 0.08, 0)
+		self.priceFrame.Position = UDim2.new(0.05, 0, 0.78, 0)
+		self.priceFrame.BackgroundTransparency = 1
+		self.priceFrame.Parent = existingFrame
+	end
+
+	-- Create 3D preview viewport if it doesn't exist
+	if not existingFrame:FindFirstChild("PreviewViewport") then
+		self.previewViewport = Instance.new("ViewportFrame")
+		self.previewViewport.Name = "PreviewViewport"
+		self.previewViewport.Size = UDim2.new(0.9, 0, 0.4, 0)
+		self.previewViewport.Position = UDim2.new(0.05, 0, 0.17, 0)
+		self.previewViewport.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+		self.previewViewport.BackgroundTransparency = 0.2
+		self.previewViewport.Parent = existingFrame
+
+		-- Configure viewport
+		local viewportBorder = Instance.new("UIStroke")
+		viewportBorder.Color = Color3.fromRGB(80, 80, 80)
+		viewportBorder.Parent = self.previewViewport
+
+		self.previewViewport.CurrentCamera = Instance.new("Camera")
+		self.previewViewport.CurrentCamera.CFrame = CFrame.new(0, 0, 5)
+		self.previewViewport.CurrentCamera.Parent = self.previewViewport
+	end
+
+	-- Create close button if it doesn't exist
+	if not existingFrame:FindFirstChild("CloseButton") then
+		local closeButton = Instance.new("TextButton")
+		closeButton.Name = "CloseButton"
+		closeButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+		closeButton.Position = UDim2.new(0.9, 0, 0.01, 0)
+		closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+		closeButton.Text = "X"
+		closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+		closeButton.TextScaled = true
+		closeButton.Font = Enum.Font.SourceSansBold
+		closeButton.Parent = existingFrame
+
+		closeButton.MouseButton1Click:Connect(function()
+			self:hide()
+		end)
+	end
 end
 
 function ItemPreview:_setupUI()

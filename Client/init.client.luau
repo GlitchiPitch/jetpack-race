@@ -117,12 +117,11 @@ end
 
 local client = Client.new()
 
--- Initialize client immediately - systems should handle server availability gracefully
-client:init()
-
 -- Optional: Wait for server confirmation and perform any post-init setup
 local function onServerLoaded()
 	warn("Client: Server loaded confirmation received")
+	-- Initialize client immediately - systems should handle server availability gracefully
+	client:init()
 	-- Any additional setup that requires server to be ready
 end
 

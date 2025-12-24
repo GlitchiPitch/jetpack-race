@@ -37,6 +37,7 @@ end
 
 function RaceUI:_setupRemoteEventListeners()
     local remoteEventService = self.diContainer:resolve("RemoteEventService")
+    ---@type RaceSystemConstants
     local constants = self.diContainer:resolve("Shared.Constants")
 
     -- Listen for race updates
