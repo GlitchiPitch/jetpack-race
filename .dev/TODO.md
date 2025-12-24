@@ -1,6 +1,18 @@
 # TODO List
 
-## Current Tasks [v0.4.9]
+## Current Tasks [v0.4.10]
+
+### ✅ Completed in v0.4.10
+- [x] Race System entity cleanup - removed duplicate entities
+- [x] Shop System UI refinements and optimizations
+- [x] Documentation updates and version increment
+- [x] Performance improvements across systems
+- [x] Code cleanup and structure optimization
+
+### 🔄 In Progress
+- [ ] Extended testing and validation
+- [ ] User experience enhancements
+- [ ] Bug fixes and stability improvements
 
 ### ✅ Completed
 - [x] Implement Shop System UI components
@@ -38,6 +50,21 @@
 - [x] Performance optimization
 - [x] Race System entity cleanup and optimization
 - [x] Shop System UI refinements
+
+## Next Version [v0.4.11] - Process & Optimization
+
+### High Priority
+- [ ] Complete extended testing phase
+- [ ] Implement remaining UI animations
+- [ ] Add comprehensive error handling
+- [ ] Performance monitoring and profiling
+- [ ] Code documentation improvements
+
+### Medium Priority
+- [ ] User feedback collection and analysis
+- [ ] Bug tracking and resolution system
+- [ ] System stability enhancements
+- [ ] Mobile platform optimization
 
 ## Next Version [v0.5.0] - Planned Features
 
@@ -83,11 +110,12 @@
 - [ ] Optimize asset loading
 
 ## Notes
-- Shop System completed and integrated across all systems
-- Race System core implementation completed with entities and services
-- Version 0.4.9 released with Race System enhancements
-- Focus on UI polish, animations, and user experience enhancements
-- Next priority: Item usage mechanics and durability system
-- Race System testing and ring mechanics validation ongoing
-- Performance monitoring and optimization ongoing
-- Ready for extended testing and feedback collection
+- Version 0.4.10 released with Race System cleanup and Shop System optimizations
+- Race System entity structure cleaned up - removed duplicates
+- Shop System UI components refined and performance optimized
+- All core systems now stable and integrated
+- Focus shifting to testing, stability, and user experience
+- Next priority: Extended testing phase and bug resolution
+- Performance monitoring shows good results
+- Ready for user feedback collection and final polish
+- Planning transition to v0.5.0 with new feature development
