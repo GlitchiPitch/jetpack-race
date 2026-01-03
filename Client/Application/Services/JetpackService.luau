@@ -1,4 +1,5 @@
 local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
 ---@class ClientJetpackService
 ---@field diContainer DIContainer
 ---@field _updateTime number
@@ -34,6 +35,7 @@ function JetpackService:startFly()
 
 	playerService:disableDefaultControl()
 	self:_moveUp()
+	self:_listenInput()
 
 	local function onRender(deltaTime: number)
 		self._deltaTime += deltaTime
@@ -42,7 +44,7 @@ function JetpackService:startFly()
 			local a = cameraService:getUnitVector()
 			playerJetpack:setMovers({
 				isActive = true,
-				vectorVelocity = a * 50,
+				vectorVelocity = a * playerJetpack.speed,
 				orientationCFrame = cameraService:getCFrame(),
 			})
 		end
@@ -56,6 +58,7 @@ function JetpackService:_moveUp()
 	local application = self.diContainer:resolve("Application")
 	local playerService = application.services.playerService
 	local cameraService = application.services.cameraService
+
 	local playerJetpack = playerService:getPlayerJetpack()
 
 	playerJetpack:setMovers({
@@ -65,6 +68,38 @@ function JetpackService:_moveUp()
 	})
 
 	task.wait(3)
+end
+
+function JetpackService:_listenInput()
+	---@type ClientApplication
+	local application = self.diContainer:resolve("Application")
+	local playerService = application.services.playerService
+	local playerJetpack = playerService:getPlayerJetpack()
+
+	---@param input InputObject
+	---@param gameProcessed boolean
+	local function inputBegan(input, gameProcessed)
+		if gameProcessed then
+			return
+		end
+
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			playerJetpack:toggleNitro(true)
+		end
+	end
+
+	local function inputEnded(input, gameProcessed)
+		if gameProcessed then
+			return
+		end
+
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			playerJetpack:toggleNitro(false)
+		end
+	end
+
+	UserInputService.InputBegan:Connect(inputBegan)
+	UserInputService.InputEnded:Connect(inputEnded)
 end
 
 return JetpackService

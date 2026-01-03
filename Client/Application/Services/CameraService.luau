@@ -31,7 +31,7 @@ function CameraService.new(diContainer)
 	self.isAiming = false
 	self.shoulderSide = 1
 	self.isCameraActive = true
-
+	self.isNitro = false
 	self:_setup()
 	return self
 end
@@ -121,6 +121,11 @@ function CameraService:_updateCamera(deltaTime)
 		targetFov = self.cameraSettings.aimFov
 		sensitivity = self.cameraSettings.aimMouseSensitivity
 		rotSmoothness = self.cameraSettings.aimRotationSmoothness
+	elseif self.isNitro then
+		targetBaseOffset = self.cameraSettings.nitroCameraOffset
+		targetFov = self.cameraSettings.nitroFov
+		sensitivity = self.cameraSettings.nitroMouseSensitivity
+		rotSmoothness = self.cameraSettings.nitroRotationSmoothness
 	else
 		targetBaseOffset = self.cameraSettings.normalCameraOffset
 		targetFov = self.cameraSettings.normalFov
@@ -217,6 +222,12 @@ function CameraService:_handleAimInput(input, gameProcessed)
 			self.isAiming = true -- ...set the aiming flag to true.
 		elseif input.UserInputState == Enum.UserInputState.End then -- ...or the button was just released...
 			self.isAiming = false -- ...set the aiming flag to false.
+		end
+	elseif input.UserInputType == Enum.UserInputType.MouseButton1 then
+		if input.UserInputState == Enum.UserInputState.Begin then -- ...and the button was just pressed down...
+			self.isNitro = true -- ...set the aiming flag to true.
+		elseif input.UserInputState == Enum.UserInputState.End then -- ...or the button was just released...
+			self.isNitro = false -- ...set the aiming flag to false.
 		end
 	end
 end

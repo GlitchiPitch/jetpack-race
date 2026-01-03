@@ -2,6 +2,9 @@
 ---@field _instance Accessory
 ---@field linearVelocity LinearVelocity
 ---@field alignOrientation AlignOrientation
+---@field speed number
+---@field nitro number
+---@field _defaultSpeed number
 local JetpackEntity = {}
 JetpackEntity.__index = JetpackEntity
 
@@ -9,6 +12,8 @@ JetpackEntity.__index = JetpackEntity
 ---@field _instance Accessory,
 ---@field alignOrientation AlignOrientation,
 ---@field linearVelocity LinearVelocity
+---@field speed number
+---@field nitro number
 
 ---@param data jetpackData
 ---@return JetpackEntity
@@ -17,7 +22,9 @@ function JetpackEntity.new(data)
 	self._instance = data._instance
 	self.linearVelocity = data.linearVelocity or Instance.new("LinearVelocity")
 	self.alignOrientation = data.alignOrientation or Instance.new("AlignOrientation")
-
+	self._defaultSpeed = data.speed or 50
+	self.speed = self._defaultSpeed
+	self.nitro = data.nitro or 100
 	self:_setup()
 	return self
 end
@@ -61,6 +68,17 @@ function JetpackEntity:setMovers(data)
 		self.linearVelocity.VectorVelocity = data.vectorVelocity
 		self.alignOrientation.CFrame = data.orientationCFrame
 	end
+end
+
+---@param state boolean
+function JetpackEntity:toggleNitro(state)
+	if state then
+		self.speed *= 2.5
+	else
+		self.speed = self._defaultSpeed
+	end
+
+	-- warn(self.speed)
 end
 
 function JetpackEntity:destroy()
