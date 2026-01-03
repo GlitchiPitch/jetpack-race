@@ -20,7 +20,6 @@ function PlayerEntity.new(player, data)
 end
 
 function PlayerEntity:getData()
-	warn(self)
 	return {
 		money = self.money,
 		equippedJetpack = self.equippedJetpack,

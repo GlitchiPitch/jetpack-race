@@ -33,7 +33,6 @@ end
 
 function Application:init()
 	self:_connectToEvents()
-	warn(self)
 	self.services.raceService:start()
 end
 

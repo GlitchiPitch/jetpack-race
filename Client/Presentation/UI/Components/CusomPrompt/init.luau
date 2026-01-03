@@ -14,13 +14,15 @@ function CustomPrompt.new(parent)
 	self.customPromptUI = script.CustomPromptUI:Clone()
 	self.parent = parent
 	self._connections = {}
+
+	self:_setup()
 	return self
 end
 
 function CustomPrompt:_setup()
 	---@param state boolean
 	local function setVisible(state)
-		self.customPromptUI.Visible = state
+		self.customPromptUI.Enabled = state
 	end
 
 	local function promptShown()
@@ -40,6 +42,7 @@ function CustomPrompt:_setup()
 
 	self.prompt.Parent = self.parent
 	self.customPromptUI.Parent = self.parent
+	setVisible(false)
 
 	self._connections = {
 		self.prompt.PromptShown:Connect(promptShown),

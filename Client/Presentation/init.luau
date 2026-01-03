@@ -28,6 +28,20 @@ end
 function Presentation:init()
 	self.ui:init()
 	self.services:init()
+
+	self:_connectToEvents()
+end
+
+function Presentation:_connectToEvents()
+	---@type Shared
+	local shared = self.diContainer:resolve("Shared")
+
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED,
+		function(args)
+			self.ui.mainUI:toggleJetpackUI(true)
+		end
+	)
 end
 
 return Presentation

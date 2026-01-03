@@ -1,0 +1,83 @@
+{
+    "className": "ScreenGui",
+    "children": [
+        {
+            "className": "UIPadding"
+        },
+        {
+            "className": "Frame",
+            "name": "Body",
+            "children": [
+                {
+                    "className": "Frame"
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "RaceUI",
+            "children": [
+                {
+                    "className": "Frame",
+                    "name": "ProgressBar",
+                    "children": [
+                        {
+                            "className": "Frame",
+                            "name": "Scale"
+                        }
+                    ]
+                },
+                {
+                    "className": "Frame",
+                    "name": "Place",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
+                        },
+                        {
+                            "className": "TextLabel"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "JetpackUI",
+            "children": [
+                {
+                    "className": "UIListLayout"
+                },
+                {
+                    "className": "UIAspectRatioConstraint"
+                },
+                {
+                    "className": "Frame",
+                    "name": "Nitro",
+                    "children": [
+                        {
+                            "className": "Frame",
+                            "name": "Scale"
+                        },
+                        {
+                            "className": "TextLabel",
+                            "name": "NitroValue"
+                        }
+                    ]
+                },
+                {
+                    "className": "Frame",
+                    "name": "Speed",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
+                        },
+                        {
+                            "className": "TextLabel"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

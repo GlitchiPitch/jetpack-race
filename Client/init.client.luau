@@ -27,9 +27,6 @@ function Client:init()
 	self.application:init()
 	self.presentation:init()
 
-	task.wait(4)
-
-	self.application.services.raceService:activateTrigger()
 end
 
 local client = Client.new()

@@ -33,6 +33,7 @@ function RaceService:init()
 	local function onInstanceRemoved(trigger) end
 
 	for _, trigger in CollectionService:GetTagged(shared.Constants.TAGS.TRIGGER_ZONE) do
+		
 		onInstanceAdded(trigger)
 	end
 
@@ -48,7 +49,8 @@ function RaceService:_setupTrigger(trigger)
 	local function callback(player)
 		self:_triggered(player)
 	end
-	local prompt = presentation.ui.Components.CustomPrompt.new(trigger)
+
+	local prompt = presentation.ui.Components.CustomPrompt.new(trigger.PrimaryPart)
 	prompt:setCallback(callback)
 
 	table.insert(self._triggers, trigger)

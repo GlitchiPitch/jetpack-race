@@ -47,6 +47,8 @@ function JetpackService:startFly()
 				vectorVelocity = a * playerJetpack.speed,
 				orientationCFrame = cameraService:getCFrame(),
 			})
+
+			playerJetpack:updateNitro()
 		end
 	end
 

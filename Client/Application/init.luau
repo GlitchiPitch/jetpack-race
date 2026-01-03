@@ -38,7 +38,6 @@ function Application:_connectToEvents()
 		shared.Constants.REMOTE_EVENTS.PLAYER_UPDATED,
 		function(args)
 			self.services.playerService:updatePlayerData(args.playerData)
-			print(args, shared.Constants.REMOTE_EVENTS.PLAYER_UPDATED)
 		end
 	)
 
@@ -46,10 +45,7 @@ function Application:_connectToEvents()
 		shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED,
 		function(args)
 			self.services.jetpackService:updateJetpack(args.jetpack)
-			self.services.jetpackService:startFly()
-			self.services.cameraService:activateFlyingCamera()
-			self.services.animationService:activateFlyingIdle()
-			print(args, shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED)
+			self.services.raceService:start()
 		end
 	)
 end
