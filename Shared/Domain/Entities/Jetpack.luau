@@ -2,8 +2,8 @@
 ---@field _instance Accessory
 ---@field linearVelocity LinearVelocity
 ---@field alignOrientation AlignOrientation
-local Jetpack = {}
-Jetpack.__index = Jetpack
+local JetpackEntity = {}
+JetpackEntity.__index = JetpackEntity
 
 ---@class jetpackData
 ---@field _instance Accessory,
@@ -12,8 +12,8 @@ Jetpack.__index = Jetpack
 
 ---@param data jetpackData
 ---@return JetpackEntity
-function Jetpack.new(data)
-	local self = setmetatable({}, Jetpack)
+function JetpackEntity.new(data)
+	local self = setmetatable({}, JetpackEntity)
 	self._instance = data._instance
 	self.linearVelocity = data.linearVelocity or Instance.new("LinearVelocity")
 	self.alignOrientation = data.alignOrientation or Instance.new("AlignOrientation")
@@ -22,7 +22,7 @@ function Jetpack.new(data)
 	return self
 end
 
-function Jetpack:_setup()
+function JetpackEntity:_setup()
 	self.linearVelocity.Parent = self._instance.Handle
 	self.alignOrientation.Parent = self._instance.Handle
 	self.linearVelocity.Attachment0 = self._instance.Handle.BodyBackAttachment
@@ -33,7 +33,7 @@ function Jetpack:_setup()
 	self.alignOrientation.Enabled = false
 end
 
-function Jetpack:getData()
+function JetpackEntity:getData()
 	return {
 		_instance = self._instance,
 		linearVelocity = self.linearVelocity,
@@ -42,7 +42,7 @@ function Jetpack:getData()
 end
 
 ---@param playerEntity PlayerEntity
-function Jetpack:equipToPlayer(playerEntity)
+function JetpackEntity:equipToPlayer(playerEntity)
 	local character = playerEntity.player.Character
 	self._instance.Parent = character
 end
@@ -53,7 +53,7 @@ end
 ---@field orientationCFrame CFrame
 
 ---@param data jetpackMoversData
-function Jetpack:setMovers(data)
+function JetpackEntity:setMovers(data)
 	self.linearVelocity.Enabled = data.isActive
 	self.alignOrientation.Enabled = data.isActive
 
@@ -63,8 +63,8 @@ function Jetpack:setMovers(data)
 	end
 end
 
-function Jetpack:destroy()
+function JetpackEntity:destroy()
 	self._instance:Destroy()
 end
 
-return Jetpack
+return JetpackEntity

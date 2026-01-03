@@ -8,10 +8,10 @@ Services.__index = Services
 
 ---@param diContainer DIContainer
 function Services.new(diContainer)
-   local self = setmetatable({}, Services)
-   self.diContainer = diContainer
-   self.trajectoryPathService = TrajectoryPathService.new()
-   return self 
+	local self = setmetatable({}, Services)
+	self.diContainer = diContainer
+	self.trajectoryPathService = TrajectoryPathService.new(diContainer)
+	return self
 end
 
 return Services

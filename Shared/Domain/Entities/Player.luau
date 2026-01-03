@@ -40,10 +40,32 @@ function PlayerEntity:unequipJetpack()
 	end
 end
 
+---@return Model?
+function PlayerEntity:getCharacter()
+	return self.player.Character
+end
+
+---@return Humanoid
+function PlayerEntity:getHumanoid()
+	local character = self:getCharacter()
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	return humanoid
+end
+
+---@return Animator
+function PlayerEntity:getAnimator()
+	local humanoid = self:getHumanoid()
+	local animator = humanoid:FindFirstChildOfClass("Animator")
+	return animator
+end
+
 function PlayerEntity:disableDefaultControl()
 	local PlayerModule = require(self.player.PlayerScripts:FindFirstChild("PlayerModule"))
+	local character = self:getCharacter()
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
 	local Control = PlayerModule:GetControls()
 	Control:Disable()
+	humanoid.PlatformStand = true
 end
 
 return PlayerEntity

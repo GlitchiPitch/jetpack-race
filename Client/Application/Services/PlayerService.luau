@@ -24,7 +24,7 @@ function PlayerService:getPlayerCharacter()
 	---@type ClientInfrastructure
 	local infrastructure = self.diContainer:resolve("Infrastructure")
 	local playerEntity = infrastructure.repositories.playerRepository:getPlayerEntity()
-	return playerEntity.player.Character
+	return playerEntity:getCharacter()
 end
 
 ---@param data table<string, any>

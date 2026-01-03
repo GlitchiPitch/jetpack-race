@@ -1,4 +1,5 @@
 ---@class TrajectoryPathService
+---@field diContainer DIContainer
 ---@field folder Folder
 ---@field pointIndex number
 local TrajectoryPathService = {}
@@ -12,14 +13,22 @@ local function quadraticBezierPoint(t: number, p0: Vector3, p1: Vector3, p2: Vec
 	return uu * p0 + 2 * u * t * p1 + tt * p2
 end
 
-function TrajectoryPathService.new()
+---@param diContainer DIContainer
+---@return TrajectoryPathService
+function TrajectoryPathService.new(diContainer)
 	local self = setmetatable({}, TrajectoryPathService)
+	self.diContainer = diContainer
 	self.folder = Instance.new("Folder")
 	self.pointIndex = 1
+
+	self.folder.Parent = workspace.Workspace
 	return self
 end
 
 function TrajectoryPathService:generateTrack()
+	---@type Shared
+	local shared = self.diContainer:resolve("Shared")
+
 	-- Refactored trajectory creation setup
 	local jetpackTrajectories = {
 		{
@@ -61,25 +70,22 @@ function TrajectoryPathService:generateTrack()
 	for i = 1, #allParts do
 		local currentPart = allParts[i]
 		local nextPart = allParts[i + 1]
-		local p = Instance.new("Part")
-		p.Parent = self.folder
-		p.Anchored = true
-		p.Size = Vector3.one * 10
-		p.CanCollide = false
-		p.Transparency = 0.5
-		
-		p.Name = self.pointIndex
-		
-		if self.pointIndex == 1 then
-			p.Color = Color3.new(1, 0, 0)
-		end
-		self.pointIndex += 1
+		local pointCFrame
 
 		if currentPart and nextPart then
-			p.CFrame = CFrame.new(currentPart, nextPart)
+			pointCFrame = CFrame.new(currentPart, nextPart)
 		else
-			p.CFrame = CFrame.new(currentPart)
+			pointCFrame = CFrame.new(currentPart)
 		end
+		
+		local p = shared.Domain.Entities.Checkpoint.new({
+			_instance = shared.Assets.Checkpoint:Clone(),
+			cframe = pointCFrame,
+			index = self.pointIndex,
+			parent = self.folder,
+		})
+
+		self.pointIndex += 1
 	end
 end
 
