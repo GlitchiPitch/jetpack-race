@@ -2,7 +2,7 @@
 ---@field player Player
 ---@field money number
 ---@field equippedJetpack string
----@field _jetpack JetpackEntity | nil
+---@field jetpack JetpackEntity | nil
 local PlayerEntity = {}
 PlayerEntity.__index = PlayerEntity
 
@@ -14,7 +14,7 @@ function PlayerEntity.new(player, data)
 	self.player = player
 	self.money = data.money or 100
 	self.equippedJetpack = data.equippedJetpack or ""
-	self._jetpack = nil
+	self.jetpack = nil
 	self._state = "Idle"
 	return self
 end
@@ -25,13 +25,13 @@ end
 
 ---@param jetpack JetpackEntity
 function PlayerEntity:equipJetpack(jetpack)
-	self._jetpack = jetpack
-	self._jetpack:equipToPlayer(self)
+	self.jetpack = jetpack
+	self.jetpack:equipToPlayer(self)
 end
 
 function PlayerEntity:unequipJetpack()
-	if self._jetpack then
-		self._jetpack:destroy()
+	if self.jetpack then
+		self.jetpack:destroy()
 	end
 end
 

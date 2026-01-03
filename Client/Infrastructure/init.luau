@@ -1,20 +1,15 @@
 local Repositories = require(script.Repositories)
-local Services = require(script.Services)
----@class ServerInfrastructure
+
+---@class ClientInfrastructure
 ---@field diContainer DIContainer
----@field Repositories Repositories
----@field services ServerInfrastructureServices
+---@field Repositories ClientRepositories
 local Infrastructure = {}
 Infrastructure.__index = Infrastructure
 
----@param diContainer DIContainer
----@return ServerInfrastructure
 function Infrastructure.new(diContainer)
 	local self = setmetatable({}, Infrastructure)
 	self.diContainer = diContainer
 	self.Repositories = Repositories
-	self.services = Services.new(diContainer)
-    
 	self:_register()
 	return self
 end
@@ -24,4 +19,5 @@ function Infrastructure:_register()
 		return self
 	end)
 end
+
 return Infrastructure

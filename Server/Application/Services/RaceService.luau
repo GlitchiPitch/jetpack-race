@@ -8,7 +8,13 @@ RaceService.__index = RaceService
 function RaceService.new(diContainer)
 	local self = setmetatable({}, RaceService)
 	self.diContainer = diContainer
+
+	self:_setup()
 	return self
+end
+
+function RaceService:_setup()
+	
 end
 
 ---@param playerEntity PlayerEntity
@@ -20,7 +26,9 @@ function RaceService:triggerActivated(playerEntity)
 end
 
 function RaceService:start()
-	
+	---@type ServerInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	infrastructure.services.trajectoryPathService:generateTrack()
 end
 
 function RaceService:finish()

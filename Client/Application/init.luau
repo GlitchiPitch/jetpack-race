@@ -24,4 +24,12 @@ end
 
 function Application:init() end
 
+function Application:_connectToEvents()
+	---@type Shared
+	local shared = self.diContainer:resolve("Shared")
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.PLAYER_UPDATED
+	)
+end
+
 return Application
