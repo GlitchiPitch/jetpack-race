@@ -27,16 +27,17 @@ function PlayerRepository:getPlayerEntity()
 	return self.playerEntity
 end
 
----@param data table<string, any>
 ---@param jetpack JetpackEntity
-function PlayerRepository:updateEntity(data, jetpack)
-	warn(data)
+function PlayerRepository:updateJetpack(jetpack)
+	self.playerEntity:equipJetpack(jetpack)
+end
+
+---@param data table<string, any>
+function PlayerRepository:updateEntity(data)
 	---@type Shared
 	local shared = self.diContainer:resolve("Shared")
 	local playerEntity = shared.Domain.Entities.Player.new(self.player, data)
-	
 	self.playerEntity = playerEntity
-	self.playerEntity:equipJetpack(jetpack)
 end
 
 return PlayerRepository

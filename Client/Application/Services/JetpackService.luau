@@ -15,11 +15,26 @@ function JetpackService.new(diContainer)
 	return self
 end
 
+---@param jetpackData jetpackData
+function JetpackService:updateJetpack(jetpackData)
+	---@type ClientInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	---@type Shared
+	local shared = self.diContainer:resolve("Shared")
+	local jetpack = shared.Domain.Entities.Jetpack.new(jetpackData)
+	infrastructure.repositories.playerRepository:updateJetpack(jetpack)
+end
+
 function JetpackService:startFly()
 	---@type ClientApplication
 	local application = self.diContainer:resolve("Application")
-	local playerJetpack = application.services.playerService:getPlayerJetpack()
 	local cameraService = application.services.cameraService
+	local playerService = application.services.playerService
+	local playerJetpack = playerService:getPlayerJetpack()
+
+	playerService:disableDefaultControl()
+	self:_moveUp()
+
 	local function onRender(deltaTime: number)
 		self._deltaTime += deltaTime
 		if self._deltaTime >= self._updateTime then
@@ -32,14 +47,24 @@ function JetpackService:startFly()
 			})
 		end
 	end
-    
+
 	RunService.RenderStepped:Connect(onRender)
 end
 
 function JetpackService:_moveUp()
-	script.Parent.AlignOrientation.Enabled = true
-	script.Parent.LinearVelocity.Enabled = true
-	script.Parent.LinearVelocity.VectorVelocity = Vector3.yAxis * 10
+	---@type ClientApplication
+	local application = self.diContainer:resolve("Application")
+	local playerService = application.services.playerService
+	local cameraService = application.services.cameraService
+	local playerJetpack = playerService:getPlayerJetpack()
+
+	playerJetpack:setMovers({
+		isActive = true,
+		vectorVelocity = Vector3.yAxis * 10,
+		orientationCFrame = cameraService:getCFrame(),
+	})
+
+	task.wait(3)
 end
 
 return JetpackService

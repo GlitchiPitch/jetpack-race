@@ -45,7 +45,9 @@ function Application:_connectToEvents()
 	shared.Infrastructure.services.remoteEventService:connectToEvent(
 		shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED,
 		function(args)
+			self.services.jetpackService:updateJetpack(args.jetpack)
 			self.services.jetpackService:startFly()
+			self.services.cameraService:activateFlyingCamera()
 			print(args, shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED)
 		end
 	)

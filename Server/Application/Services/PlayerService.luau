@@ -52,7 +52,6 @@ function PlayerService:updatePlayer(player)
 
 	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
 		playerData = playerEntity:getData(),
-		
 	})
 end
 

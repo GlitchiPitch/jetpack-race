@@ -73,37 +73,18 @@ function CameraService:activateFlyingCamera()
 		self.cameraSettings.normalCameraOffset.Y,
 		self.cameraSettings.normalCameraOffset.Z
 	)
+
 	self.effectiveFov = self.cameraSettings.normalFov
-
-	-- --]]
-	-- -- Initialization
-	-- humanoid.AutoRotate = false -- Disables the humanoid's default auto-rotation behavior.  This prevents
-	-- the character from automatically turning to face the direction of movement,
-	-- which would interfere with the custom camera control.
 	self.camera.CameraType = Enum.CameraType.Scriptable -- Sets the camera's control mode to "Scriptable".  This means that the
-	-- camera's position and orientation will be controlled by a script,
-	-- rather than by the player's default camera controls.
-	UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter -- Locks the mouse cursor to the center of the screen.  This is
-	-- a common technique used in third-person camera systems to provide
-	-- smooth and consistent camera control.
-	UserInputService.MouseIconEnabled = false -- Hides the default mouse cursor.  This is often done when the mouse
-	-- is locked to the center of the screen, as the cursor is no longer needed.
-
-	-- Create RaycastParams for camera collision
 	self.raycastParams = RaycastParams.new() -- Creates a new RaycastParams object.  This object is used to configure
-	-- how raycasts are performed.  Raycasts are used to detect collisions
-	-- between the camera and other objects in the game world.
 	self.raycastParams.FilterType = Enum.RaycastFilterType.Exclude -- Sets the filter type to "Exclude".  This means that the raycast
-	-- will ignore any objects that are included in the filter list.
 	self.raycastParams.FilterDescendantsInstances = { character } -- Sets the filter list to include the player's character.  This
-	-- prevents the camera from colliding with the character itself.
 	self.raycastParams.IgnoreWater = true
 
-	-- Connect Input Handlers
+	UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter -- Locks the mouse cursor to the center of the screen.  This is
+	UserInputService.MouseIconEnabled = false -- Hides the default mouse cursor.  This is often done when the mouse
 	UserInputService.InputBegan:Connect(handleAimInput) -- Connects the handleAimInput function to the InputBegan event,
-	-- which is fired when an input begins (e.g., a key is pressed down).
 	UserInputService.InputEnded:Connect(handleAimInput) -- Connects handleAimInput to the InputEnded event, which fires
-	-- when an input ends (e.g., a key is released).
 	UserInputService.InputBegan:Connect(handleShoulderSwapInput)
 
 	self.renderConnection = RunService.RenderStepped:Connect(updateCamera) -- Connects updateCamera to RenderStepped.
@@ -124,6 +105,11 @@ end
 
 -- Main update function connected to RenderStepped
 function CameraService:_updateCamera(deltaTime)
+	---@type ClientApplication
+	local application = self.diContainer:resolve("Application")
+	local playerService = application.services.playerService
+	local character = playerService:getPlayerCharacter()
+	self.rootPart = character:FindFirstChild("HumanoidRootPart")
 	if not self.isCameraActive or not self.rootPart then
 		return
 	end -- If the camera is not active or the root part doesn't exist, exit.

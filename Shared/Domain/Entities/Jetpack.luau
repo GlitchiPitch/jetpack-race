@@ -5,13 +5,18 @@
 local Jetpack = {}
 Jetpack.__index = Jetpack
 
----@param accessory Accessory
+---@class jetpackData
+---@field _instance Accessory,
+---@field alignOrientation AlignOrientation,
+---@field linearVelocity LinearVelocity
+
+---@param data jetpackData
 ---@return JetpackEntity
-function Jetpack.new(accessory)
+function Jetpack.new(data)
 	local self = setmetatable({}, Jetpack)
-	self._instance = accessory
-	self.linearVelocity = self._instance:FindFirstChildOfClass("LinearVelocity") or Instance.new("LinearVelocity")
-	self.alignOrientation = self._instance:FindFirstChildOfClass("AlignOrientation") or Instance.new("AlignOrientation")
+	self._instance = data._instance
+	self.linearVelocity = data.linearVelocity or Instance.new("LinearVelocity")
+	self.alignOrientation = data.alignOrientation or Instance.new("AlignOrientation")
 
 	self:_setup()
 	return self
@@ -23,8 +28,17 @@ function Jetpack:_setup()
 	self.linearVelocity.Attachment0 = self._instance.Handle.BodyBackAttachment
 	self.alignOrientation.Attachment0 = self._instance.Handle.BodyBackAttachment
 	self.alignOrientation.Mode = Enum.OrientationAlignmentMode.OneAttachment
+	self.linearVelocity.MaxForce = 4000
 	self.linearVelocity.Enabled = false
 	self.alignOrientation.Enabled = false
+end
+
+function Jetpack:getData()
+	return {
+		_instance = self._instance,
+		linearVelocity = self.linearVelocity,
+		alignOrientation = self.alignOrientation,
+	}
 end
 
 ---@param playerEntity PlayerEntity

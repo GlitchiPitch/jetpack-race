@@ -27,20 +27,20 @@ function PlayerService:getPlayerCharacter()
 	return playerEntity.player.Character
 end
 
----@class playerData
----@field data table<string, any>
----@field jetpackAsset Accessory
-
----@param data playerData
+---@param data table<string, any>
 function PlayerService:updatePlayerData(data)
-warn(data)
 	---@type ClientInfrastructure
 	local infrastructure = self.diContainer:resolve("Infrastructure")
 	---@type Shared
 	local shared = self.diContainer:resolve("Shared")
+	infrastructure.repositories.playerRepository:updateEntity(data)
+end
 
-	local jetpack = shared.Domain.Entities.Jetpack.new(data.playerData)
-	infrastructure.repositories.playerRepository:updateEntity(data.playerData, jetpack)
+function PlayerService:disableDefaultControl()
+	---@type ClientInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	local playerEntity = infrastructure.repositories.playerRepository:getPlayerEntity()
+	playerEntity:disableDefaultControl()
 end
 
 return PlayerService

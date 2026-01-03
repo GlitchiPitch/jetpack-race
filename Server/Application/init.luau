@@ -45,14 +45,19 @@ function Application:_connectToEvents()
 		function(player, _)
 			local playerEntity = self.services.playerService:getPlayerEntity(player)
 			self.services.raceService:triggerActivated(playerEntity)
+			shared.Infrastructure.services.remoteEventService:fireClient(
+				playerEntity.player,
+				shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED,
+				playerEntity:getData()
+			)
 		end
 	)
 
 	shared.Infrastructure.services.remoteEventService:connectToEvent(
 		shared.Constants.REMOTE_EVENTS.PLAYER_UPDATED,
-		function(player, _) 
+		function(player, _)
 			self.services.playerService:updatePlayer(player)
-	end
+		end
 	)
 end
 
