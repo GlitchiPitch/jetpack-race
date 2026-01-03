@@ -34,7 +34,7 @@ function Services:_register()
 
 	-- Регистрируем FeatureFlagService с зависимостью от констант
 	self.diContainer:singleton("FeatureFlagService", function()
-		local constants = self.diContainer:resolve("Shared.Constants")
+		local constants = self.diContainer:resolve("Constants")
 		return FeatureFlagService.new(constants.FeatureFlags)
 	end)
 end

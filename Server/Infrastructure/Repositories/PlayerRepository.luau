@@ -1,13 +1,13 @@
----@class PlayerRepository
+---@class PlayerRepository : IPlayerRepository
 local PlayerRepository = {}
 PlayerRepository.__index = PlayerRepository
 
----@param entities Entities
+---@param PlayerEntity PlayerEntity
 ---@return PlayerRepository
-function PlayerRepository.new(entities)
+function PlayerRepository.new(PlayerEntity)
 	local self = setmetatable({}, PlayerRepository)
 	self.playerEntities = {}
-	self.PlayerEntity = entities.Player
+	self.PlayerEntity = PlayerEntity
 	return self
 end
 

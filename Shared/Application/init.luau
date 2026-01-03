@@ -16,6 +16,7 @@ Application.__index = Application
 ---@return SharedApplication
 function Application.new(diContainer, config)
 	local self = setmetatable({}, Application)
+	warn(diContainer, config)
 	self.diContainer = diContainer
     self.config = config
 	self.commands = Commands.new()
@@ -35,13 +36,9 @@ function Application:_register()
 	self.diContainer:singleton("Shared.Application.Services", function()
 		return self.services
 	end)
-    self.diContainer:singleton("Shared.Application.Constants", function()
-		return self.constants
-	end)
 end
 
 function Application:init()
-	
 end
 
 return Application

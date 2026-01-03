@@ -4,6 +4,7 @@ local Services = require(script.Services)
 ---@class ServerApplication
 ---@field application SharedApplication
 ---@field diContainer DIContainer
+---@field constants SharedConstants
 ---@field useCases ServerUseCases
 ---@field commands ServerCommands
 ---@field remoteEventService RemoteEventService
@@ -12,12 +13,10 @@ local Application = {}
 Application.__index = Application
 
 ---@param diContainer DIContainer
----@param sharedIoCContainer DIContainer
 ---@return ServerApplication
-function Application.new(diContainer, sharedIoCContainer)
+function Application.new(diContainer)
 	local self = setmetatable({}, Application)
 	self.diContainer = diContainer
-	self.sharedIoCContainer = sharedIoCContainer
 	self:_register()
 	return self
 end
@@ -30,8 +29,15 @@ function Application:_register()
 		return UseCases.new()
 	end)
 	self.diContainer:singleton("Server.Application.Services", function(c)
-		return Services.new(c, self.sharedIoCContainer)
+		return Services.new(c)
 	end)
+end
+
+function Application:init()
+end
+
+function Application:connectToEvents()
+	
 end
 
 return Application

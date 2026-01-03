@@ -3,88 +3,20 @@
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
-      "JetpackRace": {
-        "$path": "Shared",
-        "Systems": {
-          "$className": "Folder",
-          "FlyingSystem": {
-            "$path": "Systems/FlyingSystem/Shared"
-          },
-          "PetSystem": {
-            "$path": "Systems/PetSystem/Shared"
-          },
-          "LiveLeaderboardSystem": {
-            "$path": "Systems/LiveLeaderboardSystem/Shared"
-          },
-          "RewardsSystem": {
-            "$path": "Systems/RewardsSystem/Shared"
-          },
-          "ShopSystem": {
-            "$path": "Systems/ShopSystem/Shared"
-          },
-          "RaceSystem": {
-            "$path": "Systems/RaceSystem/Shared"
-          }
-        }
+      "Shared": {
+        "$path": "Shared"
       }
     },
     "ServerScriptService": {
-      "JetpackRace": {
-        "$path": "Server",
-        "Systems": {
-          "$className": "Folder",
-          "FlyingSystem": {
-            "$path": "Systems/FlyingSystem/Server"
-          },
-          "PetSystem": {
-            "$path": "Systems/PetSystem/Server"
-          },
-          "LiveLeaderboardSystem": {
-            "$path": "Systems/LiveLeaderboardSystem/Server"
-          },
-          "RewardsSystem": {
-            "$path": "Systems/RewardsSystem/Server"
-          },
-          "ShopSystem": {
-            "$path": "Systems/ShopSystem/Server"
-          },
-          "RaceSystem": {
-            "$path": "Systems/RaceSystem/Server"
-          }
-        }
+      "Server": {
+        "$path": "Server"
       }
     },
     "StarterPlayer": {
       "StarterPlayerScripts": {
-        "JetpackRace": {
-          "$path": "Client",
-          "Systems": {
-            "$className": "Folder",
-            "FlyingSystem": {
-              "$path": "Systems/FlyingSystem/Client"
-            },
-            "PetSystem": {
-              "$path": "Systems/PetSystem/Client"
-            },
-            "LiveLeaderboardSystem": {
-              "$path": "Systems/LiveLeaderboardSystem/Client"
-            },
-            "RewardsSystem": {
-              "$path": "Systems/RewardsSystem/Client"
-            },
-            "ShopSystem": {
-              "$path": "Systems/ShopSystem/Client"
-            },
-            "RaceSystem": {
-              "$path": "Systems/RaceSystem/Client"
-            }
-          }
+        "Client": {
+          "$path": "Client"
         }
-      }
-    },
-    "Workspace": {
-      "JetpackRace": {
-        "$path": "Workspace"
       }
     }
   }

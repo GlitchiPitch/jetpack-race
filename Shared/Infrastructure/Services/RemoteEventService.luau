@@ -1,5 +1,5 @@
 local RunService = game:GetService("RunService")
----@class RemoteEventService
+---@class RemoteEventService : IRemoteEventService
 ---@field _connections table<string, RBXScriptConnection>
 ---@field remoteEvent RemoteEvent
 local RemoteEventService = {}
@@ -37,7 +37,6 @@ function RemoteEventService:connectToEvent(event, callback)
 			end
 		end)
 	end
-	return self._connections[event]
 end
 
 ---@param event string

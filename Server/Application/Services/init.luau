@@ -1,18 +1,16 @@
 local PlayerService = require(script.PlayerService)
 
 ---@class ServerApplicationServices
----@field playerService PlayerService
+---@field playerService ServerPlayerService
 local Services = {}
 Services.__index = Services
 
 ---@param diContainer DIContainer
----@param sharedIoCContainer DIContainer
 ---@return ServerApplicationServices
-function Services.new(diContainer, sharedIoCContainer)
+function Services.new(diContainer)
     local self = setmetatable({}, Services)
     self.diContainer = diContainer
-    local remoteEventService = sharedIoCContainer:resolve("RemoteEventService")
-    self.playerService = PlayerService.new(self.diContainer, remoteEventService)
+    self.playerService = PlayerService.new(self.diContainer)
     return self
 end
 
