@@ -4,6 +4,7 @@ local AnimationService = {}
 AnimationService.__index = AnimationService
 
 ---@param diContainer DIContainer
+---@return AnimationService
 function AnimationService.new(diContainer)
     local self = setmetatable({}, AnimationService)
     self.diContainer = diContainer

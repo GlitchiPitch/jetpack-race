@@ -18,42 +18,19 @@ end
 function TrajectoryPathService.new(diContainer)
 	local self = setmetatable({}, TrajectoryPathService)
 	self.diContainer = diContainer
-	self.folder = Instance.new("Folder")
-	self.pointIndex = 1
-
-	self.folder.Parent = workspace.Workspace
 	return self
 end
 
-function TrajectoryPathService:generateTrack()
-	---@type Shared
-	local shared = self.diContainer:resolve("Shared")
+---@class jetpackTrajectory
+---@field startPos Vector3
+---@field endPos Vector3
+---@field controlDelta Vector3
 
-	-- Refactored trajectory creation setup
-	local jetpackTrajectories = {
-		{
-			startPos = Vector3.new(0, 20, 0),
-			endPos = Vector3.new(500, 20, 0),
-			controlDelta = Vector3.new(0, 0, 0),
-		},
-		{
-			startPos = Vector3.new(600, 20, 0),
-			endPos = Vector3.new(1100, 200, 0),
-			controlDelta = Vector3.new(0, 150, 0),
-		},
-		{
-			startPos = Vector3.new(1200, 200, 0),
-			endPos = Vector3.new(1200, 200, -800),
-			controlDelta = Vector3.new(800, 0, 0),
-		},
-		{
-			startPos = Vector3.new(1200, 200, -900),
-			endPos = Vector3.new(1200, 200, -1400),
-			controlDelta = Vector3.new(-800, 0, 0),
-		},
-	}
 
-	local minDistance = 100
+---@param jetpackTrajectories jetpackTrajectory[]
+---@param minDistance number
+---@return Vector3[]
+function TrajectoryPathService:generateTrack(jetpackTrajectories, minDistance)
 	local allParts = {}
 
 	for _, def in ipairs(jetpackTrajectories) do
@@ -66,27 +43,7 @@ function TrajectoryPathService:generateTrack()
 		end
 	end
 
-	-- Optionally orient all parts to face the next part
-	for i = 1, #allParts do
-		local currentPart = allParts[i]
-		local nextPart = allParts[i + 1]
-		local pointCFrame
-
-		if currentPart and nextPart then
-			pointCFrame = CFrame.new(currentPart, nextPart)
-		else
-			pointCFrame = CFrame.new(currentPart)
-		end
-		
-		local p = shared.Domain.Entities.Checkpoint.new({
-			_instance = shared.Assets.Checkpoint:Clone(),
-			cframe = pointCFrame,
-			index = self.pointIndex,
-			parent = self.folder,
-		})
-
-		self.pointIndex += 1
-	end
+	return allParts
 end
 
 -- Generate path with minimum distance between points

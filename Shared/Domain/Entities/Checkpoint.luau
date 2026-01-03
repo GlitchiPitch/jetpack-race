@@ -16,8 +16,13 @@ function CheckpointEntity.new(data)
 	self._instance = data._instance
 	self.index = data.index
 
-	self._instance:PivotTo(data.cframe)
-	self._instance.Parent = data.parent
+	if data.cframe then
+		self._instance:PivotTo(data.cframe)
+	end
+
+	if data.parent then
+		self._instance.Parent = data.parent
+	end
 	return self
 end
 

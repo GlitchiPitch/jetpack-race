@@ -5,6 +5,7 @@ local Constants = {
 		PLAYER_UPDATED = "PlayerUpdated",
 		RACE_TRIGGER_ACTIVATED = "RaceTriggerActivated",
 		FLYING_ACTIVATED = "FlyingActivated",
+		RACE_START = "RaceStart",
 	},
 	PLAYER_STATES = {
 		IDLE = "Idle",

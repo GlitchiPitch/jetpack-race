@@ -3,6 +3,7 @@ local JetpackService = require(script.JetpackService)
 local PlayerService = require(script.PlayerService)
 local CameraService = require(script.CameraService)
 local AnimationService = require(script.AnimationService)
+local CheckpointService = require(script.CheckpointService)
 
 ---@class ClientApplicationServices
 ---@field diContainer DIContainer
@@ -11,6 +12,7 @@ local AnimationService = require(script.AnimationService)
 ---@field jetpackService ClientJetpackService
 ---@field cameraService CameraService
 ---@field animationService AnimationService
+---@field checkpointService ClientCheckpointService
 local Services = {}
 Services.__index = Services
 
@@ -24,6 +26,7 @@ function Services.new(diContainer)
 	self.jetpackService = JetpackService.new(diContainer)
 	self.cameraService = CameraService.new(diContainer)
 	self.animationService = AnimationService.new(diContainer)
+	self.checkpointService = CheckpointService.new(diContainer)
 	return self
 end
 

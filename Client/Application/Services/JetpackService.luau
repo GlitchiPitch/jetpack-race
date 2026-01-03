@@ -8,6 +8,7 @@ local JetpackService = {}
 JetpackService.__index = JetpackService
 
 ---@param diContainer DIContainer
+---@return ClientJetpackService
 function JetpackService.new(diContainer)
 	local self = setmetatable({}, JetpackService)
 	self.diContainer = diContainer

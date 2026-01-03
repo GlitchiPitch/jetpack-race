@@ -49,6 +49,12 @@ function Application:_connectToEvents()
 				shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED,
 				playerEntity:getData()
 			)
+
+			shared.Infrastructure.services.remoteEventService:fireClient(
+				playerEntity.player,
+				shared.Constants.REMOTE_EVENTS.RACE_START,
+				self.services.checkpointService:getCheckpoints()
+			)
 		end
 	)
 

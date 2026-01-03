@@ -48,6 +48,13 @@ function Application:_connectToEvents()
 			self.services.raceService:start()
 		end
 	)
+
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.RACE_START,
+		function(args)
+			self.services.checkpointService:trackCheckpoints(args)
+		end
+	)
 end
 
 return Application

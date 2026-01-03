@@ -24,9 +24,10 @@ function RaceService:triggerActivated(playerEntity)
 end
 
 function RaceService:start()
-	---@type ServerInfrastructure
-	local infrastructure = self.diContainer:resolve("Infrastructure")
-	infrastructure.services.trajectoryPathService:generateTrack()
+	---@type ServerApplication
+	local application = self.diContainer:resolve("Application")
+	application.services.checkpointService:generate()
+	application.services.boostsService:generate()
 end
 
 function RaceService:finish() end

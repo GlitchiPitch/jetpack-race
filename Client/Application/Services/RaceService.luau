@@ -21,8 +21,8 @@ function RaceService:start()
 	---@type ClientApplication
 	local application = self.diContainer:resolve("Application")
 
-	application.services.jetpackService:startFly()
 	application.services.cameraService:activateFlyingCamera()
+	application.services.jetpackService:startFly()
 	application.services.animationService:activateFlyingIdle()
 end
 
