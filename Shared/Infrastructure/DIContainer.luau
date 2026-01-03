@@ -50,7 +50,7 @@ end
 
 -- Разрешение зависимости
 ---@generic T
----@param name '"Logger"'|'"RemoteEventService"'|'"FeatureFlagService"'
+---@param name '"Shared"'|'"Application"'|'"Infrastructure"' | '"Presentation"'
 ---@return T
 function DIContainer:resolve(name)
 	local service = self._services[name]

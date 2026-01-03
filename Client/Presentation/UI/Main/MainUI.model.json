@@ -2,50 +2,40 @@
     "className": "ScreenGui",
     "children": [
         {
-            "className": "Frame",
-            "name": "Background"
+            "className": "UIPadding"
         },
         {
             "className": "Frame",
             "name": "Body",
             "children": [
                 {
-                    "className": "ScrollingFrame",
+                    "className": "Frame"
+                }
+            ]
+        },
+        {
+            "className": "Frame",
+            "name": "RaceUI",
+            "children": [
+                {
+                    "className": "Frame",
+                    "name": "ProgressBar",
                     "children": [
                         {
-                            "className": "UIGridLayout",
-                            "children": [
-                                {
-                                    "className": "UIAspectRatioConstraint"
-                                }
-                            ]
+                            "className": "Frame",
+                            "name": "Scale"
+                        }
+                    ]
+                },
+                {
+                    "className": "Frame",
+                    "name": "Place",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
                         },
                         {
-                            "className": "TextButton",
-                            "name": "Template",
-                            "children": [
-                                {
-                                    "className": "ImageLabel",
-                                    "children": [
-                                        {
-                                            "className": "UIStroke",
-                                            "children": [
-                                                {
-                                                    "className": "UIGradient"
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "className": "TextLabel",
-                                            "name": "ItemNameLabel"
-                                        },
-                                        {
-                                            "className": "TextLabel",
-                                            "name": "PriceLabel"
-                                        }
-                                    ]
-                                }
-                            ]
+                            "className": "TextLabel"
                         }
                     ]
                 }
@@ -53,43 +43,37 @@
         },
         {
             "className": "Frame",
-            "name": "StatsFrame",
+            "name": "JetpackUI",
             "children": [
-                {
-                    "className": "UIAspectRatioConstraint"
-                },
                 {
                     "className": "UIListLayout"
                 },
                 {
+                    "className": "UIAspectRatioConstraint"
+                },
+                {
                     "className": "Frame",
-                    "name": "Template",
+                    "name": "Nitro",
                     "children": [
                         {
-                            "className": "UIListLayout"
-                        },
-                        {
-                            "className": "UICorner"
-                        },
-                        {
-                            "className": "UIStroke",
-                            "children": [
-                                {
-                                    "className": "UIGradient"
-                                }
-                            ]
+                            "className": "Frame",
+                            "name": "Scale"
                         },
                         {
                             "className": "TextLabel",
-                            "name": "AmountLabel"
+                            "name": "NitroValue"
+                        }
+                    ]
+                },
+                {
+                    "className": "Frame",
+                    "name": "Speed",
+                    "children": [
+                        {
+                            "className": "UIAspectRatioConstraint"
                         },
                         {
-                            "className": "ImageLabel",
-                            "children": [
-                                {
-                                    "className": "UIAspectRatioConstraint"
-                                }
-                            ]
+                            "className": "TextLabel"
                         }
                     ]
                 }

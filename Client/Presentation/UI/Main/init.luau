@@ -1,129 +1,92 @@
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
 ---@class MainUI
+---@field diContainer DIContainer
+---@field _ui GuiObject
+---@field player Player
+---@field raceUI Frame
+---@field jetpackUI Frame
+---@field body Frame
+---@field _renderConnect RBXScriptConnection
 local MainUI = {}
 MainUI.__index = MainUI
 
 ---@param diContainer DIContainer
----@return MainUI
 function MainUI.new(diContainer)
 	local self = setmetatable({}, MainUI)
 	self.diContainer = diContainer
-	self.ui = script.MainUI:Clone()
 	self.player = Players.LocalPlayer
-	self:init()
+	self._ui = script.MainUI:Clone()
+	self:_setup()
 	return self
 end
 
-function MainUI:init()
-	self.ui.Parent = self.player.PlayerGui
-	self:_setupCurrencyDisplay()
-	self:_setupRemoteEventListeners()
+function MainUI:_setup()
+	self._ui.Parent = self.player.PlayerGui
+
+	self.raceUI = self._ui.RaceUI
+	self.jetpackUI = self._ui.JetpackUI
+	self.body = self._ui.Body
+
+	self:toggleJetpackUI(false)
+	self:toggleRaceUI(false)
+	self:toggleBody(false)
 end
 
-function MainUI:_setupCurrencyDisplay()
-	local statsFrame = self.ui:FindFirstChild("StatsFrame")
-	if not statsFrame then
-		warn("MainUI: StatsFrame not found")
-		return
-	end
-
-	local template = statsFrame:FindFirstChild("Template")
-	if not template then
-		warn("MainUI: Template not found in StatsFrame")
-		return
-	end
-
-	-- Hide template
-	template.Visible = false
-
-	-- Create currency displays
-	self:_createCurrencyDisplay("Coins", "rbxassetid://76908661", Color3.fromRGB(255, 215, 0))
-	self:_createCurrencyDisplay("Gems", "rbxassetid://32578003", Color3.fromRGB(0, 191, 255))
+---@param state boolean
+function MainUI:toggleRaceUI(state)
+	self.raceUI.Visible = state
 end
 
-function MainUI:_createCurrencyDisplay(currencyName, icon, color)
-	local statsFrame = self.ui.StatsFrame
-	local template = statsFrame.Template
-
-	-- Clone template
-	local currencyFrame = template:Clone()
-	currencyFrame.Name = currencyName .. "Frame"
-	currencyFrame.Visible = true
-	currencyFrame.Parent = statsFrame
-
-	-- Setup amount label
-	local amountLabel = currencyFrame:FindFirstChild("AmountLabel")
-	if amountLabel then
-		amountLabel.Text = "0"
-		amountLabel.TextColor3 = color
-	end
-
-	-- Setup icon
-	local imageLabel = currencyFrame:FindFirstChild("ImageLabel")
-	if imageLabel then
-		imageLabel.Image = icon
-		warn(imageLabel.Image)
-	end
-end
-
-function MainUI:_setupRemoteEventListeners()
-	local remoteEventService = self.diContainer:resolve("RemoteEventService")
-	---@type SharedConstants
-	local constants = self.diContainer:resolve("Shared.Constants")
-
-	-- Listen for player data updates
-	local playerUpdatedConnection = remoteEventService:connectToEvent(
-		constants.REMOTE_EVENTS.PLAYER_UPDATED,
-		function(data)
-			if data.playerData and data.playerData.currency then
-				self:updateCurrencyDisplay(data.playerData.currency)
-			end
-		end
-	)
-
-	-- Store connection for cleanup
-	self.remoteConnections = {
-		playerUpdatedConnection,
-	}
-end
-
-function MainUI:updateCurrencyDisplay(currency)
-	local statsFrame = self.ui:FindFirstChild("StatsFrame")
-	if not statsFrame then
-		return
-	end
-
-	-- Update coins
-	local coinsFrame = statsFrame:FindFirstChild("CoinsFrame")
-	if coinsFrame then
-		local amountLabel = coinsFrame:FindFirstChild("AmountLabel")
-		if amountLabel then
-			amountLabel.Text = tostring(currency.coins or 0)
-		end
-	end
-
-	-- Update gems
-	local gemsFrame = statsFrame:FindFirstChild("GemsFrame")
-	if gemsFrame then
-		local amountLabel = gemsFrame:FindFirstChild("AmountLabel")
-		if amountLabel then
-			amountLabel.Text = tostring(currency.gems or 0)
+---@param state boolean
+function MainUI:toggleJetpackUI(state)
+	self.jetpackUI.Visible = state
+	if state then
+		self:_updateJetpackUI()
+	else
+		if self._renderConnect then
+			self._renderConnect:Disconnect()
 		end
 	end
 end
 
-function MainUI:destroy()
-	if self.remoteConnections then
-		for _, connection in ipairs(self.remoteConnections) do
-			if connection then
-				connection:Disconnect()
+---@param state boolean
+function MainUI:toggleBody(state)
+	self.body.Visible = state
+end
+
+---@param value number
+function MainUI:_updateNitro(value, maxValue)
+	self.jetpackUI.Nitro.NitroValue.Text = `{value}/{maxValue}`
+end
+
+---@param value number
+function MainUI:_updateSpeed(value)
+	self.jetpackUI.Speed.TextLabel.Text = `{value} speed`
+end
+
+function MainUI:_updateJetpackUI()
+	---@type ClientApplication
+	local application = self.diContainer:resolve("Application")
+	local playerService = application.services.playerService
+
+	local _deltaTime = 0
+
+	---@param deltaTime number
+	local function onRender(deltaTime)
+		_deltaTime += deltaTime
+		if _deltaTime >= 0.3 then
+			_deltaTime = 0
+			local playerJetpack = playerService:getPlayerJetpack()
+			if playerJetpack then
+				self:_updateSpeed(playerJetpack.speed)
+				self:_updateNitro(playerJetpack.nitro, playerJetpack._maxNitro)
 			end
 		end
 	end
 
-	if self.ui then
-		self.ui:Destroy()
-	end
+	self._renderConnect = RunService.RenderStepped:Connect(onRender)
 end
 
 return MainUI

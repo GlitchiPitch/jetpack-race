@@ -1,44 +1,63 @@
----@class PlayerService
+---@class ServerPlayerService
+---@field diContainer DIContainer
 local PlayerService = {}
 PlayerService.__index = PlayerService
 
 ---@param diContainer DIContainer
----@param remoteEventService RemoteEventService
----@return PlayerService
-function PlayerService.new(diContainer, remoteEventService)
+---@return ServerPlayerService
+function PlayerService.new(diContainer)
 	local self = setmetatable({}, PlayerService)
 	self.diContainer = diContainer
-	self.remoteEventService = remoteEventService
 	return self
 end
 
+---@param player Player
 function PlayerService:onPlayerAdded(player)
-	---@type LoggerService
-	local logger = self.diContainer:resolve("Logger")
-	logger:info("PlayerService", "Player added:", player.Name, "(ID:", player.UserId, ")")
-
-	---@type IPlayerRepository
-	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	return playerRepository:getPlayerEntity(player)
+	---@type ServerInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	infrastructure.repositories.playerRepository:getPlayerEntity(player)
 end
 
+---@param player Player
 function PlayerService:onPlayerRemoving(player)
-	---@type IPlayerRepository
-	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	playerRepository:removePlayerEntity(player)
+	---@type ServerInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	infrastructure.repositories.playerRepository:removePlayerEntity(player)
 end
 
-function PlayerService:updatePlayer(player)
-	---@type IPlayerRepository
-	local playerRepository = self.diContainer:resolve("PlayerRepository")
+---@param player Player
+---@return PlayerEntity
+function PlayerService:getPlayerEntity(player)
+	---@type ServerInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
 	---@type PlayerEntity
-	local playerEntity = playerRepository:getPlayerEntity(player)
-	---@type SharedConstants
-	local constants = self.diContainer:resolve("Shared.Constants")
+	local playerEntity = infrastructure.repositories.playerRepository:getPlayerEntity(player)
 
-	self.remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
+	return playerEntity
+end
+
+---@param player Player
+function PlayerService:updatePlayer(player)
+	---@type ServerInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	---@type Shared
+	local shared = self.diContainer:resolve("Shared")
+
+	---@type PlayerEntity
+	local playerEntity = infrastructure.repositories.playerRepository:getPlayerEntity(player)
+	---@type RemoteEventService
+	local remoteEventService = shared.Infrastructure.services.remoteEventService
+	---@type SharedConstants
+	local constants = shared.Constants
+
+	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
 		playerData = playerEntity:getData(),
 	})
+end
+
+---@param playerEntity PlayerEntity
+function PlayerService:kickPlayer(playerEntity)
+	playerEntity.player:Kick("Bibibibib")
 end
 
 return PlayerService

@@ -1,9 +1,9 @@
-local MainUI = require(script.Main)
 local Components = require(script.Components)
+local MainUI = require(script.Main)
 
 ---@class UI
+---@field Components Components
 ---@field mainUI MainUI
----@field components Components
 local UI = {}
 UI.__index = UI
 
@@ -12,8 +12,8 @@ UI.__index = UI
 function UI.new(diContainer)
 	local self = setmetatable({}, UI)
 	self.diContainer = diContainer
-	self.mainUI = MainUI.new(self.diContainer)
-	self.components = Components.new(self.diContainer)
+	self.Components = Components
+	self.mainUI = MainUI.new(diContainer)
 	return self
 end
 
