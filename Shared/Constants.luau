@@ -4,6 +4,7 @@ local Constants = {
 	REMOTE_EVENTS = {
 		PLAYER_UPDATED = "PlayerUpdated",
 		RACE_TRIGGER_ACTIVATED = "RaceTriggerActivated",
+		FLYING_ACTIVATED = "FlyingActivated",
 	},
 	PLAYER_STATES = {
 		IDLE = "Idle",

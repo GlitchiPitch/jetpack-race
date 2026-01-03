@@ -18,8 +18,6 @@ function Services.new(diContainer)
 	self.diContainer = diContainer
 	self.remoteEvent = script.RemoteEvent
 
-	---@type Shared
-	local shared = self.diContainer:resolve("Shared")
 	self.remoteEventService = RemoteEventService.new(self.remoteEvent, LoggerService.new(LoggerService.LEVELS.INFO))
 	self.featureFlagService = FeatureFlagService.new({})
 	return self

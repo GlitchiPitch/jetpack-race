@@ -10,8 +10,8 @@ Jetpack.__index = Jetpack
 function Jetpack.new(accessory)
 	local self = setmetatable({}, Jetpack)
 	self._instance = accessory
-	self.linearVelocity = Instance.new("LinearVelocity")
-	self.alignOrientation = Instance.new("AlignOrientation")
+	self.linearVelocity = self._instance:FindFirstChildOfClass("LinearVelocity") or Instance.new("LinearVelocity")
+	self.alignOrientation = self._instance:FindFirstChildOfClass("AlignOrientation") or Instance.new("AlignOrientation")
 
 	self:_setup()
 	return self

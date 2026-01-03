@@ -22,13 +22,32 @@ function Application:_register()
 	end)
 end
 
-function Application:init() end
+function Application:init()
+	self:_connectToEvents()
+
+	---@type Shared
+	local shared = self.diContainer:resolve("Shared")
+	local remoteEventService = shared.Infrastructure.services.remoteEventService
+	remoteEventService:fireServer(shared.Constants.REMOTE_EVENTS.PLAYER_UPDATED)
+end
 
 function Application:_connectToEvents()
 	---@type Shared
 	local shared = self.diContainer:resolve("Shared")
 	shared.Infrastructure.services.remoteEventService:connectToEvent(
-		shared.Constants.REMOTE_EVENTS.PLAYER_UPDATED
+		shared.Constants.REMOTE_EVENTS.PLAYER_UPDATED,
+		function(args)
+			self.services.playerService:updatePlayerData(args.playerData)
+			print(args, shared.Constants.REMOTE_EVENTS.PLAYER_UPDATED)
+		end
+	)
+
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED,
+		function(args)
+			self.services.jetpackService:startFly()
+			print(args, shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED)
+		end
 	)
 end
 

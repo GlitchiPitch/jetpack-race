@@ -16,7 +16,6 @@ Application.__index = Application
 ---@return SharedApplication
 function Application.new(diContainer, config)
 	local self = setmetatable({}, Application)
-	warn(diContainer, config)
 	self.diContainer = diContainer
     self.config = config
 	self.commands = Commands.new()

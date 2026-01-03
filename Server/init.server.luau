@@ -23,7 +23,6 @@ function Server.new()
 end
 
 function Server:init()
-	self.infrastructure:init()
 	self.application:init()
 
 	local function onPlayerAdded(player)

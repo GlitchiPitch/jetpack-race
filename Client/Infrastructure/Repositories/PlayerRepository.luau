@@ -19,7 +19,7 @@ end
 function PlayerRepository:_setup()
 	---@type Shared
 	local shared = self.diContainer:resolve("Shared")
-	self.playerEntity = shared.Domain.Entities.Player.new(self.player)
+	self.playerEntity = shared.Domain.Entities.Player.new(self.player, {})
 end
 
 ---@return PlayerEntity
@@ -27,8 +27,16 @@ function PlayerRepository:getPlayerEntity()
 	return self.playerEntity
 end
 
-function PlayerRepository:updateEntity()
+---@param data table<string, any>
+---@param jetpack JetpackEntity
+function PlayerRepository:updateEntity(data, jetpack)
+	warn(data)
+	---@type Shared
+	local shared = self.diContainer:resolve("Shared")
+	local playerEntity = shared.Domain.Entities.Player.new(self.player, data)
 	
+	self.playerEntity = playerEntity
+	self.playerEntity:equipJetpack(jetpack)
 end
 
 return PlayerRepository

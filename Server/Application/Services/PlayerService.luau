@@ -1,4 +1,5 @@
 ---@class ServerPlayerService
+---@field diContainer DIContainer
 local PlayerService = {}
 PlayerService.__index = PlayerService
 
@@ -12,12 +13,16 @@ end
 
 ---@param player Player
 function PlayerService:onPlayerAdded(player)
-	self.playerRepository:getPlayerEntity(player)
+	---@type ServerInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	infrastructure.repositories.playerRepository:getPlayerEntity(player)
 end
 
 ---@param player Player
 function PlayerService:onPlayerRemoving(player)
-	self.playerRepository:removePlayerEntity(player)
+	---@type ServerInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	infrastructure.repositories.playerRepository:removePlayerEntity(player)
 end
 
 ---@param player Player
@@ -26,7 +31,7 @@ function PlayerService:getPlayerEntity(player)
 	---@type ServerInfrastructure
 	local infrastructure = self.diContainer:resolve("Infrastructure")
 	---@type PlayerEntity
-	local playerEntity = infrastructure.Repositories.PlayerRepository:getPlayerEntity(player)
+	local playerEntity = infrastructure.repositories.playerRepository:getPlayerEntity(player)
 
 	return playerEntity
 end
@@ -39,7 +44,7 @@ function PlayerService:updatePlayer(player)
 	local shared = self.diContainer:resolve("Shared")
 
 	---@type PlayerEntity
-	local playerEntity = infrastructure.Repositories.PlayerRepository:getPlayerEntity(player)
+	local playerEntity = infrastructure.repositories.playerRepository:getPlayerEntity(player)
 	---@type RemoteEventService
 	local remoteEventService = shared.Infrastructure.services.remoteEventService
 	---@type SharedConstants
@@ -47,6 +52,7 @@ function PlayerService:updatePlayer(player)
 
 	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
 		playerData = playerEntity:getData(),
+		
 	})
 end
 

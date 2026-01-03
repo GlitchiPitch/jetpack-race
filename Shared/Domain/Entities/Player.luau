@@ -20,7 +20,11 @@ function PlayerEntity.new(player, data)
 end
 
 function PlayerEntity:getData()
-	return self.data
+	return {
+		money = self.money,
+		equippedJetpack = self.equippedJetpack,
+		jetpack = self.jetpack,
+	}
 end
 
 ---@param jetpack JetpackEntity

@@ -58,11 +58,27 @@ function TrajectoryPathService:generateTrack()
 	end
 
 	-- Optionally orient all parts to face the next part
-	for i = 1, #allParts - 1 do
+	for i = 1, #allParts do
 		local currentPart = allParts[i]
 		local nextPart = allParts[i + 1]
+		local p = Instance.new("Part")
+		p.Parent = self.folder
+		p.Anchored = true
+		p.Size = Vector3.one * 10
+		p.CanCollide = false
+		p.Transparency = 0.5
+		
+		p.Name = self.pointIndex
+		
+		if self.pointIndex == 1 then
+			p.Color = Color3.new(1, 0, 0)
+		end
+		self.pointIndex += 1
+
 		if currentPart and nextPart then
-			currentPart.CFrame = CFrame.new(currentPart.Position, nextPart.Position)
+			p.CFrame = CFrame.new(currentPart, nextPart)
+		else
+			p.CFrame = CFrame.new(currentPart)
 		end
 	end
 end
@@ -102,18 +118,6 @@ function TrajectoryPathService:generatePathWithMinDistance(controlPoints: { Vect
 
 		-- Check distance from previous point
 		if (point - previousPoint).Magnitude >= minDistance then
-			local p = Instance.new("Part")
-			p.Parent = self.folder
-			p.Anchored = true
-			p.Size = Vector3.one * 10
-			p.CanCollide = false
-			p.Transparency = 0.5
-			p.Position = point
-			p.Name = self.pointIndex
-			if self.pointIndex == 1 then
-				p.Color = Color3.new(1, 0, 0)
-			end
-			self.pointIndex += 1
 			table.insert(path, point)
 			previousPoint = point
 		end

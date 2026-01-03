@@ -2,14 +2,14 @@ local Repositories = require(script.Repositories)
 
 ---@class ClientInfrastructure
 ---@field diContainer DIContainer
----@field Repositories ClientRepositories
+---@field repositories ClientRepositories
 local Infrastructure = {}
 Infrastructure.__index = Infrastructure
 
 function Infrastructure.new(diContainer)
 	local self = setmetatable({}, Infrastructure)
 	self.diContainer = diContainer
-	self.Repositories = Repositories
+	self.repositories = Repositories.new(diContainer)
 	self:_register()
 	return self
 end
