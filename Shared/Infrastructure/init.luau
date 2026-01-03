@@ -3,7 +3,7 @@ local Services = require(script.Services)
 
 ---@class Infrastructure
 ---@field DIContainer DIContainer
----@field Services SharedInfrastructureServices
+---@field services SharedInfrastructureServices
 local Infrastructure = {}
 Infrastructure.__index = Infrastructure
 
@@ -11,7 +11,7 @@ Infrastructure.__index = Infrastructure
 function Infrastructure.new()
     local self = setmetatable({}, Infrastructure)
     self.DIContainer = DIContainer.new()
-    self.Services = Services.new(self.DIContainer)
+    self.services = Services.new(self.DIContainer)
     return self
 end
 

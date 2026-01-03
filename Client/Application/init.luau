@@ -11,18 +11,17 @@ Application.__index = Application
 function Application.new(diContainer)
 	local self = setmetatable({}, Application)
 	self.diContainer = diContainer
-    self.services = Services.new(self.diContainer)
+	self.services = Services.new(self.diContainer)
 	self:_register()
 	return self
 end
 
-function Application:_register() end
-
-function Application:init()
-	-- self.remoteEventService:connectToEvent(self.constants.BUY_ITEM, function(args)
-	-- 	if self.useCases.SetCoinsPurchase:execute(self.commands.SetCoinsPurchase.new(args)) then
-	-- 	end
-	-- end)
+function Application:_register()
+	self.diContainer:singleton("Application", function()
+		return self
+	end)
 end
+
+function Application:init() end
 
 return Application

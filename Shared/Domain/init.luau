@@ -1,6 +1,6 @@
 local Entities = require(script.Entities)
 ---@class Domain
----@field Entities ShopEntities
+---@field Entities Entities
 local Domain = {}
 Domain.__index = Domain
 

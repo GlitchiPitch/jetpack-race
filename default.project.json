@@ -18,6 +18,11 @@
           "$path": "Client"
         }
       }
+    },
+    "Workspace": {
+      "Workspace": {
+        "$path": "Workspace"
+      }
     }
   }
 }

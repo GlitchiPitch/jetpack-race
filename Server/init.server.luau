@@ -15,24 +15,30 @@ Server.__index = Server
 
 ---@return Server
 function Server.new()
-    local self = setmetatable({}, Server)
-    self.shared = Shared.new()
-    self.infrastructure = ServerInfrastructure.new(self.shared.Infrastructure.DIContainer)
-    self.application = ServerApplication.new(self.shared.Infrastructure.DIContainer)
-    return self
+	local self = setmetatable({}, Server)
+	self.shared = Shared.new()
+	self.infrastructure = ServerInfrastructure.new(self.shared.Infrastructure.DIContainer)
+	self.application = ServerApplication.new(self.shared.Infrastructure.DIContainer)
+	return self
 end
 
 function Server:init()
-    self.infrastructure:init()
-    self.application:init()
+	self.infrastructure:init()
+	self.application:init()
 
-    Players.PlayerAdded:Connect(function(player)
-        self.application.services.playerService:onPlayerAdded(player)
-    end)
+	local function onPlayerAdded(player)
+		self.application.services.playerService:onPlayerAdded(player)
+	end
 
-    Players.PlayerRemoving:Connect(function(player)
-        self.application.services.playerService:onPlayerRemoving(player)
-    end)
+	local function onPlayerRemoving(player)
+		self.application.services.playerService:onPlayerRemoving(player)
+	end
+
+	Players.PlayerAdded:Connect(onPlayerAdded)
+	Players.PlayerRemoving:Connect(onPlayerRemoving)
+
+    ReplicatedStorage:SetAttribute(self.shared.Constants.SERVER_INITIALIZED, true)
 end
 
-return Server
+local server = Server.new()
+server:init()

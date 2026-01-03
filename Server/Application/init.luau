@@ -17,27 +17,34 @@ Application.__index = Application
 function Application.new(diContainer)
 	local self = setmetatable({}, Application)
 	self.diContainer = diContainer
+
+	self.commands = Commands
+	self.useCases = UseCases
+	self.services = Services
 	self:_register()
 	return self
 end
 
 function Application:_register()
-	self.diContainer:singleton("Server.Application.Commands", function()
-		return Commands.new()
-	end)
-	self.diContainer:singleton("Server.Application.UseCases", function()
-		return UseCases.new()
-	end)
-	self.diContainer:singleton("Server.Application.Services", function(c)
-		return Services.new(c)
+	self.diContainer:singleton("Application", function()
+		return self
 	end)
 end
 
 function Application:init()
+	self:_connectToEvents()
 end
 
-function Application:connectToEvents()
-	
+function Application:_connectToEvents()
+	---@type Shared
+	local shared = self.diContainer:resolve("Shared")
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.RACE_TRIGGER_ACTIVATED,
+		function(player, _)
+			local playerEntity = self.services.playerService:getPlayerEntity(player)
+			self.services.raceService:triggerActivated(playerEntity)
+		end
+	)
 end
 
 return Application

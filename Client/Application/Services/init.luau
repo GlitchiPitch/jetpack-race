@@ -1,5 +1,8 @@
+local RaceService = require(script.RaceService)
+
 ---@class ClientApplicationServices
 ---@field diContainer DIContainer
+---@field raceService ClientApplicationRaceService
 local Services = {}
 Services.__index = Services
 
@@ -8,12 +11,8 @@ Services.__index = Services
 function Services.new(diContainer)
 	local self = setmetatable({}, Services)
 	self.diContainer = diContainer
-    self:_register()
+	self.raceService = RaceService.new(diContainer)
 	return self
-end
-
-function Services:_register()
-
 end
 
 return Services

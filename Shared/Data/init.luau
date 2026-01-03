@@ -1,4 +1,6 @@
 ---@class SharedData
-local Data = {}
+local Data = {
+	JetpackList = require(script.JetpackList),
+}
 
 return Data

@@ -10,34 +10,49 @@ function PlayerService.new(diContainer)
 	return self
 end
 
-function PlayerService:init()
-	---@type Entities
-	local entities = self.diContainer:resolve("Entities")
-	---@type PlayerRepository
-	local playerRepository = self.diContainer:resolve("PlayerRepository")
-	self.PlayerEntity = entities.Player
-	self.playerRepository = playerRepository
-end
-
+---@param player Player
 function PlayerService:onPlayerAdded(player)
 	self.playerRepository:getPlayerEntity(player)
 end
 
+---@param player Player
 function PlayerService:onPlayerRemoving(player)
 	self.playerRepository:removePlayerEntity(player)
 end
 
-function PlayerService:updatePlayer(player)
-    ---@type PlayerEntity
-	local playerEntity = self.playerRepository:getPlayerEntity(player)
-    ---@type RemoteEventService
-	local remoteEventService = self.diContainer:resolve("RemoteEventService")
-    ---@type SharedConstants
-    local constants = self.diContainer:resolve("Shared.Constants")
+---@param player Player
+---@return PlayerEntity
+function PlayerService:getPlayerEntity(player)
+	---@type ServerInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	---@type PlayerEntity
+	local playerEntity = infrastructure.Repositories.PlayerRepository:getPlayerEntity(player)
 
-    remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
-        playerData = playerEntity:getData(),
-    })
+	return playerEntity
+end
+
+---@param player Player
+function PlayerService:updatePlayer(player)
+	---@type ServerInfrastructure
+	local infrastructure = self.diContainer:resolve("Infrastructure")
+	---@type Shared
+	local shared = self.diContainer:resolve("Shared")
+
+	---@type PlayerEntity
+	local playerEntity = infrastructure.Repositories.PlayerRepository:getPlayerEntity(player)
+	---@type RemoteEventService
+	local remoteEventService = shared.Infrastructure.services.remoteEventService
+	---@type SharedConstants
+	local constants = shared.Constants
+
+	remoteEventService:fireClient(player, constants.REMOTE_EVENTS.PLAYER_UPDATED, {
+		playerData = playerEntity:getData(),
+	})
+end
+
+---@param playerEntity PlayerEntity
+function PlayerService:kickPlayer(playerEntity)
+	playerEntity.player:Kick("Bibibibib")
 end
 
 return PlayerService

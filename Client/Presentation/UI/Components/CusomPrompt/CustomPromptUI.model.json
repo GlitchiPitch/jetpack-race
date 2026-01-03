@@ -1,0 +1,13 @@
+{
+    "className": "BillboardGui",
+    "children": [
+        {
+            "className": "Frame",
+            "children": [
+                {
+                    "className": "TextLabel"
+                }
+            ]
+        }
+    ]
+}
