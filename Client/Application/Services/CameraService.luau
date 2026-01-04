@@ -101,6 +101,7 @@ function CameraService:deactivateFlyingCamera()
 	end
 	UserInputService.MouseBehavior = Enum.MouseBehavior.Default -- Resets the mouse behavior to the default.
 	UserInputService.MouseIconEnabled = true -- Re-enables the mouse icon.
+	self.camera.CameraType = Enum.CameraType.Custom
 end
 
 -- Main update function connected to RenderStepped
@@ -122,7 +123,12 @@ function CameraService:_updateCamera(deltaTime)
 		sensitivity = self.cameraSettings.aimMouseSensitivity
 		rotSmoothness = self.cameraSettings.aimRotationSmoothness
 	elseif self.isNitro then
-		targetBaseOffset = self.cameraSettings.nitroCameraOffset
+		local function getRandomValue()
+			return math.random(10, 300) / 100
+		end
+		local bobbleOffset = Vector3.new(getRandomValue(), getRandomValue(), getRandomValue())
+
+		targetBaseOffset = self.cameraSettings.nitroCameraOffset + bobbleOffset
 		targetFov = self.cameraSettings.nitroFov
 		sensitivity = self.cameraSettings.nitroMouseSensitivity
 		rotSmoothness = self.cameraSettings.nitroRotationSmoothness

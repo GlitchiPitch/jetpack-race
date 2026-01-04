@@ -30,12 +30,11 @@ function RaceService:init()
 	end
 
 	---@param trigger Model
-	local function onInstanceRemoved(trigger) 
+	local function onInstanceRemoved(trigger)
 		print(trigger)
 	end
 
 	for _, trigger in CollectionService:GetTagged(shared.Constants.TAGS.TRIGGER_ZONE) do
-		
 		onInstanceAdded(trigger)
 	end
 

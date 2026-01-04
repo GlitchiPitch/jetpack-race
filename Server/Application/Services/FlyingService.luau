@@ -9,6 +9,7 @@ local RunService = game:GetService("RunService")
 ---@field _updateConnect RBXScriptConnection?
 ---@field _updateTime number
 ---@field _deltaTime number
+---@field _playerPositions table<number, Vector3>
 local FlyingService = {}
 FlyingService.__index = FlyingService
 
@@ -20,7 +21,16 @@ function FlyingService.new(diContainer)
 	self.flyingPlayers = {}
 	self._updateTime = 1
 	self._deltaTime = 0
+
+	self._playerPositions = {}
 	return self
+end
+
+---@param player Player
+function FlyingService:onPlayerRemoving(player)
+	if self._playerPositions[player.UserId] then
+		self._playerPositions[player.UserId] = nil
+	end
 end
 
 ---@param playerEntity PlayerEntity
@@ -43,7 +53,9 @@ function FlyingService:setUpdate(state)
 	if state then
 		self:_update()
 	else
-		self._updateConnect:Disconnect()
+		if self._updateConnect then
+			self._updateConnect:Disconnect()
+		end
 	end
 end
 
@@ -67,6 +79,8 @@ end
 ---@param playerEntity PlayerEntity
 ---@return boolean
 function FlyingService:_validateFly(playerEntity)
+	local character = playerEntity:getCharacter()
+	local lastPosition = self._playerPositions[playerEntity.player.UserId]
 	return true
 end
 

@@ -15,4 +15,8 @@ function BoostsService:generate()
     
 end
 
+function BoostsService:clear()
+    
+end
+
 return BoostsService

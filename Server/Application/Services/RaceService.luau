@@ -30,6 +30,10 @@ function RaceService:start()
 	application.services.boostsService:generate()
 end
 
-function RaceService:finish() end
+function RaceService:finish() 
+	---@type ServerApplication
+	local application = self.diContainer:resolve("Application")
+	application.services.boostsService:clear()
+end
 
 return RaceService

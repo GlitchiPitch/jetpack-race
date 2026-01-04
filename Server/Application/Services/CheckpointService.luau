@@ -1,5 +1,6 @@
 ---@class ServerCheckpointService
 ---@field diContainer DIContainer
+---@field _reachedCheckpoints table<number, number>
 local CheckpointService = {}
 CheckpointService.__index = CheckpointService
 
@@ -11,7 +12,23 @@ function CheckpointService.new(diContainer)
 	self.folder.Parent = workspace.Workspace
 	self.pointIndex = 1
 	self.points = {}
+
+	self._reachedCheckpoints = {}
 	return self
+end
+
+---@param playerEntity PlayerEntity
+function CheckpointService:clearReachedPoints(playerEntity)
+	if self._reachedCheckpoints[playerEntity.player.UserId] then
+		self._reachedCheckpoints[playerEntity.player.UserId] = nil
+	end
+end
+
+---@param player Player
+function CheckpointService:onPlayerRemoving(player)
+	if self._reachedCheckpoints[player.UserId] then
+		self._reachedCheckpoints[player.UserId] = nil
+	end
 end
 
 function CheckpointService:generate()
@@ -69,6 +86,7 @@ function CheckpointService:generate()
 		self.points[self.pointIndex] = {
 			point = currentPart,
 			instance = p._instance,
+			index = self.pointIndex,
 		}
 
 		self.pointIndex += 1
@@ -78,6 +96,25 @@ end
 ---@return checkpointData[]
 function CheckpointService:getCheckpoints()
 	return self.points
+end
+
+---@param playerEntity PlayerEntity
+---@param checkpointData checkpointData
+function CheckpointService:checkpointReached(playerEntity, checkpointData)
+	local character = playerEntity:getCharacter()
+	if character then
+		local mag = (character:GetPivot().Position - checkpointData.point).Magnitude
+		warn(checkpointData, mag)
+		if mag < 40 then
+			self._reachedCheckpoints[playerEntity.player.UserId] = checkpointData.index
+			warn(
+				"self._reachedCheckpoints[playerEntity.player.UserId]",
+				self._reachedCheckpoints[playerEntity.player.UserId]
+			)
+		else
+			print("Player Kick")
+		end
+	end
 end
 
 return CheckpointService

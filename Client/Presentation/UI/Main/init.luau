@@ -37,6 +37,13 @@ end
 ---@param state boolean
 function MainUI:toggleRaceUI(state)
 	self.raceUI.Visible = state
+	if state then
+		self:_updateRaceUI()
+	else
+		if self._raceRenderConnect then
+			self._raceRenderConnect:Disconnect()
+		end
+	end
 end
 
 ---@param state boolean
@@ -66,7 +73,39 @@ function MainUI:_updateSpeed(value)
 	self.jetpackUI.Speed.TextLabel.Text = `{value} speed`
 end
 
+---@param value number
+function MainUI:_updateCheckpointIndex(value, maxValue)
+	self.raceUI.Place.TextLabel.Text = `{value}/{maxValue}`
+	local function calculateProgressBarSize(current, max)
+		if max == 0 then
+			return UDim2.fromScale(0, 1)
+		end
+		return UDim2.fromScale(math.clamp(current / max, 0, 1), 1)
+	end
+
+	self.raceUI.ProgressBar.Scale.Size = calculateProgressBarSize(value, maxValue)
+end
+
 function MainUI:_updateJetpackUI()
+	---@type ClientApplication
+	local application = self.diContainer:resolve("Application")
+	local checkpointService = application.services.checkpointService
+
+	local _deltaTime = 0
+
+	---@param deltaTime number
+	local function onRender(deltaTime)
+		_deltaTime += deltaTime
+		if _deltaTime >= 0.3 then
+			_deltaTime = 0
+			self:_updateCheckpointIndex(checkpointService._currentPoint - 1, checkpointService._maxPoints)
+		end
+	end
+
+	self._renderConnect = RunService.RenderStepped:Connect(onRender)
+end
+
+function MainUI:_updateRaceUI()
 	---@type ClientApplication
 	local application = self.diContainer:resolve("Application")
 	local playerService = application.services.playerService
@@ -86,7 +125,7 @@ function MainUI:_updateJetpackUI()
 		end
 	end
 
-	self._renderConnect = RunService.RenderStepped:Connect(onRender)
+	self._raceRenderConnect = RunService.RenderStepped:Connect(onRender)
 end
 
 return MainUI

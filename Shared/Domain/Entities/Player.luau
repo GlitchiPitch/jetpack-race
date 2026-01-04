@@ -36,6 +36,7 @@ end
 function PlayerEntity:unequipJetpack()
 	if self.jetpack then
 		self.jetpack:destroy()
+		self.jetpack = nil
 	end
 end
 
@@ -58,13 +59,19 @@ function PlayerEntity:getAnimator()
 	return animator
 end
 
-function PlayerEntity:disableDefaultControl()
+---@param state boolean
+function PlayerEntity:toggleDefaultControl(state)
 	local PlayerModule = require(self.player.PlayerScripts:FindFirstChild("PlayerModule"))
 	local character = self:getCharacter()
 	local humanoid = character:FindFirstChildOfClass("Humanoid")
 	local Control = PlayerModule:GetControls()
-	Control:Disable()
-	humanoid.PlatformStand = true
+	if state then
+		Control:Enable()
+		humanoid.PlatformStand = false
+	else
+		Control:Disable()
+		humanoid.PlatformStand = true
+	end
 end
 
 return PlayerEntity

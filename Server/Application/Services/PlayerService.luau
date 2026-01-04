@@ -23,6 +23,12 @@ function PlayerService:onPlayerRemoving(player)
 	---@type ServerInfrastructure
 	local infrastructure = self.diContainer:resolve("Infrastructure")
 	infrastructure.repositories.playerRepository:removePlayerEntity(player)
+
+	---@type ServerApplication
+	local application = self.diContainer:resolve("Application")
+	application.services.flyingService:onPlayerRemoving(player)
+	application.services.checkpointService:onPlayerRemoving(player)
+
 end
 
 ---@param player Player

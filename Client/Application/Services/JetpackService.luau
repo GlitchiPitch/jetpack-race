@@ -4,6 +4,9 @@ local UserInputService = game:GetService("UserInputService")
 ---@field diContainer DIContainer
 ---@field _updateTime number
 ---@field _deltaTime number
+---@field _inputBeganConnect RBXScriptConnection
+---@field _inputEndedConnect RBXScriptConnection
+---@field _renderConnect RBXScriptConnection
 local JetpackService = {}
 JetpackService.__index = JetpackService
 
@@ -34,7 +37,7 @@ function JetpackService:startFly()
 	local playerService = application.services.playerService
 	local playerJetpack = playerService:getPlayerJetpack()
 
-	playerService:disableDefaultControl()
+	playerService:toggleDefaultControl(false)
 	self:_moveUp()
 	self:_listenInput()
 
@@ -53,7 +56,24 @@ function JetpackService:startFly()
 		end
 	end
 
-	RunService.RenderStepped:Connect(onRender)
+	self._renderConnect = RunService.RenderStepped:Connect(onRender)
+end
+
+function JetpackService:finishFly()
+	---@type ClientApplication
+	local application = self.diContainer:resolve("Application")
+	local playerService = application.services.playerService
+	playerService:toggleDefaultControl(true)
+
+	if self._inputBeganConnect then
+		self._inputBeganConnect:Disconnect()
+	end
+	if self._inputEndedConnect then
+		self._inputEndedConnect:Disconnect()
+	end
+	if self._renderConnect then
+		self._renderConnect:Disconnect()
+	end
 end
 
 function JetpackService:_moveUp()
@@ -101,8 +121,8 @@ function JetpackService:_listenInput()
 		end
 	end
 
-	UserInputService.InputBegan:Connect(inputBegan)
-	UserInputService.InputEnded:Connect(inputEnded)
+	self._inputBeganConnect = UserInputService.InputBegan:Connect(inputBegan)
+	self._inputEndedConnect = UserInputService.InputEnded:Connect(inputEnded)
 end
 
 return JetpackService

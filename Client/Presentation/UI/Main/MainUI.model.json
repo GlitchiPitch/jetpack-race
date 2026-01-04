@@ -18,6 +18,9 @@
             "name": "RaceUI",
             "children": [
                 {
+                    "className": "UIAspectRatioConstraint"
+                },
+                {
                     "className": "Frame",
                     "name": "ProgressBar",
                     "children": [

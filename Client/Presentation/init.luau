@@ -38,8 +38,29 @@ function Presentation:_connectToEvents()
 
 	shared.Infrastructure.services.remoteEventService:connectToEvent(
 		shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED,
-		function(args)
+		function(_)
 			self.ui.mainUI:toggleJetpackUI(true)
+		end
+	)
+
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.RACE_START,
+		function(_)
+			self.ui.mainUI:toggleRaceUI(true)
+		end
+	)
+
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.FLYING_DEACTIVATED,
+		function(_)
+			self.ui.mainUI:toggleJetpackUI(false)
+		end
+	)
+
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.FINISH_RACE,
+		function(_)
+			self.ui.mainUI:toggleRaceUI(false)
 		end
 	)
 end

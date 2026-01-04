@@ -36,11 +36,13 @@ function PlayerService:updatePlayerData(data)
 	infrastructure.repositories.playerRepository:updateEntity(data)
 end
 
-function PlayerService:disableDefaultControl()
+
+---@param state boolean
+function PlayerService:toggleDefaultControl(state)
 	---@type ClientInfrastructure
 	local infrastructure = self.diContainer:resolve("Infrastructure")
 	local playerEntity = infrastructure.repositories.playerRepository:getPlayerEntity()
-	playerEntity:disableDefaultControl()
+	playerEntity:toggleDefaultControl(state)
 end
 
 return PlayerService

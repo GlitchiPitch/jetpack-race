@@ -17,13 +17,7 @@ function RaceService:activateTrigger()
 	shared.Infrastructure.services.remoteEventService:fireServer(shared.Constants.REMOTE_EVENTS.RACE_TRIGGER_ACTIVATED)
 end
 
-function RaceService:start()
-	---@type ClientApplication
-	local application = self.diContainer:resolve("Application")
-
-	application.services.cameraService:activateFlyingCamera()
-	application.services.jetpackService:startFly()
-	application.services.animationService:activateFlyingIdle()
-end
+function RaceService:start() end
+function RaceService:finish() end
 
 return RaceService

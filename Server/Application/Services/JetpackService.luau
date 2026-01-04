@@ -37,7 +37,7 @@ function JetpackService:_getPlayerJetpack(playerEntity)
 	local shared = self.diContainer:resolve("Shared")
 	local jetpackAsset = shared.Assets.Jetpack[playerEntity.equippedJetpack] or shared.Assets.Jetpack.Default
 	local jetpack = shared.Domain.Entities.Jetpack.new({
-		_instance = jetpackAsset,
+		_instance = jetpackAsset:Clone(),
 	})
 	return jetpack
 end

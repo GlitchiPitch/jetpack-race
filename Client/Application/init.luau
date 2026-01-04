@@ -45,7 +45,9 @@ function Application:_connectToEvents()
 		shared.Constants.REMOTE_EVENTS.FLYING_ACTIVATED,
 		function(args)
 			self.services.jetpackService:updateJetpack(args.jetpack)
-			self.services.raceService:start()
+			self.services.cameraService:activateFlyingCamera()
+			self.services.jetpackService:startFly()
+			self.services.animationService:activateFlyingIdle()
 		end
 	)
 
@@ -53,6 +55,23 @@ function Application:_connectToEvents()
 		shared.Constants.REMOTE_EVENTS.RACE_START,
 		function(args)
 			self.services.checkpointService:trackCheckpoints(args)
+			self.services.raceService:start()
+		end
+	)
+
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.FINISH_RACE,
+		function(_)
+			self.services.raceService:finish()
+		end
+	)
+
+	shared.Infrastructure.services.remoteEventService:connectToEvent(
+		shared.Constants.REMOTE_EVENTS.FLYING_DEACTIVATED,
+		function(_)
+			self.services.jetpackService:finishFly()
+			self.services.animationService:deactivateFlyingIdle()
+			self.services.cameraService:deactivateFlyingCamera()
 		end
 	)
 end
