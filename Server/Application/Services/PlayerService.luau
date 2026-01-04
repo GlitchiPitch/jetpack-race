@@ -1,5 +1,18 @@
----@class ServerPlayerService
----@field diContainer DIContainer
+--- ServerPlayerService - Server-side player management service
+---
+--- This service handles player lifecycle management on the server side,
+--- including player addition, removal, data synchronization, and interaction
+--- with other game services.
+---
+--- Key Features:
+--- - Handles player join/leave events
+--- - Manages player entities through PlayerRepository
+--- - Synchronizes player data with clients
+--- - Integrates with FlyingService and CheckpointService
+--- - Provides player kick functionality
+---
+--- @class ServerPlayerService
+--- @field diContainer DIContainer Dependency injection container for resolving other services
 local PlayerService = {}
 PlayerService.__index = PlayerService
 
@@ -28,7 +41,6 @@ function PlayerService:onPlayerRemoving(player)
 	local application = self.diContainer:resolve("Application")
 	application.services.flyingService:onPlayerRemoving(player)
 	application.services.checkpointService:onPlayerRemoving(player)
-
 end
 
 ---@param player Player

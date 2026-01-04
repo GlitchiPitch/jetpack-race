@@ -1,5 +1,17 @@
----@class ClientPlayerService
----@field diContainer DIContainer
+--- ClientPlayerService - Client-side player management service
+---
+--- This service provides client-side access to player-related functionality,
+--- including player entity management, character access, jetpack operations,
+--- and control system management.
+---
+--- Key Features:
+--- - Provides access to player's jetpack entity
+--- - Manages player character retrieval
+--- - Handles player data synchronization from server
+--- - Controls player movement input handling
+---
+--- @class ClientPlayerService
+--- @field diContainer DIContainer Dependency injection container for resolving other services
 local PlayerService = {}
 PlayerService.__index = PlayerService
 
@@ -35,7 +47,6 @@ function PlayerService:updatePlayerData(data)
 	local shared = self.diContainer:resolve("Shared")
 	infrastructure.repositories.playerRepository:updateEntity(data)
 end
-
 
 ---@param state boolean
 function PlayerService:toggleDefaultControl(state)

@@ -1,10 +1,29 @@
 local RunService = game:GetService("RunService")
----@class ClientCheckpointService
----@field diContainer DIContainer
----@field _checkpoints Vector3[]
----@field _deltaTime number
----@field _updateTime number
----@field _maxPoints number
+--- ClientCheckpointService - Client-side checkpoint tracking and race progress
+---
+--- This service manages client-side checkpoint tracking during active races,
+--- providing real-time progress updates, visual feedback, and automatic
+--- race completion detection.
+---
+--- Key Features:
+--- - Real-time checkpoint proximity checking and validation
+--- - Visual checkpoint state feedback (color changes)
+--- - Sequential checkpoint progression tracking
+--- - Automatic race completion detection and reporting
+--- - Server synchronization for checkpoint achievements
+---
+--- Race Flow:
+--- - Receives checkpoint data from server at race start
+--- - Monitors player position relative to current target checkpoint
+--- - Provides immediate visual feedback on checkpoint capture
+--- - Automatically advances to next checkpoint or finishes race
+---
+--- @class ClientCheckpointService
+--- @field diContainer DIContainer Dependency injection container for resolving other services
+--- @field _checkpoints Vector3[] Array of checkpoint positions in sequence
+--- @field _deltaTime number Accumulated time since last update check
+--- @field _updateTime number Time interval between checkpoint checks
+--- @field _maxPoints number Total number of checkpoints in current race
 local CheckpointService = {}
 CheckpointService.__index = CheckpointService
 

@@ -1,7 +1,7 @@
 local PlayerRepository = require(script.PlayerRepository)
 
 ---@class Repositories
----@field playerRepository PlayerRepository
+---@field playerRepository ServerPlayerRepository
 local Repositories = {}
 Repositories.__index = Repositories
 

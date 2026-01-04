@@ -5,7 +5,7 @@ local Presentation = require(script.Presentation)
 local Application = require(script.Application)
 local Infrastructure = require(script.Infrastructure)
 
----@class ShopClient
+---@class Client
 ---@field application ClientApplication
 ---@field presentation Presentation
 ---@field shared Shared
@@ -13,7 +13,7 @@ local Infrastructure = require(script.Infrastructure)
 local Client = {}
 Client.__index = Client
 
----@return ShopClient
+---@return Client
 function Client.new()
 	local self = setmetatable({}, Client)
 	self.shared = Shared.new()

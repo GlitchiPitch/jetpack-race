@@ -29,7 +29,7 @@ function JetpackEntity.new(data)
 	self._nitroIsActivated = false
 
 	self.speed = self._defaultSpeed
-	self.nitro = self._maxNitro
+	self.nitro = 0
 	self:_setup()
 	return self
 end
@@ -50,6 +50,8 @@ function JetpackEntity:getData()
 		_instance = self._instance,
 		linearVelocity = self.linearVelocity,
 		alignOrientation = self.alignOrientation,
+		speed = self._defaultSpeed,
+		nitro = self._maxNitro,
 	}
 end
 

@@ -1,10 +1,29 @@
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
----@class CameraService
----@field diContainer DIContainer
----@field renderConnection RBXScriptConnection
----@field cameraSettings cameraSettings
----@field camera Camera
+--- CameraService - Advanced camera control system for jetpack flight
+---
+--- This service provides sophisticated camera controls specifically designed for
+--- jetpack flight mechanics, including collision detection, smooth interpolation,
+--- multiple camera modes, and responsive input handling.
+---
+--- Key Features:
+--- - Smooth camera movement with frame-rate independent interpolation
+--- - Collision detection to prevent camera clipping through walls
+--- - Multiple camera modes: normal, aim, and nitro boost
+--- - Shoulder switching (left/right camera positioning)
+--- - Mouse-based camera rotation with configurable sensitivity
+--- - Automatic camera cleanup when character is removed
+---
+--- Camera Modes:
+--- - **Normal**: Default flight camera with moderate responsiveness
+--- - **Aim**: Zoomed-in camera with increased mouse sensitivity for precision
+--- - **Nitro**: Dynamic camera with bobble effects during speed boosts
+---
+--- @class CameraService
+--- @field diContainer DIContainer Dependency injection container for resolving other services
+--- @field renderConnection RBXScriptConnection Connection to RenderStepped for camera updates
+--- @field cameraSettings table Camera configuration settings from Config service
+--- @field camera Camera The workspace CurrentCamera instance
 local CameraService = {}
 CameraService.__index = CameraService
 

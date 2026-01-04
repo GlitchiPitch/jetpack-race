@@ -1,8 +1,25 @@
 local Players = game:GetService("Players")
----@class ClientPlayerRepository
----@field diContainer DIContainer
----@field player Player
----@field playerEntity PlayerEntity
+--- ClientPlayerRepository - Client-side player data management and caching
+---
+--- This repository manages the local player's entity on the client side,
+--- providing access to player data and handling updates from the server.
+--- It serves as the client-side counterpart to the server PlayerRepository.
+---
+--- Key Features:
+--- - Singleton player entity management for the local player
+--- - Jetpack equipment tracking and updates
+--- - Player data synchronization from server updates
+--- - Character and entity data access methods
+---
+--- Data Flow:
+--- - Creates player entity on initialization using LocalPlayer
+--- - Receives data updates from server via PlayerService
+--- - Provides read/write access to player state and equipment
+---
+--- @class ClientPlayerRepository
+--- @field diContainer DIContainer Dependency injection container for resolving other services
+--- @field player Player The Roblox LocalPlayer instance
+--- @field playerEntity PlayerEntity The local player's entity instance
 local PlayerRepository = {}
 PlayerRepository.__index = PlayerRepository
 

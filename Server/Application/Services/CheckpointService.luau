@@ -1,6 +1,24 @@
----@class ServerCheckpointService
----@field diContainer DIContainer
----@field _reachedCheckpoints table<number, number>
+--- ServerCheckpointService - Server-side checkpoint management and validation
+---
+--- This service handles the generation and validation of race checkpoints on the server.
+--- It creates checkpoint entities along predefined race trajectories and tracks
+--- player progress through the checkpoint system.
+---
+--- Key Features:
+--- - Generates checkpoints along curved trajectories using TrajectoryPathService
+--- - Validates checkpoint reach distances to prevent cheating
+--- - Tracks individual player checkpoint progress
+--- - Manages checkpoint entity cleanup on player removal
+--- - Provides checkpoint data access for client synchronization
+---
+--- Checkpoint Generation:
+--- - Uses trajectory data to place checkpoints at optimal intervals
+--- - Orients checkpoints to face the next point in the path
+--- - Creates collision-enabled checkpoint entities in the workspace
+---
+--- @class ServerCheckpointService
+--- @field diContainer DIContainer Dependency injection container for resolving other services
+--- @field _reachedCheckpoints table<number, number> Maps player UserIds to their last reached checkpoint index
 local CheckpointService = {}
 CheckpointService.__index = CheckpointService
 
