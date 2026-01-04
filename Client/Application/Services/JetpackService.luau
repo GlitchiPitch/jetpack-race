@@ -91,6 +91,14 @@ function JetpackService:_moveUp()
 	})
 
 	task.wait(3)
+
+	playerJetpack:setMovers({
+		isActive = true,
+		vectorVelocity = Vector3.zero,
+		orientationCFrame = cameraService:getCFrame(),
+	})
+
+	task.wait(3)
 end
 
 function JetpackService:_listenInput()

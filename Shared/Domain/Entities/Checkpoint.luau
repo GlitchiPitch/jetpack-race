@@ -23,6 +23,9 @@ function CheckpointEntity.new(data)
 	if data.parent then
 		self._instance.Parent = data.parent
 	end
+
+	self._instance.PrimaryPart.FrontSurfaceGui.TextLabel.Text = self.index
+	
 	return self
 end
 

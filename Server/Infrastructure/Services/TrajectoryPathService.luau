@@ -26,7 +26,6 @@ end
 ---@field endPos Vector3
 ---@field controlDelta Vector3
 
-
 ---@param jetpackTrajectories jetpackTrajectory[]
 ---@param minDistance number
 ---@return Vector3[]
@@ -115,10 +114,10 @@ function TrajectoryPathService:filterPathPoints(path: { Vector3 }, minDistance: 
 end
 
 -- Generate path with fixed number of points (reduces density)
--- @param controlPoints: {startPoint, controlPoint, endPoint}
--- @param numPoints: desired number of points (lower = more spacing)
--- @return {Vector3}: array with specified number of points
-function TrajectoryPathService:generateSparsePath(controlPoints: { Vector3 }, numPoints: number): { Vector3 }
+--- @param controlPoints table<string, Vector3>
+--- @param numPoints number desired number of points (lower = more spacing)
+--- @return Vector3[] array with specified number of points
+function TrajectoryPathService:generateSparsePath(controlPoints: { Vector3 }, numPoints: number)
 	local path = {}
 	local p0, p1, p2 = controlPoints[1], controlPoints[2], controlPoints[3]
 

@@ -22,7 +22,7 @@ function BoostEntity.new(boostData, touchCallback)
 	self._instance:PivotTo(boostData.cframe)
 	self._instance.Parent = boostData.parent
 	self._touchCallback = touchCallback
-    self._isTouched = false
+	self._isTouched = false
 	self:_setup()
 	return self
 end
@@ -30,16 +30,19 @@ end
 function BoostEntity:_setup()
 	---@param hit Instance
 	local function onTouched(hit)
-        if self._isTouched then
-            return
-        end
-        
-		self._touchCallback(hit)
+		if self._isTouched then
+			return
+		end
+
+		if self._touchCallback(hit) then
+			self:destroy()
+		end
 	end
 
 	self._hitbox = Instance.new("Part")
 	self._hitbox.Transparency = 0.5
 	self._hitbox.Anchored = true
+	self._hitbox.Size = Vector3.one * 20
 	self._hitbox.CFrame = self._instance.PrimaryPart.CFrame
 	self._hitbox.Parent = self._instance
 	self._hitbox.Shape = Enum.PartType.Ball
@@ -47,6 +50,12 @@ function BoostEntity:_setup()
 	self._hitbox.CanQuery = false
 
 	self._hitboxConnect = self._hitbox.Touched:Connect(onTouched)
+end
+
+function BoostEntity:destroy()
+	self._hitboxConnect:Disconnect()
+	self._hitbox:Destroy()
+	self._instance:Destroy()
 end
 
 return BoostEntity

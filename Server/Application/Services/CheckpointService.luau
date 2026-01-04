@@ -19,6 +19,9 @@
 --- @class ServerCheckpointService
 --- @field diContainer DIContainer Dependency injection container for resolving other services
 --- @field _reachedCheckpoints table<number, number> Maps player UserIds to their last reached checkpoint index
+--- @field folder Folder
+--- @field pointIndex number
+--- @field points table<number, table<any, any>>
 local CheckpointService = {}
 CheckpointService.__index = CheckpointService
 
@@ -27,12 +30,18 @@ function CheckpointService.new(diContainer)
 	local self = setmetatable({}, CheckpointService)
 	self.diContainer = diContainer
 	self.folder = Instance.new("Folder")
-	self.folder.Parent = workspace.Workspace
 	self.pointIndex = 1
 	self.points = {}
-
 	self._reachedCheckpoints = {}
+
+	self:_setup()
+
 	return self
+end
+
+function CheckpointService:_setup()
+	self.folder.Name = "Checkpoints"
+	self.folder.Parent = workspace.Workspace
 end
 
 ---@param playerEntity PlayerEntity
@@ -57,23 +66,23 @@ function CheckpointService:generate()
 
 	local jetpackTrajectories = {
 		{
-			startPos = Vector3.new(0, 20, 0),
-			endPos = Vector3.new(500, 20, 0),
+			startPos = workspace.Workspace.Track["1"].Position,
+			endPos = workspace.Workspace.Track["2"].Position,
 			controlDelta = Vector3.new(0, 0, 0),
 		},
 		{
-			startPos = Vector3.new(600, 20, 0),
-			endPos = Vector3.new(1100, 200, 0),
+			startPos = workspace.Workspace.Track["3"].Position,
+			endPos = workspace.Workspace.Track["4"].Position,
 			controlDelta = Vector3.new(0, 150, 0),
 		},
 		{
-			startPos = Vector3.new(1200, 200, 0),
-			endPos = Vector3.new(1200, 200, -800),
-			controlDelta = Vector3.new(800, 0, 0),
+			startPos = workspace.Workspace.Track["5"].Position,
+			endPos = workspace.Workspace.Track["6"].Position,
+			controlDelta = Vector3.new(0, 0, -400),
 		},
 		{
-			startPos = Vector3.new(1200, 200, -900),
-			endPos = Vector3.new(1200, 200, -1400),
+			startPos = workspace.Workspace.Track["7"].Position,
+			endPos = workspace.Workspace.Track["8"].Position,
 			controlDelta = Vector3.new(-800, 0, 0),
 		},
 	}
